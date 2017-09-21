@@ -1,0 +1,24 @@
+{% extends 'base.html'%}
+<!--<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">-->
+
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'm4876_01.css' %}"></link>
+<script language="Javascript" src="http://d3js.org/d3.v3.js"></script>
+<script language="Javascript" src="{% static 'm4876_01.js' %}"></script>
+
+<script type="text/javascript">
+
+	d3.json("{% static 'm4876_01.json' %}", function(chartdata) {
+		drawChartData_m4876_01("#d3div", 740, 445, chartdata);
+	});
+	
+
+</script>
+
+
+<div id="d3div" class='topdiv'></div>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
+{% endblock %}

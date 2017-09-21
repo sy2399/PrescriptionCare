@@ -1,0 +1,888 @@
+﻿{
+  
+  "chart": {
+    "caption": "MDM 사용자 일별 로그인 현황",
+    "bgcolor": "FFFFFF",
+    "canvasborderthickness": "0",
+    "labeldisplay": "NONE",
+    "plotbordercolor": "FFFFFF",
+    "basefontcolor": "FFFFFF",
+    "outcnvbasefontcolor": "333333",
+    "showvalues": "1",
+    "captionpadding": "150",
+    "legendpadding": "0",
+    "tooltipcolor": "333333",
+    "canvasborderalpha": "0",
+    "legendshadow": "0",
+    "legendborderalpha": "0",
+    "showBorder": "0"
+  },
+  "colorrange": {
+    "gradient": "1",
+    "minvalue": "0",
+    "code": "81A749",
+    "startlabel": "",
+    "endlabel": "Very High",
+    "color": [
+      {
+        "label": "Average",
+        "code": "3E9583",
+        "minvalue": "0",
+        "maxvalue": "615",
+        "alpha": "40"
+      },
+      {
+        "code": "1F2D86",
+        "minvalue": "615",
+        "maxvalue": "15832",
+        "alpha": "20"
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "data": [
+        {
+          "rowid": "일요일",
+          "columnid": "00",
+          "value": "1"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "01",
+          "value": "2"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "02",
+          "value": "0"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "03",
+          "value": "0"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "04",
+          "value": "0"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "05",
+          "value": "0"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "06",
+          "value": "1"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "07",
+          "value": "0"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "08",
+          "value": "2"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "09",
+          "value": "5"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "10",
+          "value": "2"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "11",
+          "value": "6"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "12",
+          "value": "1"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "13",
+          "value": "6"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "14",
+          "value": "13"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "15",
+          "value": "17"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "16",
+          "value": "16"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "17",
+          "value": "9"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "18",
+          "value": "6"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "19",
+          "value": "3"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "20",
+          "value": "4"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "21",
+          "value": "25"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "22",
+          "value": "16"
+        },
+        {
+          "rowid": "일요일",
+          "columnid": "23",
+          "value": "27"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "00",
+          "value": "4"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "01",
+          "value": "0"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "02",
+          "value": "0"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "03",
+          "value": "0"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "04",
+          "value": "0"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "05",
+          "value": "0"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "06",
+          "value": "0"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "07",
+          "value": "3"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "08",
+          "value": "367"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "09",
+          "value": "942"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "10",
+          "value": "848"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "11",
+          "value": "1035"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "12",
+          "value": "240"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "13",
+          "value": "7029"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "14",
+          "value": "927"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "15",
+          "value": "4323"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "16",
+          "value": "15832"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "17",
+          "value": "5825"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "18",
+          "value": "5784"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "19",
+          "value": "621"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "20",
+          "value": "1909"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "21",
+          "value": "97"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "22",
+          "value": "11"
+        },
+        {
+          "rowid": "월요일",
+          "columnid": "23",
+          "value": "19"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "00",
+          "value": "5"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "01",
+          "value": "1"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "02",
+          "value": "5"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "03",
+          "value": "5"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "04",
+          "value": "0"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "05",
+          "value": "0"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "06",
+          "value": "0"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "07",
+          "value": "6"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "08",
+          "value": "513"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "09",
+          "value": "2197"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "10",
+          "value": "2925"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "11",
+          "value": "1035"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "12",
+          "value": "260"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "13",
+          "value": "2992"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "14",
+          "value": "1212"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "15",
+          "value": "1526"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "16",
+          "value": "897"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "17",
+          "value": "885"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "18",
+          "value": "696"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "19",
+          "value": "445"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "20",
+          "value": "325"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "21",
+          "value": "40"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "22",
+          "value": "14"
+        },
+        {
+          "rowid": "화요일",
+          "columnid": "23",
+          "value": "32"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "00",
+          "value": "4"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "01",
+          "value": "6"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "02",
+          "value": "4"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "03",
+          "value": "4"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "04",
+          "value": "0"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "05",
+          "value": "0"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "06",
+          "value": "0"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "07",
+          "value": "11"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "08",
+          "value": "494"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "09",
+          "value": "2064"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "10",
+          "value": "907"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "11",
+          "value": "980"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "12",
+          "value": "238"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "13",
+          "value": "1173"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "14",
+          "value": "1039"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "15",
+          "value": "1057"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "16",
+          "value": "1385"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "17",
+          "value": "1076"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "18",
+          "value": "665"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "19",
+          "value": "412"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "20",
+          "value": "314"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "21",
+          "value": "61"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "22",
+          "value": "10"
+        },
+        {
+          "rowid": "수요일",
+          "columnid": "23",
+          "value": "5"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "00",
+          "value": "6"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "01",
+          "value": "4"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "02",
+          "value": "0"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "03",
+          "value": "0"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "04",
+          "value": "0"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "05",
+          "value": "0"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "06",
+          "value": "1"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "07",
+          "value": "18"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "08",
+          "value": "533"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "09",
+          "value": "1266"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "10",
+          "value": "1104"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "11",
+          "value": "1892"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "12",
+          "value": "264"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "13",
+          "value": "1318"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "14",
+          "value": "7759"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "15",
+          "value": "955"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "16",
+          "value": "966"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "17",
+          "value": "1073"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "18",
+          "value": "842"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "19",
+          "value": "478"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "20",
+          "value": "295"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "21",
+          "value": "77"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "22",
+          "value": "14"
+        },
+        {
+          "rowid": "목요일",
+          "columnid": "23",
+          "value": "14"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "00",
+          "value": "8"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "01",
+          "value": "4"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "02",
+          "value": "1"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "03",
+          "value": "1"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "04",
+          "value": "0"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "05",
+          "value": "0"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "06",
+          "value": "0"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "07",
+          "value": "9"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "08",
+          "value": "523"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "09",
+          "value": "1320"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "10",
+          "value": "1228"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "11",
+          "value": "1701"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "12",
+          "value": "924"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "13",
+          "value": "1337"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "14",
+          "value": "1297"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "15",
+          "value": "1062"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "16",
+          "value": "829"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "17",
+          "value": "174"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "18",
+          "value": "33"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "19",
+          "value": "24"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "20",
+          "value": "13"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "21",
+          "value": "10"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "22",
+          "value": "6"
+        },
+        {
+          "rowid": "금요일",
+          "columnid": "23",
+          "value": "6"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "00",
+          "value": "5"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "01",
+          "value": "1"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "02",
+          "value": "2"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "03",
+          "value": "0"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "04",
+          "value": "0"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "05",
+          "value": "0"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "06",
+          "value": "0"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "07",
+          "value": "1"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "08",
+          "value": "0"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "09",
+          "value": "5"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "10",
+          "value": "7"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "11",
+          "value": "12"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "12",
+          "value": "8"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "13",
+          "value": "6"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "14",
+          "value": "19"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "15",
+          "value": "6"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "16",
+          "value": "9"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "17",
+          "value": "7"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "18",
+          "value": "5"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "19",
+          "value": "4"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "20",
+          "value": "3"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "21",
+          "value": "7"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "22",
+          "value": "5"
+        },
+        {
+          "rowid": "토요일",
+          "columnid": "23",
+          "value": "1"
+        }
+      ]
+    }
+  ]
+}
