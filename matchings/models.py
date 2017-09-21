@@ -1,5 +1,11 @@
 from django.db import models
 
+import numpy as np
+import pandas as pd
+import datetime 
+
+DATA_INPUT_FORMAT = ('%Y-%m-%d')
+
 # Create your models here.
 
 class Disease(models.Model):
@@ -7,10 +13,10 @@ class Disease(models.Model):
 	PTNO = models.IntegerField(default=0) 
 	
 	#상병시작일자
-	STARTDATE = models.DateTimeField('start date')
+	STARTDATE = models.DateField('start date')
 	
 	#상병종료일자
-	ENDDATE =  models.DateTimeField('start date') 	
+	ENDDATE =  models.DateField('end date') 	
 	
 	#외래, 입원
 	IPDOPD = models.CharField(max_length=1) 
@@ -82,5 +88,9 @@ class Prescription(models.Model):
 
 	#보험구분코드
 	SELFFLAG = models.IntegerField(default=0)  
+
+
+disease1 = Disease(PTNO=401532, STARTDATE='2017-07-01', ENDDATE='2017-07-01')
+disease1.save()
 
 
