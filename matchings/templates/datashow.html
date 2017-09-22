@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Data{% endblock %}
+
+{% block content %}
+	<div class="container-fluid">
+		<div class="row">
+			<nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+				<ul class="nav nav-pills flex-column">
+					<li class="nav-item">
+						<a class="nav-link active" href="#">Overview <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Reports</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Analytics</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Export</a>
+					</li>
+				</ul>
+
+				<ul class="nav nav-pills flex-column">
+					<li class="nav-item">
+						<a class="nav-link" href="#">Nav item</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Nav item again</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">One more nav</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Another nav item</a>
+					</li>
+				</ul>
+
+				<ul class="nav nav-pills flex-column">
+					<li class="nav-item">
+						<a class="nav-link" href="#">Nav item again</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">One more nav</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Another nav item</a>
+					</li>
+				</ul>
+			</nav>
+
+			<main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
+				<h1>Dashboard</h1>
+
+				<section class="row text-center placeholders">
+					<div class="col-6 col-sm-3 placeholder">
+						<a href="{% url 'matchings:m4876_00' %}"><img src="data:image/gif;base64,R0lGODlhAQABAIABAAJ12AAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle" alt="Generic placeholder thumbnail" ></a>
+						<h4>Label</h4>
+						<div class="text-muted">Something else</div>
+					</div>
+					<div class="col-6 col-sm-3 placeholder">
+						<a href="{% url 'matchings:m4876_01' %}"><img src="data:image/gif;base64,R0lGODlhAQABAIABAADcgwAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle" alt="Generic placeholder thumbnail"></a>
+						<h4>Label</h4>
+						<span class="text-muted">Something else</span>
+					</div>
+					<div class="col-6 col-sm-3 placeholder">
+						<img src="data:image/gif;base64,R0lGODlhAQABAIABAAJ12AAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle" alt="Generic placeholder thumbnail">
+						<h4>Label</h4>
+						<span class="text-muted">Something else</span>
+					</div>
+					<div class="col-6 col-sm-3 placeholder">
+						<img src="data:image/gif;base64,R0lGODlhAQABAIABAADcgwAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle" alt="Generic placeholder thumbnail">
+						<h4>Label</h4>
+						<span class="text-muted">Something else</span>
+					</div>
+				</section>
+
+				<h2>Diseases</h2>
+				<div class="table-responsive">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>차트번호</th>
+								<th>상병시작일자</th>
+								<th>상병종료일자</th>
+								<th>외래, 입원</th>
+								<th>과코드</th>
+								<th>입력과</th>
+								<th>입력의사</th>
+								<th>증상, 질병</th>
+								<th>특정기호</th>
+								<th>증상, 부상병</th>
+								<th>추가정보</th>
+								<th>처방코드</th>
+							</tr>
+						</thead>
+						{% if disease_list %}
+						<tbody>	
+							{% for disease in disease_list %}
+							<tr>
+								<td>{{ disease.id }}</td>
+								<td>{{ disease.PTNO }}</td>
+								<td>{{ disease.STARTDATE }}</td>
+								<td>{{ disease.ENDDATE }}</td>
+								<td>{{ disease.IPDOPD }}</td>
+								<td>{{ disease.DEPTCODE }}</td>
+								<td>{{ disease.WRITEDEPT }}</td>
+								<td>{{ disease.WRITEDRCODE }}</td>
+								<td>{{ disease.DXCODE }}</td>
+								<td>{{ disease.SPCKIHO }}</td>
+								<td>{{ disease.PRESENTSYMTOM }}</td>
+								<td>{{ disease.DXMOREFLAG }}</td>
+								<td><a href="#">list</a></td>
+							</tr>
+						{% endfor %}
+						</tbody>
+						{% endif %}
+					</table>
+				</div>
+			</main>
+		</div>
+	</div>
+{% endblock %}
