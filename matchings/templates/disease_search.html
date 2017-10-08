@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Data{% endblock %}
+
+{% block content %}
+	<div class="container-fluid">
+		<div class="row">
+			<nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+				<ul class="nav nav-pills flex-column">
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'matchings:datashow' %}">Overview</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Reports</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" href="{% url 'matchings:disease_search' %}">Search<span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Analytics</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Export</a>
+					</li>
+				</ul>
+
+			</nav>
+
+			<main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
+				<h1>Search Disease by Prescriptions</h1>
+				<form action="." method="post">{% csrf_token %}
+					{{ form.as_table }}
+					<input type="submit" value="Submit" />
+				</form>
+
+				<h2>Prescription list</h2>
+				<div class="table-responsive">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>차트번호</th>
+								<th>상병코드</th>
+								<th>상병설명</th>
+							</tr>
+						</thead>
+						{% if object_list %}
+						<tbody>	
+							{% for prescription in object_list %}
+							<tr>
+								<td>{{ prescription.id }}</td>
+								<td>{{ prescription.DXCODE }}</td>
+								<td>prescription.explain</td>
+							</tr>
+							{% endfor %}	
+						</tbody>
+						{% elif search_term %}
+						<b><i>Search Word "{{ search_term }}" Not found</i></b>
+						{% endif %}
+					</table>
+				</div>
+			</main>
+		</div>
+	</div>
+{% endblock %}
