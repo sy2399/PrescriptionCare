@@ -1,1 +1,4 @@
 *.swp
+*.sqlite3
+*.csv
+*.xlsx
