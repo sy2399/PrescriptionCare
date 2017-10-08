@@ -32,6 +32,8 @@
 					{{ form.as_table }}
 					<input type="submit" value="Submit" />
 				</form>
+				
+				<br/></br>
 
 				<h2>Prescription list</h2>
 				<div class="table-responsive">
@@ -48,8 +50,8 @@
 							{% for prescription in object_list %}
 							<tr>
 								<td>{{ prescription.id }}</td>
-								<td>{{ prescription.DXCODE }}</td>
-								<td>prescription.explain</td>
+								<td>{{ prescription.ORDERCODE }}</td>
+								<td>{{ prescription.ORDERNAME }}</td>
 							</tr>
 							{% endfor %}	
 						</tbody>
