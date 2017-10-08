@@ -1,13 +1,30 @@
 {% extends "base.html" %}
 
-{% block title %}home{% endblock %}
-
+{% block title %}System Name Home{% endblock %}
+{% load static %}
 {% block content %}
-{% if user.is_active %}
-	<div class="container-fluid">
-	<a href="{% url 'matchings:datashow' %}">Welcome!!!!</a>
+	<link rel="stylesheet" href="{% static 'css/home.css' %}">
+	{% if user.is_active %}
+	<p><a href={% url 'matchings:datashow' %}>Welcome!!</a></p>
+	{% else %}
+	<div class="container">
+		<div class="outer">
+			<div class="inner">
+				<div class="contents">
+					<p id="cards_title" class="row">Please login first</p>
+					<div class="row cards">
+						<div class="col-sm-5 card">
+							<a href="{% url 'login' %}">Login</a>
+						</div>
+						<div class="col-sm-5 card">
+							<a href="{% url 'register'%}">Register</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-{% else %}
-	<p>Please login first</p>
-{% endif %}
+	{% endif %}
 {% endblock %}
+
+

@@ -6,7 +6,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	
-	<title>{% block title %}VData{% endblock %}</title>
+	<title>{% block title %}System Name{% endblock %}</title>
 	
 	<!-- Bootstrap core CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
@@ -21,27 +21,24 @@
 <body>
 	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="{% url 'home' %}">VData</a>
+			<a class="navbar-brand" href="{% url 'home' %}">System Name</a>
 		</div>
 		<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active"><a class="nav-link" href="#">Home</a></li>
+				{% if user.is_active %}
 				<li class="nav-item"><a class="nav-link" href>Page1</a></li>
 				<li class="nav-item"><a class="nav-link" href>Page2</a></li>
+				{% endif %}
 			</ul>
-			{% if user.is_active %}
 			<h6 id="header" class="nav navbar-nav navbar-right">
-				Welcome, <strong>{% firstof user.get_short_name user.get_username %}</strong> /
+				Welcome
+				{% if user.is_active %}
+				,<strong>{% firstof user.get_short_name user.get_username %}</strong> /
 				<a href="{% url 'password_change' %}">Change Password</a> /
 				<a href="{% url 'logout'%}">Logout</a>
+				{% endif %}
 			</h6>
-			{% else %}
-			<h6 id="header" class="nav navbar-nav navbar-right" style="color:white">
-				Welcome, Anonymous /
-				<a href="{% url 'login' %}">Login</a> /
-				<a href="{% url 'register'%}">Register</a>
-			</h6>
-			{% endif %}
 		</div>
 	</nav>
 
