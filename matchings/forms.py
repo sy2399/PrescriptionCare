@@ -1,4 +1,5 @@
 from django import forms
 
-class DiseaseSearchForm(forms.Form):
+class PrescriptionSearchForm(forms.Form):
 	search_word = forms.CharField(label='Search Prescriptions')
+

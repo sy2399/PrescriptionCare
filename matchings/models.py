@@ -84,7 +84,15 @@ class Prescription(models.Model):
 
 	#보험코드
 	BCODE = models.CharField(max_length=1024) 	
-
+	
 	#보험구분코드
 	SELFFLAG = models.IntegerField(default=0)  
 
+
+dxcode_input = []
+
+class Prescription_List(models.Model):
+	ORDERCODE = models.CharField(max_length=128)
+
+	def input_code(self):
+		dxcode_input.append(self.ORDERCODE)
