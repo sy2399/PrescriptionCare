@@ -89,6 +89,14 @@ def find_dxcode(Graph, disease):
 
 
 
+def get_dxcode_input_list(dxcode_input):
+	dxcodes = dxcode_input.split(" ")
+
+	dxcode_input_list = []
+	for dxcode in dxcodes:
+		dxcode_input_list.append(dxcode)
+
+	return dxcode_input_list
 
 
 
@@ -143,7 +151,9 @@ def get_disease_by_networkx(dxcode_input):
 	G = DG.to_undirected()
 
 #test
-	dxcode_input = ['F5DW200A', 'IBC', 'ZBMC22','IKE-A','TAAPER-B','TCDW','TPSD','TCMT']     
+	#dxcode_input = ['F5DW200A', 'IBC', 'ZBMC22','IKE-A','TAAPER-B','TCDW','TPSD','TCMT']     
+	dxcode_input = get_dxcode_input_list(dxcode_input)
+	
 	return find_disease(G,dxcode_input)[0:9]
 #print(A[0:9])
 
