@@ -1,5 +1,5 @@
 from django import forms
 
-class PrescriptionSearchForm(forms.Form):
-	search_word = forms.CharField(label='Search Prescriptions')
+class MatchForm(forms.Form):
+	match_word = forms.CharField(label='Match Prescriptions')
 

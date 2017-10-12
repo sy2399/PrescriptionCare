@@ -6,7 +6,9 @@ from django.views.generic.edit import FormView
 from django.db.models import Q
 
 from matchings.models import Disease, Prescription_List
-from matchings.forms import PrescriptionSearchForm
+from matchings.forms import MatchForm
+
+from matchings import modelings
 
 # Create your views here.
 
@@ -16,18 +18,18 @@ class datashow(ListView):
 	def get_queryset(self):
 		return Disease.objects.order_by('-STARTDATE')[:10]
 
-class PrescriptionSearchFormView(FormView):
-	form_class = PrescriptionSearchForm
+class MatchFormView(FormView):
+	form_class = MatchForm
 	template_name = 'disease_search.html'
 
 	def form_valid(self, form):
-		schWord = '%s' % self.request.POST['search_word']
-		prescription_list = Prescription_List.objects.filter(Q(ORDERCODE__icontains=schWord)).distinct()
+		schWord = '%s' % self.request.POST['match_word']
+		#prescription_list = Prescription_List.objects.filter(Q(ORDERCODE__icontains=schWord)).distinct()
 
 		context = {}
 		context['form'] = form
 		context['search_term'] = schWord
-		context['object_list'] = prescription_list
+		context['object_list'] = modelings.get_disease_by_networkx(schWord)
 
 		return render(self.request, self.template_name, context)
 

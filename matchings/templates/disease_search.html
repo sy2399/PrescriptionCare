@@ -14,7 +14,7 @@
 						<a class="nav-link" href="#">Reports</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link active" href="{% url 'matchings:disease_search' %}">Search<span class="sr-only">(current)</span></a>
+						<a class="nav-link active" href="{% url 'matchings:match_disease' %}">Search<span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="#">Analytics</a>
@@ -28,13 +28,13 @@
 
 			<main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
 				<h1>Search Disease by Prescriptions</h1>
-				<form action="." method="post">{% csrf_token %}
-					{{ form.as_table }}					
-					<input type="submit" value="Search" />
+			<!--	<form action="." method="post">{% csrf_token %}
+					{{ form }}
+					<input type="submit" value="Search1" />
 				</form>
 				
 				<br/></br>
-
+			
 				<h2>Prescription list</h2>
 				<div class="table-responsive">
 					<table class="table table-striped">
@@ -54,18 +54,27 @@
 								<td>{{ prescription.id }}</td>
 								<td>{{ prescription.ORDERCODE }}</td>
 								<td>prescription.ORDERNAME</td>
-								<td><input type="radio" name="prescription" id="{{ prescription.id }}" value="{{ prescription.ORDERNAME }}"></td>
+								<td>
+									<input type="radio" name="prescription" id="{{ prescription.id }}" value="{{ prescription.ORDERNAME }}">
+								</td>
 							</tr>
 							{% endfor %}
 						</tbody>
-						<input type="submit" value="Submit Prescription">
+						<input name="button1" type="submit" value="Submit Prescription">
+
 						</form>
 						{% elif search_term %}
 						<b><i>Search Word "{{ search_term }}" Not found</i></b>
 						{% endif %}
 					</table>
 				</div>
+			-->
+				<form action="." method="post">{% csrf_token %}
+					{{ form.as_table }}					
+					<input type="submit" value="Search2" />
+				</form>
 
+				<br/><br/>
 				<h2>Disease list</h2>
 				<div class="table-responsive">
 					<table class="table table-striped">
@@ -73,27 +82,27 @@
 							<tr>
 								<th>차트번호</th>
 								<th>상병코드</th>
-								<th>상병설명</th>
-								<th>매칭률</th>
+								<th>상병빈도</th>
+								<th>상병비율</th>
+								<th></th>
 							</tr>
 						</thead>
-						<!--{% if object_list %}
+						{% if object_list %}
 						<form action="."method="post">{% csrf_token %}
 						<tbody>	
-							{% for prescription in object_list %}
+							{% for disease in object_list %}
 							<tr>
-								<td>{{ prescription.id }}</td>
-								<td>{{ prescription.ORDERCODE }}</td>
-								<td>prescription.ORDERNAME</td>
+								<td>{{ disease }}</td>
+								<td></td>
+								<td></td>
+								<td></td>
 								<td><input type="radio" name="prescription" id="{{ prescription.id }}" value="{{ prescription.ORDERNAME }}"></td>
 							</tr>
 							{% endfor %}
 						</tbody>
-						<input type="submit" value="Submit Prescription">
+						<input type="submit" value="Submit Disease">
 						</form>
-						{% elif search_term %}
-						<b><i>Search Word "{{ search_term }}" Not found</i></b>
-						{% endif %}-->
+						{% endif %}
 					</table>
 				</div>
 			</main>
