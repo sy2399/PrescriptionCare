@@ -10,12 +10,12 @@ from itertools import combinations
 from collections import Counter
 import operator
 
-from matchings.models import Prescription_Temp
+from matchings.models import Prescription
 # get data
 #df = pd.read_excel("sample_data.XLSX", header = None,s=1, encoding="utf8")
 #img_objs_df.columns = ["image_id", "user_id", "age", "tag", "accuracy"]
 
-df = pd.DataFrame(list(Prescription_Temp.objects.all().values('IPDOPD', 'DXCODE','ORDERCLASS', 'ORDERCODE', 'ORDERNAME', 'DXCODECOUNT', 'DATECOUNT')))
+df = pd.DataFrame(list(Prescription.objects.all().values('IPDOPD', 'DXCODE','ORDERCLASS', 'ORDERCODE', 'ORDERNAME', 'DXCODECOUNT', 'DATECOUNT')))
 
 # drop not used columns
 #df = df.drop(df.columns['id'], axis=1)
