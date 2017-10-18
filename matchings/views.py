@@ -8,8 +8,9 @@ from django.db.models import Q
 from matchings.models import Disease, Prescription_List
 from matchings.forms import MatchForm
 
-from matchings import modelings
+from matchings.modelings import NetworkxModel 
 
+import pandas as pd
 # Create your views here.
 
 class datashow(ListView):
@@ -26,14 +27,14 @@ class MatchFormView(FormView):
 		schWord = '%s' % self.request.POST['match_word']
 		#prescription_list = Prescription_List.objects.filter(Q(ORDERCODE__icontains=schWord)).distinct()
 
+		model = NetworkxModel()
 		context = {}
 		context['form'] = form
 		context['search_term'] = schWord
-		context['object_list'] = modelings.get_disease_by_networkx(schWord)
+
+		context['disease_list'] = model.get_disease_by_networkx(dxcode_input=schWord)
 
 		return render(self.request, self.template_name, context)
-
-
 
 
 class m4876_00(TemplateView):

@@ -80,23 +80,21 @@
 					<table class="table table-striped">
 						<thead>
 							<tr>
-								<th>차트번호</th>
-								<th>상병코드</th>
-								<th>상병빈도</th>
-								<th>상병비율</th>
+								<th>Name</th>
+								<th>Count</th>
+								<th>Weight</th>
 								<th></th>
 							</tr>
 						</thead>
-						{% if object_list %}
+						{% if disease_list %}
 						<form action="."method="post">{% csrf_token %}
 						<tbody>	
-							{% for disease in object_list %}
+							{% for disease in disease_list %}
 							<tr>
-								<td>{{ disease }}</td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td><input type="radio" name="prescription" id="{{ prescription.id }}" value="{{ prescription.ORDERNAME }}"></td>
+								<td>{{ disease.0 }}</td>
+								<td>{{ disease.1.count }}</td>
+								<td>{{ disease.1.weight }}</td>
+								<td><input type="checkbox" name="disease_check" id="1" value="1"></td>
 							</tr>
 							{% endfor %}
 						</tbody>
