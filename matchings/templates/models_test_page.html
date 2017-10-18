@@ -14,10 +14,10 @@
 						<a class="nav-link" href="#">Reports</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link active" href="{% url 'matchings:match_disease' %}">Search<span class="sr-only">(current)</span></a>
-					</li>
+						<a class="nav-link" href="{% url 'matchings:match_disease' %}">Search</a>
+					</li>	
 					<li class="nav-item">
-						<a class="nav-link" href="{% url 'matchings:models_test' %}">Compare Models</a>
+						<a class="nav-link active" href="{% url 'matchings:models_test' %}">Compare Models<span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="#">Analytics</a>
@@ -30,55 +30,15 @@
 			</nav>
 
 			<main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
-				<h1>Search Disease by Prescriptions</h1>
-			<!--	<form action="." method="post">{% csrf_token %}
-					{{ form }}
-					<input type="submit" value="Search1" />
-				</form>
-				
-				<br/></br>
-			
-				<h2>Prescription list</h2>
-				<div class="table-responsive">
-					<table class="table table-striped">
-						<thead>
-							<tr>
-								<th>차트번호</th>
-								<th>처방코드</th>
-								<th>처방설명</th>
-								<th></th>
-							</tr>
-						</thead>
-						{% if object_list %}
-						<form action="."method="post">{% csrf_token %}
-						<tbody>	
-							{% for prescription in object_list %}
-							<tr>
-								<td>{{ prescription.id }}</td>
-								<td>{{ prescription.ORDERCODE }}</td>
-								<td>prescription.ORDERNAME</td>
-								<td>
-									<input type="radio" name="prescription" id="{{ prescription.id }}" value="{{ prescription.ORDERNAME }}">
-								</td>
-							</tr>
-							{% endfor %}
-						</tbody>
-						<input name="button1" type="submit" value="Submit Prescription">
-
-						</form>
-						{% elif search_term %}
-						<b><i>Search Word "{{ search_term }}" Not found</i></b>
-						{% endif %}
-					</table>
-				</div>
-			-->
+				<h1>Model comparison</h1>
 				<form action="." method="post">{% csrf_token %}
 					{{ form.as_table }}					
-					<input type="submit" value="Search2" />
+					<input type="submit" value="Search" />
 				</form>
 
 				<br/><br/>
-				<h2>Disease list</h2>
+				
+				<h2>Neural Network</h2>
 				<div class="table-responsive">
 					<table class="table table-striped">
 						<thead>
@@ -86,7 +46,6 @@
 								<th>Name</th>
 								<th>Count</th>
 								<th>Weight</th>
-								<th></th>
 							</tr>
 						</thead>
 						{% if disease_list %}
@@ -97,16 +56,41 @@
 								<td>{{ disease.0 }}</td>
 								<td>{{ disease.1.count }}</td>
 								<td>{{ disease.1.weight }}</td>
-								<td><input type="checkbox" name="disease_check" id="1" value="1"></td>
 							</tr>
 							{% endfor %}
 						</tbody>
-						<input type="submit" value="Submit Disease">
 						</form>
 						{% endif %}
 					</table>
 				</div>
-			
+
+
+
+				<h2>Networkx</h2>
+				<div class="table-responsive">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Count</th>
+								<th>Weight</th>
+							</tr>
+						</thead>
+						{% if disease_list %}
+						<form action="."method="post">{% csrf_token %}
+						<tbody>	
+							{% for disease in disease_list %}
+							<tr>
+								<td>{{ disease.0 }}</td>
+								<td>{{ disease.1.count }}</td>
+								<td>{{ disease.1.weight }}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+						</form>
+						{% endif %}
+					</table>
+				</div>
 			</main>
 		</div>
 	</div>
