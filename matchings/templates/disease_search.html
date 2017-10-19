@@ -31,16 +31,14 @@
 
 			<main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
 				<h1>Search Disease by Prescriptions</h1>
-			<!--	<form action="." method="post">{% csrf_token %}
-					{{ form }}
-					<input type="submit" value="Search1" />
-				</form>
-				
-				<br/></br>
+				<br/>
 			
 				<h2>Prescription list</h2>
 				<div class="table-responsive">
-					<table class="table table-striped">
+				{% csrf_token %}
+					<input type="text" id="search_prescription" name="search_prescription" />
+					<br/>
+					<table class="table table-striped scroll">
 						<thead>
 							<tr>
 								<th>차트번호</th>
@@ -49,30 +47,24 @@
 								<th></th>
 							</tr>
 						</thead>
-						{% if object_list %}
-						<form action="."method="post">{% csrf_token %}
-						<tbody>	
-							{% for prescription in object_list %}
+						{% if prescription_list %}
+						<tbody id="search-results">	
+						{% for prescription in prescription_list %}
 							<tr>
 								<td>{{ prescription.id }}</td>
 								<td>{{ prescription.ORDERCODE }}</td>
-								<td>prescription.ORDERNAME</td>
+								<td>ORDERNAME</td>
 								<td>
-									<input type="radio" name="prescription" id="{{ prescription.id }}" value="{{ prescription.ORDERNAME }}">
+									<input type="checkbox" name="prescription" id="{{ prescription.id }}" value="{{ prescription.ORDERNAME }}">
 								</td>
 							</tr>
-							{% endfor %}
+						{% endfor %}
 						</tbody>
-						<input name="button1" type="submit" value="Submit Prescription">
-
-						</form>
-						{% elif search_term %}
-						<b><i>Search Word "{{ search_term }}" Not found</i></b>
 						{% endif %}
 					</table>
 				</div>
-			-->
-				<form action="." method="post">{% csrf_token %}
+
+			<!--	<form action="." method="post">{% csrf_token %}
 					{{ form.as_table }}					
 					<input type="submit" value="Search2" />
 				</form>
@@ -106,7 +98,7 @@
 						{% endif %}
 					</table>
 				</div>
-			
+			-->
 			</main>
 		</div>
 	</div>

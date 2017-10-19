@@ -1,3 +1,9 @@
+from django.template.context_processors import csrf
+
+from django.shortcuts import render_to_response, render
+from django.http import HttpResponseRedirect
+from django.http import HttpResponse
+
 from django.shortcuts import render
 from django.views.generic import ListView
 from django.views.generic.base import TemplateView
@@ -35,6 +41,24 @@ class MatchFormView(FormView):
 		context['disease_list'] = model.get_disease_by_networkx(dxcode_input=schWord)
 
 		return render(self.request, self.template_name, context)
+
+def match_disease(request):
+	args = {}
+	args.update(csrf(request))
+	args['prescription_list'] = Prescription_List.objects.all()
+
+	return render_to_response('disease_search.html', args)
+
+def search_prescription(request):
+	if request.method == "POST":
+		search_text = request.POST['search_text']
+	else:
+		search_text = ''
+
+	prescriptions = Prescription_List.objects.filter(ORDERCODE__contains=search_text)	
+
+	return render_to_response('ajax/ajax_prescription_search.html', {'prescriptions': prescriptions})
+
 
 class ModelCompareFormView(FormView):
 	form_class = MatchForm
