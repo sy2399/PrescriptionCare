@@ -341,14 +341,10 @@ class NeuralNetwork():
 		dxcode_vect = self.vect.transform(dxcode_input_list)
 		with self.graph.as_default():
 			y_pred = self.model.predict(dxcode_vect.toarray())
-			
 
 			all_classes = np.array(self.y_classes)
 			all_classes[np.argmax(y_pred, axis=1)]
 
-			
-			
-		
 			for i in range(0, len(y_pred)):
 				top_index = np.argsort(y_pred[i])[::-1][:10]# find the index of top ?? value
 				top_diagnosis = all_classes[top_index]
