@@ -14,7 +14,7 @@ from django.db.models import Q
 from matchings.models import Disease, Prescription_List
 from matchings.forms import MatchForm
 
-from matchings.modelings import NetworkxModel 
+from matchings.modelings import NeuralNetwork, NetworkxModel 
 
 import pandas as pd
 # Create your views here.
@@ -63,17 +63,20 @@ def search_prescription(request):
 class ModelCompareFormView(FormView):
 	form_class = MatchForm
 	template_name = 'models_test_page.html'
-
+	NNmodel = NeuralNetwork()	
+	NXmodel = NetworkxModel()
+	#NNmodel.__init__()
+	#NXmodel.__init__()
+	
 	def form_valid(self, form):
 		schWord = '%s' % self.request.POST['match_word']
 		#prescription_list = Prescription_List.objects.filter(Q(ORDERCODE__icontains=schWord)).distinct()
 
-		model = NetworkxModel()
 		context = {}
 		context['form'] = form
 		context['search_term'] = schWord
-
-		context['disease_list'] = model.get_disease_by_networkx(dxcode_input=schWord)
+		context['neuralnet_disease_list'] = self.NNmodel.get_disease(dxcode_input=schWord)
+		context['networkx_disease_list'] = self.NXmodel.get_disease(dxcode_input=schWord)
 
 		return render(self.request, self.template_name, context)
 

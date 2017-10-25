@@ -48,14 +48,14 @@
 								<th>Weight</th>
 							</tr>
 						</thead>
-						{% if disease_list %}
+						{% if neuralnet_disease_list %}
 						<form action="."method="post">{% csrf_token %}
 						<tbody>	
-							{% for disease in disease_list %}
+							{% for disease in neuralnet_disease_list %}
 							<tr>
-								<td>{{ disease.0 }}</td>
-								<td>{{ disease.1.count }}</td>
-								<td>{{ disease.1.weight }}</td>
+								<td>{{ disease }}</td>
+								<td></td>
+								<td></td>
 							</tr>
 							{% endfor %}
 						</tbody>
@@ -76,10 +76,10 @@
 								<th>Weight</th>
 							</tr>
 						</thead>
-						{% if disease_list %}
+						{% if networkx_disease_list %}
 						<form action="."method="post">{% csrf_token %}
 						<tbody>	
-							{% for disease in disease_list %}
+							{% for disease in networkx_disease_list %}
 							<tr>
 								<td>{{ disease.0 }}</td>
 								<td>{{ disease.1.count }}</td>
