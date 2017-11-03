@@ -50,18 +50,23 @@
 						{% if prescription_list %}
 						<tbody id="search-results">	
 						{% for prescription in prescription_list %}
-							<tr>
+							<tr onClick="save_prescription(this, {{ prescription.ORDERCODE }})">
 								<td>{{ prescription.id }}</td>
 								<td>{{ prescription.ORDERCODE }}</td>
 								<td>ORDERNAME</td>
-								<td>
+								<!--<td>
 									<input type="checkbox" name="prescription" id="{{ prescription.id }}" value="{{ prescription.ORDERNAME }}">
-								</td>
+								</td>-->
 							</tr>
 						{% endfor %}
 						</tbody>
 						{% endif %}
 					</table>
+				</div>
+
+				<div id="form_id" class="form-group">
+					<label>list:</label>
+					<input type>
 				</div>
 
 			<!--	<form action="." method="post">{% csrf_token %}
