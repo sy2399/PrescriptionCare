@@ -18,7 +18,7 @@ $(function(){
 		$('#clickResultView').val($('#clickResultView').val() + td.eq(1).text());
     });
 
-	$('#list_form_button').on("click", function(){
+	$('#list_form_button').click(function(){
 		$.ajax({
 			type: "POST",
 			url: "search_disease/",
