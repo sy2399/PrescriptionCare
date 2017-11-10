@@ -35,7 +35,7 @@
 			
 				<h2>Prescription list</h2>
 				<div id="prescription_form" class="table-responsive" "form-group">
-				{% csrf_token %}
+					{% csrf_token %}
 
 					<label>Prescription:</label>
 					<input type="text" id="search_prescription" name="search_prescription" />
@@ -46,7 +46,6 @@
 								<th>차트번호</th>
 								<th>처방코드</th>
 								<th>처방설명</th>
-								<th></th>
 							</tr>
 						</thead>
 						{% if prescription_list %}
@@ -63,7 +62,9 @@
 					</table>
 					
 					<div id="list_form" class="form-group">
-						<label>Disease:</label>
+
+						{% csrf_token %}
+						<label>Prescription List:</label>
 						<input type="text" id="clickResultView">
 						<button id="list_form_button">Submit</button>
 					</div>
@@ -72,17 +73,16 @@
 				<br/><br/>
 				<h2>Disease list</h2>
 				<div class="table-responsive">
-					<table class="table table-striped">
+					<table class="table table-striped scroll">
 						<thead>
 							<tr>
 								<th>Name</th>
 								<th>Count</th>
-								<th>Weight</th>
+								<th>Submit</th>
 							</tr>
 						</thead>
 						{% if disease_list %}
-						<form action="."method="post">{% csrf_token %}
-						<tbody>	
+						<tbody id="search-disease-results">	
 							{% for disease in disease_list %}
 							<tr>
 								<td>{{ disease }}</td>
@@ -91,8 +91,6 @@
 							</tr>
 							{% endfor %}
 						</tbody>
-						<input type="submit" value="Submit Disease">
-						</form>
 						{% endif %}
 					</table>
 				</div>

@@ -10,7 +10,6 @@ urlpatterns = [
 
 	url(r'^model_comparison/', views.ModelCompareFormView.as_view(), name='models_test'),
 
-
 	url(r'^m4876_00/$', views.m4876_00.as_view(), name='m4876_00'),
 	url(r'^m4876_01/$', views.m4876_01.as_view(), name='m4876_01'),
 ]

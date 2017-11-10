@@ -1,14 +1,10 @@
 {% if prescriptions.count > 0 %}
 
 {% for prescription in prescriptions %}
-<tr onClick="save_prescription(this, {{ prescription.ORDERCODE }})">
+<tr>
 	<td>{{ prescription.id }}</td>
 	<td>{{ prescription.ORDERCODE }}</td>
 	<td>ORDERNAME</td>
-<!--	<td>
-		<input type="checkbox" name="prescription" id="{{ prescription.id }}" value="{{ prescription.ORDERNAME }}">
-	</td>
--->
 </tr>
 
 {% endfor %}

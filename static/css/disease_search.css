@@ -1,7 +1,7 @@
 
 table.scroll {
-	width: 100%;
-	border-spacing: 0;
+	width: 75%;
+	border-spacing: 1;
 }
 
 table.scroll th,
@@ -13,7 +13,7 @@ table.scroll tbody { display: block; }
 
 table.scroll thead tr {
 	/* fallback */
-	width: 100%;
+	width: 75%;
 	/* minus scroll bar width */
 	width: -webkit-calc(100% - 16px);
 	width:    -moz-calc(100% - 16px);
@@ -35,7 +35,7 @@ table.scroll tbody {
 
 table.scroll tbody td,
 table.scroll thead th {
-	width: 25%;
+	width: 33%;
 	float: left;
 }
 

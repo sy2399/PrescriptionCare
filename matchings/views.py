@@ -20,6 +20,9 @@ from matchings.graph_model import NetworkxModel
 import pandas as pd
 import pickle
 
+NNmodel = NeuralNetwork()
+
+
 class datashow(ListView):
 	template_name = 'datashow.html'
 
@@ -60,24 +63,27 @@ def search_prescription(request):
 		search_text = ''
 
 	prescriptions = Prescription_List.objects.filter(ORDERCODE__contains=search_text)	
+	context = {}
+	context['prescriptions'] = prescriptions
 
-	return render_to_response('ajax/ajax_prescription_search.html', {'prescriptions': prescriptions})
+	return render(request, 'ajax/ajax_prescription_search.html', context)
 
 def search_disease(request):
 	if request.method == "POST":
-		search_text = request.POST['search_list']
+		search_list = request.POST['search_list']
 	else:
 		search_list = ''
 
-	NNmodel = NeuralNetwork()
-
 	context = {}
 	#context['form'] = form
-	context['search_term'] = schWord
-	context['neuralnet_disease_list'] = self.NNmodel.get_disease(dxcode_input=schWord)
+	context['search_term'] = search_list
+	context['disease_list'] = NNmodel.get_disease(dxcode_input=search_list)
+	print(search_list)
+	print(context['disease_list'])
+#	context['neuralnet_disease_list'] = self.NNmodel.get_disease(dxcode_input=schWord)
 #		context['networkx_disease_list'] = self.NXmodel.get_disease(dxcode_input=schWord)
 
-	return render_to_response(ajax/ajax_disease_search.html, context)
+	return render(request, 'ajax/ajax_disease_search.html', context)
 
 
 
@@ -85,7 +91,7 @@ class ModelCompareFormView(FormView):
 	form_class = MatchForm
 	template_name = 'models_test_page.html'
 	
-	NNmodel = NeuralNetwork()	
+#	NNmodel = NeuralNetwork()	
 #	NXmodel = NetworkxModel()
 	
 	def form_valid(self, form):
@@ -95,7 +101,7 @@ class ModelCompareFormView(FormView):
 		context = {}
 		context['form'] = form
 		context['search_term'] = schWord
-		context['neuralnet_disease_list'] = self.NNmodel.get_disease(dxcode_input=schWord)
+		context['neuralnet_disease_list'] = NNmodel.get_disease(dxcode_input=schWord)
 #		context['networkx_disease_list'] = self.NXmodel.get_disease(dxcode_input=schWord)
 
 		return render(self.request, self.template_name, context)

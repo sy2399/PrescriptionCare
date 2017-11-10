@@ -1,5 +1,4 @@
 $(function(){
-
 	$('#search_prescription').keyup(function() {
 		$.ajax({
 			type: "POST",
@@ -20,7 +19,7 @@ $(function(){
     });
 
 	$('#list_form_button').on("click", function(){
-		$ajax({
+		$.ajax({
 			type: "POST",
 			url: "search_disease/",
 			data: {
@@ -28,39 +27,18 @@ $(function(){
 				'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
 			},
 			success: diseaseSearchSuccess,
-			dataType: 'html',
-		})
-
+			dataType: 'html'
+		});
 	});
 });
 
 function prescriptionSearchSuccess(data, textStatus, jqXHR){
+	console.log(data);
 	$('#search-prescription-results').html(data);
 }
 
 function diseaseSearchSuccess(data, textStatus, jqXHR){
-	$('#search-disease-results').html(data)
+	console.log(data);
+	$('#search-disease-results').html(data);
 }
 
-
-
-//
-//
-//function save_prescription(target, ordercode){
-//
-//	$ajax({
-//		type: "POST",
-//		url: "save_prescription/",
-//		data: {
-//			'save_text': ordercode,
-//			'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
-//		},
-//		success: saveSuccess,
-//		datatype: 'html'
-//	});
-//
-//}
-//
-//function saveSuccess(data, textStatus, jqXHR){
-//
-//}
