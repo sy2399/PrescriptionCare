@@ -42,6 +42,10 @@ class MatchFormView(FormView):
 
 		return render(self.request, self.template_name, context)
 
+
+
+
+
 def match_disease(request):
 	args = {}
 	args.update(csrf(request))
@@ -59,31 +63,28 @@ def search_prescription(request):
 
 	return render_to_response('ajax/ajax_prescription_search.html', {'prescriptions': prescriptions})
 
-def save_prescription(request):
+def search_disease(request):
 	if request.method == "POST":
-		save_text = request.POST['save_text']
+		search_text = request.POST['search_list']
+	else:
+		search_list = ''
+
+	NNmodel = NeuralNetwork()
+
+	context = {}
+	#context['form'] = form
+	context['search_term'] = schWord
+	context['neuralnet_disease_list'] = self.NNmodel.get_disease(dxcode_input=schWord)
+#		context['networkx_disease_list'] = self.NXmodel.get_disease(dxcode_input=schWord)
+
+	return render_to_response(ajax/ajax_disease_search.html, context)
+
 
 
 class ModelCompareFormView(FormView):
 	form_class = MatchForm
 	template_name = 'models_test_page.html'
 	
-#	pickle.dump(self.vect, open("vectorizer.pickle", "wb"))
-#
-#	with open("vectorizer.pickle", "rb") as f:
-#			vectorizer = pickle.load(f)
-#
-#	json_file = open("static/NN_model.json", "r")
-#	loaded_N_model_json = json_file.read()
-#	json_file.close()
-#
-#	loaded_model = model_from_json(loaded_N_model_json)
-#
-#	loaded_model.load_weights("NN_model.h5")
-#	#print("Loaded model from disf")
-#	loaded_model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
-
-
 	NNmodel = NeuralNetwork()	
 #	NXmodel = NetworkxModel()
 	
@@ -98,6 +99,8 @@ class ModelCompareFormView(FormView):
 #		context['networkx_disease_list'] = self.NXmodel.get_disease(dxcode_input=schWord)
 
 		return render(self.request, self.template_name, context)
+
+
 
 
 class m4876_00(TemplateView):

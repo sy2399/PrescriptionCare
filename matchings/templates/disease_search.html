@@ -34,8 +34,10 @@
 				<br/>
 			
 				<h2>Prescription list</h2>
-				<div class="table-responsive">
+				<div id="prescription_form" class="table-responsive" "form-group">
 				{% csrf_token %}
+
+					<label>Prescription:</label>
 					<input type="text" id="search_prescription" name="search_prescription" />
 					<br/>
 					<table class="table table-striped scroll">
@@ -48,31 +50,24 @@
 							</tr>
 						</thead>
 						{% if prescription_list %}
-						<tbody id="search-results">	
+						<tbody id="search-prescription-results">	
 						{% for prescription in prescription_list %}
-							<tr onClick="save_prescription(this, {{ prescription.ORDERCODE }})">
+							<tr>
 								<td>{{ prescription.id }}</td>
 								<td>{{ prescription.ORDERCODE }}</td>
 								<td>ORDERNAME</td>
-								<!--<td>
-									<input type="checkbox" name="prescription" id="{{ prescription.id }}" value="{{ prescription.ORDERNAME }}">
-								</td>-->
 							</tr>
 						{% endfor %}
 						</tbody>
 						{% endif %}
 					</table>
+					
+					<div id="list_form" class="form-group">
+						<label>Disease:</label>
+						<input type="text" id="clickResultView">
+						<button id="list_form_button">Submit</button>
+					</div>
 				</div>
-
-				<div id="form_id" class="form-group">
-					<label>list:</label>
-					<input type>
-				</div>
-
-			<!--	<form action="." method="post">{% csrf_token %}
-					{{ form.as_table }}					
-					<input type="submit" value="Search2" />
-				</form>
 
 				<br/><br/>
 				<h2>Disease list</h2>
@@ -83,7 +78,6 @@
 								<th>Name</th>
 								<th>Count</th>
 								<th>Weight</th>
-								<th></th>
 							</tr>
 						</thead>
 						{% if disease_list %}
@@ -91,10 +85,9 @@
 						<tbody>	
 							{% for disease in disease_list %}
 							<tr>
-								<td>{{ disease.0 }}</td>
-								<td>{{ disease.1.count }}</td>
-								<td>{{ disease.1.weight }}</td>
-								<td><input type="checkbox" name="disease_check" id="1" value="1"></td>
+								<td>{{ disease }}</td>
+								<td></td>
+								<td></td>
 							</tr>
 							{% endfor %}
 						</tbody>
@@ -103,7 +96,7 @@
 						{% endif %}
 					</table>
 				</div>
-			-->
+
 			</main>
 		</div>
 	</div>
