@@ -30,6 +30,25 @@ $(function(){
 			dataType: 'html'
 		});
 	});
+
+	$('#search-disease-results').on({
+	    mouseenter : function(){
+	        var tr = $(this);
+            var td = tr.children();//선택한 상병값
+            var pre_td = td.eq(1);
+            //여기서 ajax로 관련처방리스트 불러서 아래의 pre_td.text()안에 넣으면댐
+            pre_td.text(td.text())
+
+	    },
+	    mouseleave: function(){
+	        var tr = $(this);
+            var td = tr.children();//선택한 상병값
+            var pre_td = td.eq(1);
+
+            pre_td.text("")
+	    }
+
+	}, "tr");
 });
 
 function prescriptionSearchSuccess(data, textStatus, jqXHR){
