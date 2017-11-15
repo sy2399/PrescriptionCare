@@ -8,6 +8,8 @@
 
 
 </style>
+
+
 	<div class="container-fluid">
 		<div class="row">
 			<nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
@@ -45,21 +47,21 @@
 					<label>Prescription:</label>
 					<input type="text" id="search_prescription" name="search_prescription" />
 					<br/>
-					<table class="table table scroll">
+					<table class="table table-striped scroll">
 						<thead>
 							<tr>
-								<th>차트번호</th>
+								<th>처방번호</th>
 								<th>처방코드</th>
 								<th>처방설명</th>
 							</tr>
 						</thead>
-						{% if prescription_list %}
+						{% if prescriptions %}
 						<tbody id="search-prescription-results">	
-						{% for prescription in prescription_list %}
+						{% for prescription in prescriptions %}
 							<tr>
 								<td>{{ prescription.id }}</td>
-								<td>{{ prescription.ORDERCODE }}</td>
-								<td>ORDERNAME</td>
+								<td>{{ prescription.ordercode }}</td>
+								<td>{{ prescription.ordername}}</td>
 							</tr>
 						{% endfor %}
 						</tbody>
@@ -78,11 +80,14 @@
 				<br/><br/>
 				<h2>Disease list</h2>
 				<div class="table-responsive">
-					<table class="table table scroll">
+					<table class="table table-striped scroll">
 						<thead>
 							<tr id= "table-responsive-th">
-								<th>Name</th>
-								<th></th>
+								<th style="width=20%">Disease</th>
+								<th style="width=20%">Disease name</th>
+								<th style="width=20%">Proportion</th>
+								<th style="width=20%">Prescription</th>
+								<th style="width=20%">Prescription name</th>
 							</tr>
 						</thead>
 

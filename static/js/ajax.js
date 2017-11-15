@@ -1,3 +1,4 @@
+
 $(function(){
 	$('#search_prescription').keyup(function() {
 		$.ajax({
@@ -31,34 +32,53 @@ $(function(){
 		});
 	});
 
-	$('#search-disease-results').on({
-	    mouseenter : function(){
-	        var tr = $(this);
-            var td = tr.children();//선택한 상병값
-            td.eq(0).css("background-color", "#abd9e9");
-            var pre_td = td.eq(1);
-            //여기서 ajax로 관련처방리스트 불러서 아래의 pre_td.text()안에 넣으면댐
-            pre_td.text(td.text())
+//	$('#search-disease-results').on({
+//	    click : function(){
+//			var tr = $(this);
+//			var td2 = tr.children();//선택한 상병값
+//			td2.eq(0).css("background-color", "#abd9e9");
+//			var pre_td = td2.eq(1);
+//
+//			//여기서 ajax로 관련처방리스트 불러서 아래의 pre_td.text()안에 넣으면댐
+//			$.ajax({
+//				type: "POST",
+//				url: "search_connection/",
+//				data: {
+//					'connection_list': pre_td.text(),
+//					'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+//				},
+//				success: connectionSearchSuccess,
+//				dataType: 'html'
+//			})
+//			
+//			//var disease_name = td.text();
+//			//var connection = "{{ connection }}";
+//			
+//			//console.log(connection);
+//			pre_td.text(td2.text());
+//
+//		}/*,
+//	    mouseleave: function(){
+//	        var tr = $(this);
+//            var td = tr.children();//선택한 상병값
+//            var pre_td = td.eq(1);
+//            td.eq(0).css("background-color", "#ffffff");
+//            pre_td.text("")
+//	    }*/
+//
+//	}, "tr");
 
-	    },
-	    mouseleave: function(){
-	        var tr = $(this);
-            var td = tr.children();//선택한 상병값
-            var pre_td = td.eq(1);
-            td.eq(0).css("background-color", "#ffffff");
-            pre_td.text("")
-	    }
 
-	}, "tr");
 });
 
 function prescriptionSearchSuccess(data, textStatus, jqXHR){
-	console.log(data);
 	$('#search-prescription-results').html(data);
 }
 
 function diseaseSearchSuccess(data, textStatus, jqXHR){
-	console.log(data);
 	$('#search-disease-results').html(data);
 }
 
+function connectionSearchSuccess(data, textStatus, jqXHR){
+	$('#search--results').html(data);
+}

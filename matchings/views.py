@@ -11,50 +11,56 @@ from django.views.generic.edit import FormView
 
 from django.db.models import Q
 
-from matchings.models import Disease, Prescription_List
+from matchings.models import Disease, Disease_name, Prescription
 from matchings.forms import MatchForm
 
-from matchings.neural_net_model import NeuralNetwork
-from matchings.graph_model import NetworkxModel
+#from matchings.neural_net_model import NeuralNetwork
+from matchings.networkx_model import NetworkX
 
 import pandas as pd
+import numpy as np
 import pickle
 
-NNmodel = NeuralNetwork()
 
+#diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist')))
+
+
+prescriptiondf = pd.DataFrame(list(Prescription.objects.all().values('ordercode', 'ordername')))
+#namedf['dxcode'] = namedf['icdcode']
+#del namedf['icdcode']
+#df = pd.merge(df, namedf, on='dxcode')
+
+# drop rows which contain nan
+#df = df.dropna(how="any")
+
+
+
+#####Models for main/sub seperateing
+
+#main_NNmodel = NeuralNetwork(1)
+#sub_NNmodel = NeuralNetwork(2)
+#
+#main_NXmodel = NetworkxModel(1)
+#sub_NXmodel = NetworkxModel(2)
+
+#####Modes for non seperating
+
+#NNmodel = NeuralNetwork()
+NXmodel = NetworkX()
 
 class datashow(ListView):
 	template_name = 'datashow.html'
 
 	def get_queryset(self):
-		return Disease.objects.order_by('-STARTDATE')[:10]
-
-class MatchFormView(FormView):
-	form_class = MatchForm
-	template_name = 'disease_search.html'
-
-	def form_valid(self, form):
-		schWord = '%s' % self.request.POST['match_word']
-		#prescription_list = Prescription_List.objects.filter(Q(ORDERCODE__icontains=schWord)).distinct()
-
-		model = NetworkxModel()
-		context = {}
-		context['form'] = form
-		context['search_term'] = schWord
-		context['disease_list'] = model.get_disease_by_networkx(dxcode_input=schWord)
-
-		return render(self.request, self.template_name, context)
-
-
-
+		return Disease.objects.all()[0:10]
 
 
 def match_disease(request):
-	args = {}
-	args.update(csrf(request))
-	args['prescription_list'] = Prescription_List.objects.all()
+	context = {}
+	context.update(csrf(request))
+	context['prescriptions'] = Prescription.objects.all()
 
-	return render_to_response('disease_search.html', args)
+	return render_to_response('disease_search.html', context)
 
 def search_prescription(request):
 	if request.method == "POST":
@@ -62,7 +68,8 @@ def search_prescription(request):
 	else:
 		search_text = ''
 
-	prescriptions = Prescription_List.objects.filter(ORDERCODE__contains=search_text)	
+	prescriptions = Prescription.objects.filter(ordercode__contains=search_text)
+
 	context = {}
 	context['prescriptions'] = prescriptions
 
@@ -75,16 +82,59 @@ def search_disease(request):
 		search_list = ''
 
 	context = {}
-	#context['form'] = form
 	context['search_term'] = search_list
-	context['disease_list'] = NNmodel.get_disease(dxcode_input=search_list)
-	print(search_list)
-	print(context['disease_list'])
+
+#for seperating main/sub disease
+#	context['main_NN_disease_list'] = NNmodel.get_disease(dxcode_input=search_list, num=5)
+#	context['sub_NN_disease_list'] = sub_NNmodel.get_disease(dxcode_input=search_list, num=10)
+#	context['main_NX_disease_list'] = main_NXmodel.get_disease(dxcode_input=search_list, num=5)
+#	context['sub_NX_disease_list'] = sub_NXmodel.get_disease(dxcode_input=search_list, num=10)
+
+# for non seperating main/sub disease
+#	context['NN_disease_list'] = NNmodel.get_disease(dxcode_input=search_list, num=10)
+
+	disease_list = NXmodel.get_disease(dxcode_input=search_list, num=10)
+	context['NX_disease_list'] = disease_list
+
+#	disease_name_list = []
+#
+#	connection = {}
+#
+#	for i in np.arange(len(disease_list)):
+#		connection[i] = NXmodel.find_dxcode(disease_list[i][0])[:10]
+#	
+#	context['connection'] = connection
+
+#	print(search_list)
+#	print(context['disease_list'])
 #	context['neuralnet_disease_list'] = self.NNmodel.get_disease(dxcode_input=schWord)
 #		context['networkx_disease_list'] = self.NXmodel.get_disease(dxcode_input=schWord)
 
 	return render(request, 'ajax/ajax_disease_search.html', context)
 
+#def search_connection(request):
+#	if request.method == "POST":
+#		search_list = request.POST['search_list']
+#	else:
+#		search_list = ''
+#
+#	context = {}
+#	connection = {}
+
+#for seperating main/sub disease
+#	for item in context['main_NN_disease_list']:
+#		print(item)
+#		connection[item] = main_NXmodel.find_dxcode(item)
+#
+#	print(connection)
+#	context['connection'] = connection
+#	
+#	for disease in disease_list:
+#		connection[disease] = NXmodel.find_dxcode(disease[0])[:10]
+#	
+#	context['connection'] = connection
+#
+#	return
 
 
 class ModelCompareFormView(FormView):
@@ -105,7 +155,6 @@ class ModelCompareFormView(FormView):
 #		context['networkx_disease_list'] = self.NXmodel.get_disease(dxcode_input=schWord)
 
 		return render(self.request, self.template_name, context)
-
 
 
 

@@ -29,7 +29,7 @@ from keras.models import model_from_json
 from matchings.models import Disease
 
 # get data
-df = pd.DataFrame(list(Disease.objects.all().values('DXCODE', 'PRESCRIPTIONLIST')))
+df = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist')))
 
 # add column names
 df.columns = ["주상병", "처방코드"]
@@ -104,34 +104,83 @@ class MachineLearningModeling:
 				count += 1
 
 
-class NeuralNetwork():
+class NeuralNetwork:
 	def __init__(self):
 
-		try: 
-			with open("static/y_classes.txt", 'r') as y:
+		try:
+
+			##for seperating main/sub disease
+#			if import_flag ==  1:
+#				with open("static/main_y_classes.txt", 'r') as y:
+#					self.y_classes = y.read().splitlines()
+#				
+#				with open("static/main_vectorizer.pickle", "rb") as f:
+#					vectorizer = pickle.load(f)
+#			
+#				self.vect = vectorizer
+#
+#				json_file = open("static/main_NN_model.json", "r")
+#				loaded_N_model_json = json_file.read()
+#				json_file.close()
+#
+#				loaded_model = model_from_json(loaded_N_model_json)
+#
+#				loaded_model.load_weights("static/main_NN_model.h5")
+#			
+#			elif import_flag == 2:
+#				with open("static/sub_y_classes.txt", 'r') as y:
+#					self.y_classes = y.read().splitlines()
+#				
+#				with open("static/sub_vectorizer.pickle", "rb") as f:
+#					vectorizer = pickle.load(f)
+#			
+#				self.vect = vectorizer
+#
+#				json_file = open("static/sub_NN_model.json", "r")
+#				loaded_N_model_json = json_file.read()
+#				json_file.close()
+#
+#				loaded_model = model_from_json(loaded_N_model_json)
+#
+#				loaded_model.load_weights("static/sub_NN_model.h5")
+		
+			# for non seperating main/ sub disease	
+			with open("static/NNmodel_data/y_classes.txt", 'r') as y:
 				self.y_classes = y.read().splitlines()
-			
-			with open("static/vectorizer.pickle", "rb") as f:
+		
+			with open("static/NNmodel_data/vectorizer.pickle", "rb") as f:
 				vectorizer = pickle.load(f)
 		
 			self.vect = vectorizer
 
-			json_file = open("static/NN_model.json", "r")
+			json_file = open("static/NNmodel_data/NN_model.json", "r")
 			loaded_N_model_json = json_file.read()
 			json_file.close()
 
 			loaded_model = model_from_json(loaded_N_model_json)
 
-			loaded_model.load_weights("static/NN_model.h5")
-			
+			loaded_model.load_weights("static/NNmodel_data/NN_model.h5")
+		
+	
 			self.graph = tf.get_default_graph()
 			self.model = loaded_model
-			print("Files loaded successfully")
+			print("NN: Files loaded successfully")
 
 		except:
-			print("DO not have required files")
+			print("NN: DO not have required files")
+
+			#for seperateing main/sub disease
+			#tempdf = df[df.주부상병 == import_flag]
+			#
+			#X = tempdf[["처방코드"]]
+			#y = tempdf[["주상병"]]
+
+
+			#for non seperating main/sub disease
 			X = df[["처방코드"]]
 			y = df[["주상병"]]
+
+
 
 			X_list = X.values.ravel()
 			num_features = len(set("".join(X_list[0:len(X_list)+1])))
@@ -152,35 +201,68 @@ class NeuralNetwork():
 				self.y_train_idx.append(self.index)
 
 			callback1 = keras.callbacks.EarlyStopping(monitor='val_loss', patience=3)
-			self.train_and_fit_model(self.X_train, self.y_train_idx, self.y_classes, 100, 1, 0.1, [callback1])
+			self.train_and_fit_model(self.X_train, self.y_train_idx, self.y_classes, 100, 100, 0.1, [callback1])
 
 
 			#save model as file
-			pickle.dump(self.vect, open("static/vectorizer.pickle", "wb"))
 
-			y_class_file = open('static/y_classes.txt', 'w')
+			#for seperating main/sub disease
+#			if import_flag == 1:
+#				pickle.dump(self.vect, open("static/NNmodel_vectorizer.pickle", "wb"))
+#
+#				y_class_file = open('static/NNmodel_y_classes.txt', 'w')
+#
+#				for item in self.y_classes:
+#					y_class_file.write("%s\n" % item)
+#
+#
+#				NN_model_json = self.model.to_json()
+#				with open("static/NNmodel_data/NN_model.json", "w") as json_file:
+#					json_file.write(NN_model_json)
+#			
+#				self.model.save_weights("static/NNmodel_data/NN_model.h5")
+#			
+#			elif import_flag == 2:
+#				pickle.dump(self.vect, open("static/sub_vectorizer.pickle", "wb"))
+#
+#				y_class_file = open('static/sub_y_classes.txt', 'w')
+#
+#				for item in self.y_classes:
+#					y_class_file.write("%s\n" % item)
+#
+#
+#				NN_model_json = self.model.to_json()
+#				with open("static/sub_NN_model.json", "w") as json_file:
+#					json_file.write(NN_model_json)
+#			
+#				self.model.save_weights("static/sub_NN_model.h5")
+
+			
+			pickle.dump(self.vect, open("static/NNmodel_data/vectorizer.pickle", "wb"))
+
+			y_class_file = open('static/NNmodel_data/y_classes.txt', 'w')
 
 			for item in self.y_classes:
 				y_class_file.write("%s\n" % item)
 
 
 			NN_model_json = self.model.to_json()
-			with open("static/NN_model.json", "w") as json_file:
+			with open("static/NNmodel_data/NN_model.json", "w") as json_file:
 				json_file.write(NN_model_json)
 		
-			self.model.save_weights("static/NN_model.h5")
+			self.model.save_weights("static/NNmodel_data/NN_model.h5")
 
 
 	# construct model
 	def build_neural_net(self, X_train, y_classes):
 		self.model = Sequential()
-		self.model.add(Dense(128, input_shape=(X_train.shape[1],)))
-#		self.model.add(Dense(2056, input_shape=(X_train.shape[1],)))
-#		self.model.add(Activation('relu'))
-#		self.model.add(Dropout(0.1))
-#		self.model.add(Dense(1024))
-#		self.model.add(Activation('relu'))
-#		self.model.add(Dropout(0.1))
+#		self.model.add(Dense(128, input_shape=(X_train.shape[1],)))
+		self.model.add(Dense(2056, input_shape=(X_train.shape[1],)))
+		self.model.add(Activation('relu'))
+		self.model.add(Dropout(0.1))
+		self.model.add(Dense(1024))
+		self.model.add(Activation('relu'))
+		self.model.add(Dropout(0.1))
 		self.model.add(Dense(len(y_classes)))
 		self.model.add(Activation('softmax'))
 
@@ -250,7 +332,7 @@ class NeuralNetwork():
 #		print (count/len(unique_y))
 #		return top_diagnosis
 
-	def get_disease(self, dxcode_input):
+	def get_disease(self, dxcode_input, num):
 		dxcode_input_list = []
 		dxcode_input_list.append(dxcode_input)
 
@@ -265,7 +347,7 @@ class NeuralNetwork():
 			all_classes[np.argmax(y_pred, axis=1)]
 
 			for i in range(0, len(y_pred)):
-				top_index = np.argsort(y_pred[i])[::-1][:10]# find the index of top ?? value
+				top_index = np.argsort(y_pred[i])[::-1][:num]# find the index of top ?? value
 				top_diagnosis = all_classes[top_index]
 
 			return top_diagnosis.tolist()
