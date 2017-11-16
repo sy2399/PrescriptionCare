@@ -17,6 +17,8 @@ from matchings.models import Disease, Disease_name, Prescription
 
 # get data
 
+
+diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist') ))
 diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
 
 prescriptiondf = pd.DataFrame(list(Prescription.objects.all().values('ordercode', 'ordername')))
@@ -178,21 +180,38 @@ class NetworkX:
 	def get_disease(self, dxcode_input, num):
 
 		dxcode = self.get_dxcode_input_list(dxcode_input)
-		results = list(self.find_disease(dxcode))[0:num]
+		results = list(self.find_disease(dxcode))
+		
+		result_len = (results)
+		selected_results = results[0:num]
 
-		print(type(results))
+		#print(type(results))
 		results_converted_to_list = []
-		for item in results:
+		for item in selected_results:
 			results_converted_to_list.append(list(item))
 
 		#make proportion field in results
-		total_count = 0
-		for item in results_converted_to_list:
-			total_count = total_count + item[1]['count']
+#		total_count = 0
+#		for item in results_converted_to_list:
+#			total_count = total_count + item[1]['count']
 
+		rank = 0
 		for item in results_converted_to_list:
-			item[1]['proportion'] = item[1]['count'] / total_count
-			item.append(item[1])
+			percentage = rank/result_len
+			rank = rank + 1
+			if percentage < 0.2:
+				relation = "Very high"
+			elif percentage < 0.4:
+				relation = "High"
+			elif percentage < 0.6:
+				relation = "Middle"
+			elif percentage < 0.8:
+				relation = "Low"
+			else:
+				relation = "Very Low"
+
+			#item[1]['proportion'] = item[1]['count'] / total_count
+			item.append(relation)
 
 		#map disease name
 		for item in results_converted_to_list:
