@@ -1,12 +1,75 @@
-{% for disease in NX_disease_list %}
-<tr>
-	<td style="width=20%">{{ disease.0 }}</td>
-	<td style="width=20%">{{ disease.1 }}</td>
-	<td style="width=20%">{{ disease.2 }}</td>
-	<td style="width=20%">{{ disease.3 }}</td>
-	<td style="width=20%">{{ disease.4}}</td>
-</tr>
-{% endfor %}
+<script>
+function showPrescription(disease){
+
+	var dis = disease.toString();
+	var pcode_list = dis.split(",");
+	<!--alert(pcode_list[4]);-->
+	var prescriptionView = document.getElementById("prescriptionView");
+
+	prescriptionView.innerHTML= "<tr><td>"+ pcode_list[4]+"</td><td>"+ pcode_list[14] +"</td></tr>"
+					+"<tr><td>"+ pcode_list[5]+"</td><td>"+ pcode_list[15] +"</td></tr>"
+					+"<tr><td>"+ pcode_list[6]+"</td><td>"+ pcode_list[16] +"</td></tr>"
+					+"<tr><td>"+ pcode_list[7]+"</td><td>"+ pcode_list[17] +"</td></tr>"
+					+"<tr><td>"+ pcode_list[8]+"</td><td>"+ pcode_list[18] +"</td></tr>"
+					+"<tr><td>"+ pcode_list[9]+"</td><td>"+ pcode_list[19] +"</td></tr>"
+					+"<tr><td>"+ pcode_list[10]+"</td><td>"+ pcode_list[20] +"</td></tr>"
+					+"<tr><td>"+ pcode_list[11]+"</td><td>"+ pcode_list[21] +"</td></tr>"
+					+"<tr><td>"+ pcode_list[12]+"</td><td>"+ pcode_list[22] +"</td></tr>";
+}
 
 
 
+</script>
+<div id = "resultView" style = "visibility:visible">
+<div style = "width:50%;float:left" >
+<table class="table table-striped scroll" id = "resultTable" style="width:100%">
+	<thead>
+	<tr class= "table-responsive-th">
+		<th >Disease</th>
+		<th >Disease name</th>
+		<th >Proportion</th>
+
+
+	</tr>
+	</thead>
+
+	<tbody>
+		{% for disease in NX_disease_list %}
+
+		<tr onclick = "showPrescription({{disease}})">
+
+
+			<td id = "disease0" >{{ disease.0 }}</td>
+			<td id = "disease1" >{{ disease.1 }}</td>
+			<td id = "disease2" >{{ disease.2 }}</td>
+
+		</tr>
+
+	{% endfor %}
+	</tbody>
+
+</table>
+</div>
+
+
+<div style = "width:50%;float:left" >
+	<table class="table table-striped scroll" id = "prescriptionResult" style="width:100%;">
+		<thead>
+			<tr class= "table-responsive-th">
+			<th >Prescription</th>
+			<th >Prescription Name</th>
+		</tr>
+		</thead>
+		<tbody id = "prescriptionView">
+
+
+		</tbody>
+	</table>
+</div>
+
+
+</div>
+<script>
+
+
+</script>

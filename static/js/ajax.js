@@ -76,7 +76,9 @@ function prescriptionSearchSuccess(data, textStatus, jqXHR){
 }
 
 function diseaseSearchSuccess(data, textStatus, jqXHR){
-	$('#search-disease-results').html(data);
+	$('#resultDiv').html(data);
+    //$('#testView').html(data)
+
 }
 
 function connectionSearchSuccess(data, textStatus, jqXHR){

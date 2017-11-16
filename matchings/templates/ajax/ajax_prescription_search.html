@@ -2,9 +2,9 @@
 
 {% for prescription in prescriptions %}
 <tr>
-	<td>{{ prescription.id }}</td>
-	<td>{{ prescription.ordercode }}</td>
-	<td>{{ prescription.ordername }}</td>
+	<td id = "prescriptionId">{{ prescription.id }}</td>
+	<td id = "prescriptionCode">{{ prescription.ordercode }}</td>
+	<td id = "prescriptionName">{{ prescription.ordername }}</td>
 </tr>
 
 {% endfor %}

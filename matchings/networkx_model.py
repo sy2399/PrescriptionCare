@@ -248,14 +248,17 @@ class NetworkX:
 			prescription_code_list = []
 			for prescription_code in self.find_dxcode(item[0])[:num]:
 				prescription_code_list.append(prescription_code)
+
+
 			item.append(prescription_code_list)
 
 		for item in results_converted_to_list:
 			prescription_name_list = []
 			i = 0
-			flag = False
+
 
 			for i in np.arange(num):
+				flag = False
 				for idx, j in prescriptiondf.iterrows():
 					#print(item[3][i] ,j['ordercode'])
 					if item[3][i] == j['ordercode'].split(" ")[0]:
