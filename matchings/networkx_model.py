@@ -182,7 +182,7 @@ class NetworkX:
 		dxcode = self.get_dxcode_input_list(dxcode_input)
 		results = list(self.find_disease(dxcode))
 		
-		result_len = (results)
+		result_len = len(results)
 		selected_results = results[0:num]
 
 		#print(type(results))
@@ -257,7 +257,7 @@ class NetworkX:
 
 			for i in np.arange(num):
 				for idx, j in prescriptiondf.iterrows():
-					print(item[3][i] ,j['ordercode'])
+					#print(item[3][i] ,j['ordercode'])
 					if item[3][i] == j['ordercode'].split(" ")[0]:
 						prescription_name_list.append(j['ordername'])
 						flag = True
@@ -269,6 +269,6 @@ class NetworkX:
 			item.append(prescription_name_list)
 			#print(prescription_name_list)	
 
-		#print(results_converted_to_list)
+		print(results_converted_to_list)
 		return results_converted_to_list
 
