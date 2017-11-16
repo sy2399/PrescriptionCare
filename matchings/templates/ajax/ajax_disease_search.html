@@ -8,12 +8,17 @@
 
 
 <script>
-function showPrescription(disease){
+function showPrescription(element,disease){
 
 	var dis = disease.toString();
 	var pcode_list = dis.split(",");
 	<!--alert(pcode_list[4]);-->
 	var prescriptionView = document.getElementById("prescriptionView");
+
+
+	element.flag = 'clicked';
+	element.style.backgroundColor = "#abd9e9"
+
 
 	prescriptionView.innerHTML= "<tr><td>"+ pcode_list[4]+"</td><td>"+ pcode_list[14] +"</td></tr>"
 					+"<tr><td>"+ pcode_list[5]+"</td><td>"+ pcode_list[15] +"</td></tr>"
@@ -46,7 +51,7 @@ function showPrescription(disease){
 	<tbody>
 		{% for disease in NX_disease_list %}
 
-		<tr onclick = "showPrescription({{disease}})">
+		<tr onclick = "showPrescription(this,{{disease}})">
 
 
 			<td id = "disease0" >{{ disease.0 }}</td>
