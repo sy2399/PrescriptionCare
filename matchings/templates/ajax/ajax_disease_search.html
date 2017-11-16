@@ -15,8 +15,12 @@ function showPrescription(element,disease){
 	<!--alert(pcode_list[4]);-->
 	var prescriptionView = document.getElementById("prescriptionView");
 
+    var resultTable = document.getElementById("resultTable");
+    var resultTableTr = resultTable.getElementsByTagName("tr");
 
-	element.flag = 'clicked';
+    for(var i = 0;i<resultTableTr.length;i++){
+        resultTableTr[i].style.backgroundColor = "white";
+    }
 	element.style.backgroundColor = "#abd9e9"
 
 
