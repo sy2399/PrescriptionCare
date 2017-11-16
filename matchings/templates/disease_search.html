@@ -3,6 +3,22 @@
 {% block title %}Data{% endblock %}
 
 {% block content %}
+
+
+
+
+
+<script type="text/javascript">
+function loading(){
+    document.getElementById("loading").style.visibility = "visible";
+}
+
+
+
+</script>
+
+
+
 <style>
 
 
@@ -73,12 +89,18 @@
 						{% csrf_token %}
 						<label>Prescription List:</label>
 						<input type="text" id="clickResultView">
-						<button id="list_form_button">Submit</button>
+						<button id="list_form_button" onclick = "loading()">Submit</button>
 					</div>
 				</div>
 
 				<br/><br/>
 				<h2>Disease list</h2>
+
+
+                <div id="loading" style = "visibility:hidden"><img id="loading-image" src="../../../static/img/loading.gif" alt="Loading..." /></div>
+
+
+
 				<div class="table-responsive" id = "resultDiv">
 					<!--<table class="table table-striped scroll">-->
 						<!--<thead>-->
