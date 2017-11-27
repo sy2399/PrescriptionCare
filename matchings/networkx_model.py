@@ -12,16 +12,19 @@ from collections import Counter
 import operator
 
 import json
+import time
 
 from matchings.models import Disease, Disease_name, Prescription
 
 # get data
-
-
 diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist') ))
 diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
 
 prescriptiondf = pd.DataFrame(list(Prescription.objects.all().values('ordercode', 'ordername')))
+tls = []
+for item in prescriptiondf['ordercode'].str.split(" "):
+	tls.append(item[0])
+prescriptiondf['ordercode'] = pd.Series(data = tls)
 
 # drop rows which contain nan
 
@@ -185,7 +188,6 @@ class NetworkX:
 		result_len = len(results)
 		selected_results = results[0:num]
 
-		#print(type(results))
 		results_converted_to_list = []
 		for item in selected_results:
 			results_converted_to_list.append(list(item))
@@ -195,6 +197,7 @@ class NetworkX:
 #		for item in results_converted_to_list:
 #			total_count = total_count + item[1]['count']
 
+		start = int(round(time.time() * 1000))
 		rank = 0
 		for item in results_converted_to_list:
 			percentage = rank/result_len
@@ -213,18 +216,12 @@ class NetworkX:
 			#item[1]['proportion'] = item[1]['count'] / total_count
 			item.append(relation)
 
+
 		#map disease name
 		for item in results_converted_to_list:
-			flag = False
-			for idx, j in diseasenamedf.iterrows():
-				if item[0] == j['icdcode']:
-					item[1] = j['namek']
-					flag = True
-					break
-			
-			if flag is False:
-				item[1] = "Unknown"
-
+			idx = diseasenamedf['icdcode'][diseasenamedf['icdcode'] == item[0]].index[0]
+			item[1] = diseasenamedf['namek'][idx]
+		
 #		for item in results_converted_to_list:
 #			#map prescription name
 #			prescription_list = []
@@ -253,25 +250,16 @@ class NetworkX:
 			item.append(prescription_code_list)
 
 		for item in results_converted_to_list:
-			prescription_name_list = []
-			i = 0
-
-
+			prescription_name_list = ["Unknown"]
 			for i in np.arange(num):
-				flag = False
-				for idx, j in prescriptiondf.iterrows():
-					#print(item[3][i] ,j['ordercode'])
-					if item[3][i] == j['ordercode'].split(" ")[0]:
-						prescription_name_list.append(j['ordername'])
-						flag = True
-						break
 
-				if flag == False:
-					prescription_name_list.append("Unknown")
+				if (prescriptiondf['ordercode'] != item[3][i]).all():
+					continue
+				
+				idx = prescriptiondf['ordercode'][prescriptiondf['ordercode'] == item[3][i]].index[0]
+				prescription_name_list.append(prescriptiondf['ordername'][idx])
 
 			item.append(prescription_name_list)
-			#print(prescription_name_list)	
 
-		print(results_converted_to_list)
 		return results_converted_to_list
 
