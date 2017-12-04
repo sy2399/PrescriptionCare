@@ -4,47 +4,33 @@
 
 {% block content %}
 
-
-
-
 <script type="text/javascript">
-function loading(){
-    document.getElementById("loading").style.visibility = "visible";
-}
+	function loading(){
+		document.getElementById("loading").style.visibility = "visible";
+	}
 
-function allSelect(){
+	function allSelect(){
 
-
-
-}
+	}
 
 
-function alldeSelect(){
+	function alldeSelect(){
 
-}
+	}
 
-$(function(){
-	$('#resetBtn').click(function(){
-		$('#search_prescription').val("");
+	$(function(){
+		$('#resetBtn').click(function(){
+			$('#search_prescription').val("");
+		});
+
+		$('#allselectBtn').click(function(){
+
+			  $('input[name=_selected_]').prop('checked', this.checked);
+
+		});
 	});
 
-	$('#allselectBtn').click(function(){
-
-		  $('input[name=_selected_]').prop('checked', this.checked);
-
-	});
-
-
-});
-
-</script>
-
-
-
-
-
-
-
+	</script>
 
 	<div class="container-fluid">
 		<div class="row">
@@ -64,10 +50,10 @@ $(function(){
 					</li>
 
 					<li class="nav-item">
-						<a class="nav-link" href="#">사용 통계</a>
+						<a class="nav-link" href="{% url 'matchings:userstatics' %}">사용 통계</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">계정 관리</a>
+						<a class="nav-link" href="{% url 'matchings:usermanagement' %}">계정 관리</a>
 					</li>
 				</ul>
 
@@ -81,9 +67,6 @@ $(function(){
 				<h2>인정 상병 관리</h2>
 				<div id="prescription_form" class="table-responsive" class = "form-group">
 					{% csrf_token %}
-
-
-
 
 					<div id="loading" style = "visibility:hidden"><img id="loading-image" src="../../../static/img/loading.gif" alt="Loading..." /></div>
 
@@ -122,25 +105,14 @@ $(function(){
 									<button id="list_form_button" onclick = "loading()">Submit</button>
 									<button id="list_reset_button">Reset</button>
 								</div>
-
-
 							</div>
 
 							<div class="col-md-6">
 								<div class="table-responsive" id = "resultDiv"></div>
 								<br>
-
-
 							</div>
 					</div>
 				</div>
-
-
-
-
-
-
-
 
 				<div id = "testView"></div>
 			</main>

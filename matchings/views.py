@@ -12,6 +12,7 @@ from django.template import RequestContext
 
 from django.db.models import Q
 
+from django.contrib.auth.models import User
 from matchings.models import Disease, Disease_name, Prescription
 from matchings.forms import MatchForm
 
@@ -60,7 +61,6 @@ def match_disease(request):
 	context = {}
 	context.update(csrf(request))
 	context['prescriptions'] = Prescription.objects.all()
-	#print("user:", request.user)
 	context['user'] = request.user
 
 	return render(request, 'disease_search.html', context)
@@ -115,31 +115,6 @@ def search_disease(request):
 
 	return render(request, 'ajax/ajax_disease_search.html', context)
 
-#def search_connection(request):
-#	if request.method == "POST":
-#		search_list = request.POST['search_list']
-#	else:
-#		search_list = ''
-#
-#	context = {}
-#	connection = {}
-
-#for seperating main/sub disease
-#	for item in context['main_NN_disease_list']:
-#		print(item)
-#		connection[item] = main_NXmodel.find_dxcode(item)
-#
-#	print(connection)
-#	context['connection'] = connection
-#	
-#	for disease in disease_list:
-#		connection[disease] = NXmodel.find_dxcode(disease[0])[:10]
-#	
-#	context['connection'] = connection
-#
-#	return
-
-
 class ModelCompareFormView(FormView):
 	form_class = MatchForm
 	template_name = 'models_test_page.html'
@@ -158,6 +133,20 @@ class ModelCompareFormView(FormView):
 #		context['networkx_disease_list'] = self.NXmodel.get_disease(dxcode_input=schWord)
 
 		return render(self.request, self.template_name, context)
+
+class UserStatics(ListView):
+	template_name = 'userstatics.html'
+
+	def get_queryset(self):
+		return User.objects.filter(is_superuser=False)
+
+class UserManagement(ListView):
+	template_name = 'usermanagement.html'
+
+	def get_queryset(self):
+		return User.objects.filter(is_superuser=False)
+
+
 
 
 
