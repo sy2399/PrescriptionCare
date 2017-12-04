@@ -8,6 +8,7 @@ from django.shortcuts import render
 from django.views.generic import ListView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
+from django.template import RequestContext
 
 from django.db.models import Q
 
@@ -59,8 +60,10 @@ def match_disease(request):
 	context = {}
 	context.update(csrf(request))
 	context['prescriptions'] = Prescription.objects.all()
+	#print("user:", request.user)
+	context['user'] = request.user
 
-	return render_to_response('disease_search.html', context)
+	return render(request, 'disease_search.html', context)
 
 def search_prescription(request):
 	if request.method == "POST":
@@ -80,7 +83,7 @@ def search_disease(request):
 		search_list = request.POST['search_list']
 	else:
 		search_list = ''
-
+	
 	context = {}
 	context['search_term'] = search_list
 
