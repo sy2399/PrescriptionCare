@@ -6,33 +6,93 @@
 {% block extrastyle %}{% static 'css/forms.css' %}{% endblock %}
 
 {% block content %}
-	<div id="content">
-		<h1>Please Login</h1>
- 
-		<form action="." method="post">
+	<!--<div id="content">-->
+		<!--<h1>Please Login</h1>-->
+
+		<!--<form action="." method="post">-->
+			<!--{% csrf_token %}-->
+			<!--{% if form.errors %}-->
+			<!--<p class="errornote">Wrong!! Please correct the error(s) below</p>-->
+			<!--{% endif %}-->
+			<!--<p>Please enter your id and password</p>-->
+
+			<!--<fieldset class="aligned">-->
+				<!--<div class="form-row">-->
+					<!--{{ form.username.label_tag }}{{ form.username }}-->
+				<!--</div>-->
+				<!--<div class="form-row">-->
+					<!--{{ form.password.label_tag }}{{ form.password }}-->
+				<!--</div>-->
+			<!--</fieldset>-->
+
+			<!--<div class="submit-row">-->
+				<!--<input type="submit" value="Log In"/>-->
+				<!--<input type="hidden" name="next" value="{{ next }}" />-->
+			<!--</div>-->
+
+			<!--<script type="text/javascript">-->
+				<!--document.getElementById('id_username').focus();-->
+			<!--</script>-->
+		<!--</form>-->
+	<!--</div>
+	-->
+<style>
+
+	.colorgraph {
+  height: 5px;
+  border-top: 0;
+  background: #c4e17f;
+  border-radius: 5px;
+  background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+}
+</style>
+
+<div class="container">
+
+<div class="row" style="margin-top:20px">
+    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+		<form role="form" action="." method = "post">
 			{% csrf_token %}
 			{% if form.errors %}
-			<p class="errornote">Wrong!! Please correct the error(s) below</p>
+				<p class="errornote">Wrong!! Please correct the error(s) below</p>
 			{% endif %}
-			<p>Please enter your id and password</p>
+			<fieldset>
+				<h2 style ="text-align:center">ONTIC HIS</h2>
+				<h2 style ="text-align:center">Smart Support Service</h2>
+				<hr class="colorgraph">
 
-			<fieldset class="aligned">
-				<div class="form-row">
-					{{ form.username.label_tag }}{{ form.username }}
+
+				<div class="form-group">
+					{% load widget_tweaks %}
+					{{ form.username.label_tag }}{{ form.username|add_class:"form-control input-lg" }}
+                    <!--<input type="text" class="form-control input-lg" id="username" placeholder="ID">-->
 				</div>
-				<div class="form-row">
-					{{ form.password.label_tag }}{{ form.password }}
+				<div class="form-group">
+					{% load widget_tweaks %}
+					{{ form.password.label_tag }}{{ form.password|add_class:"form-control input-lg" }}
+                    <!--<input type="password" class="form-control input-lg" id="password" placeholder="Password">-->
+				</div>
+				<span class="button-checkbox">
+
+                    <input type="checkbox" name="remember_me" id="remember_me" checked="checked" class="hidden">
+					<a href="" class="btn btn-link pull-right">ID 기억하기</a>
+				</span>
+				<hr class="colorgraph">
+
+				<div align="center" >
+					<div  >
+                        <input type="submit" class="btn btn-lg btn-success btn-block" value="Sign In">
+						<input type="hidden" name="next" value="{{ next }}" />
+					</div>
+
 				</div>
 			</fieldset>
-
-			<div class="submit-row">
-				<input type="submit" value="Log In"/>
-				<input type="hidden" name="next" value="{{ next }}" />
-			</div>
-
-			<script type="text/javascript">
-				document.getElementById('id_username').focus();
-			</script>
 		</form>
 	</div>
+</div>
+
+</div>
 {% endblock %}

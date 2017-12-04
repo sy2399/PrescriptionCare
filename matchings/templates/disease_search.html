@@ -7,23 +7,43 @@
 
 
 
-
 <script type="text/javascript">
 function loading(){
     document.getElementById("loading").style.visibility = "visible";
 }
 
+function allSelect(){
 
+
+
+}
+
+
+function alldeSelect(){
+
+}
+
+$(function(){
+	$('#resetBtn').click(function(){
+		$('#search_prescription').val("");
+	});
+
+	$('#allselectBtn').click(function(){
+
+		  $('input[name=_selected_]').prop('checked', this.checked);
+
+	});
+
+
+});
 
 </script>
 
 
 
-<style>
 
 
 
-</style>
 
 
 	<div class="container-fluid">
@@ -37,95 +57,91 @@ function loading(){
 						<a class="nav-link" href="#">Reports</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link active" href="{% url 'matchings:match_disease' %}">Search<span class="sr-only">(current)</span></a>
-					</li>
-					<li class="nav-item">
 						<a class="nav-link" href="{% url 'matchings:models_test' %}">Compare Models</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Analytics</a>
+						<a class="nav-link active" href="{% url 'matchings:match_disease' %}">인정상병관리<span class="sr-only">(current)</span></a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link" href="#">사용 통계</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Export</a>
+						<a class="nav-link" href="#">계정 관리</a>
 					</li>
 				</ul>
 
 			</nav>
 
 			<main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
+
 				<h1>Search Disease by Prescriptions</h1>
 				<br/>
-			
-				<h2>Prescription list</h2>
+
+				<h2>인정 상병 관리</h2>
 				<div id="prescription_form" class="table-responsive" class = "form-group">
 					{% csrf_token %}
 
-					<label>Prescription:</label>
-					<input type="text" id="search_prescription" name="search_prescription" />
-					<br/>
-					<table class="table table-striped scroll">
-						<thead>
-							<tr>
-								<th>처방번호</th>
-								<th>처방코드</th>
-								<th>처방설명</th>
-							</tr>
-						</thead>
-						{% if prescriptions %}
-						<tbody id="search-prescription-results">	
-						{% for prescription in prescriptions %}
-							<tr>
-								<td>{{ prescription.id }}</td>
-								<td>{{ prescription.ordercode }}</td>
-								<td>{{ prescription.ordername}}</td>
-							</tr>
-						{% endfor %}
-						</tbody>
-						{% endif %}
-					</table>
-					
-					<div id="list_form" class="form-group">
 
-						{% csrf_token %}
-						<label>Prescription List:</label>
-						<input type="text" id="clickResultView">
-						<button id="list_form_button" onclick = "loading()">Submit</button>
+
+
+					<div id="loading" style = "visibility:hidden"><img id="loading-image" src="../../../static/img/loading.gif" alt="Loading..." /></div>
+
+					<br>
+					<div class="row">
+							<div class="col-md-6" >
+							<label>Prescription:</label>
+							<input type="text" id="search_prescription" name="search_prescription" />
+							<button id="resetBtn">초기화</button>
+								<table class="table table-striped scroll" style="width:100%">
+									<thead>
+										<tr>
+											<th>처방번호</th>
+											<th>처방코드</th>
+											<th>처방설명</th>
+										</tr>
+									</thead>
+									{% if prescriptions %}
+									<tbody id="search-prescription-results">
+									{% for prescription in prescriptions %}
+										<tr>
+											<td>{{ prescription.id }}</td>
+											<td>{{ prescription.ordercode }}</td>
+											<td>{{ prescription.ordername}}</td>
+										</tr>
+									{% endfor %}
+									</tbody>
+									{% endif %}
+								</table>
+
+								<div id="list_form" class="form-group">
+
+									{% csrf_token %}
+									<label>처방 리스트:</label>
+									<input type="text" id="clickResultView">
+									<button id="list_form_button" onclick = "loading()">Submit</button>
+									<button id="list_reset_button">Reset</button>
+								</div>
+
+
+							</div>
+
+							<div class="col-md-6">
+								<div class="table-responsive" id = "resultDiv"></div>
+								<br>
+
+
+							</div>
 					</div>
 				</div>
 
-				<br/><br/>
-				<h2>Disease list</h2>
-
-
-				<div id="loading" style = "visibility:hidden"><img id="loading-image" src="../../../static/img/loading.gif" alt="Loading..." /></div>
 
 
 
-				<div class="table-responsive" id = "resultDiv">
-					<!--<table class="table table-striped scroll">-->
-						<!--<thead>-->
-							<!--<tr id= "table-responsive-th">-->
-								<!--<th style="width=20%">Disease</th>-->
-								<!--<th style="width=20%">Disease name</th>-->
-								<!--<th style="width=20%">Proportion</th>-->
-								<!--<th style="width=20%">Prescription</th>-->
-								<!--<th style="width=20%">Prescription name</th>-->
-							<!--</tr>-->
-						<!--</thead>-->
-
-						<!--<tbody id="search-disease-results">	-->
-							<!--<table id = "diseaseSuccess">-->
 
 
-							<!--</table>-->
-							<!--<table id = "prescriptionSuccess">-->
 
 
-							<!--</table>-->
-						<!--</tbody>-->
-
-					<!--</table>-->
-				</div>
 				<div id = "testView"></div>
 			</main>
 		</div>

@@ -36,6 +36,9 @@ $(function(){
 		});
 	});
 
+    $('#list_reset_button').click(function(){
+        $('#clickResultView').val("");
+    });
 //	$('#search-disease-results').on({
 //	    click : function(){
 //			var tr = $(this);
@@ -81,6 +84,9 @@ function prescriptionSearchSuccess(data, textStatus, jqXHR){
 
 function diseaseSearchSuccess(data, textStatus, jqXHR){
     $('#loading').attr('style', 'visibility:hidden');
+//    $('#afterResultView1').attr('style', 'visibility:visible');
+//    $('#afterResultView2').attr('style', 'visibility:visible');
+
 	$('#resultDiv').html(data);
     //$('#testView').html(data)
 

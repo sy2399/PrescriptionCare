@@ -5,6 +5,7 @@
 {% block content %}
 	<div class="container-fluid">
 		<div class="row">
+
 			<nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
 				<ul class="nav nav-pills flex-column">
 					<li class="nav-item">
@@ -14,20 +15,22 @@
 						<a class="nav-link" href="#">Reports</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{% url 'matchings:match_disease' %}">Search</a>
-					</li>	
-					<li class="nav-item">
 						<a class="nav-link active" href="{% url 'matchings:models_test' %}">Compare Models<span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Analytics</a>
+						<a class="nav-link" href="{% url 'matchings:match_disease' %}">인정상병관리</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link" href="#">사용 통계</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Export</a>
+						<a class="nav-link" href="#">계정 관리</a>
 					</li>
 				</ul>
 
 			</nav>
+
 
 			<main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
 				<h1>Model comparison</h1>
