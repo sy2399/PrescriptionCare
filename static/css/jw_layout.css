@@ -1,0 +1,56 @@
+/* common */
+.innerWrap {width:1000px;margin:0 auto;}
+
+/* header */
+#jw_header {height:40px;background-color:#0090c8;}
+#jw_header h1 {width:215px;height:100%;text-align:left;text-indent:-10000em;background:url('../images/logo_jw_white.png') no-repeat 0 7px;}
+#jw_header h1 a {display:block;height:100%;}
+#jw_header .innerWrap {height:40px;}
+#jw_header .innerWrap:after {display:block;clear:both;content:'';}
+#jw_header .nav_util {float:right;height:100%;}
+#jw_header .nav_util:after {display:block;clear:both;content:'';}
+#jw_header .nav_util .txt_welcome {float:left;height:100%;padding:10px 0 0;font-weight:700;font-size:12px;color:#a8f4ff;line-height:22px;box-sizing:border-box;}
+#jw_header .nav_util .txt_welcome .flag_general {display:inline-block;width:85px;height:20px;margin-right:20px;text-indent:-1000em;background:url('../images/flag_general.png') no-repeat 0 0;}
+#jw_header .nav_util .txt_welcome .flag_eng {display:inline-block;width:75px;height:20px;margin-right:20px;text-indent:-1000em;background:url('../images/flag_eng.png') no-repeat 0 0;}
+#jw_header .nav_util ul {float:left;margin-left:25px;}
+#jw_header .nav_util ul:after {display:block;clear:both;content:'';}
+#jw_header .nav_util li:first-child {background:none;}
+#jw_header .nav_util li:first-child a {padding-left:0;}
+#jw_header .nav_util li {float:left;height:100%;background:url('../images/line_util.png') no-repeat 0 16px;}
+#jw_header .nav_util li a {display:block;height:12px;padding:15px 13px 13px;font-size:12px;color:#fff;line-height:1em;}
+
+/* gnb */
+#jw_gnb {height:80px;border-bottom:1px solid #dbdbdb;}
+#jw_gnb .innerWrap {height:100%;}
+#jw_gnb .innerWrap:after {display:block;clear:both;content:'';}
+#jw_gnb h1 {float:left;width:180px;height:100%;}
+#jw_gnb h1 a {display:block;height:100%;text-indent:-1000em;background:url('../images/logo_jw.png') no-repeat  0 23px;}
+#jw_gnb ul:after {display:block;clear:both;content:'';}
+#jw_gnb ul {float:right;height:100%;}
+#jw_gnb li {float:left;position:relative;height:100%;text-align:center;background:url('../images/line_gnb.png') no-repeat 0 34px;}
+#jw_gnb li:first-child {background:none;}
+#jw_gnb li a {display:block;height:100%;padding:0 40px;font-weight:700;font-size:16px;color:#333;line-height:80px;}
+#jw_gnb li a.active {color:#0090c8;}
+#jw_gnb li ul {position:absolute;left:0;top:53px;width:100%;border:1px solid #0090c8;background-color:#26a1d0;}
+#jw_gnb li li {float:none;width:100%;border-top:1px solid #0090c8;background:url('../images/bul_dot_white.png') no-repeat 15px 50%;}
+#jw_gnb li li:first-child {border-top:0 none;background:url('../images/bul_dot_white.png') no-repeat 15px 50%;}
+#jw_gnb li li a {display:block;height:30px;padding-left:24px;font-weight:normal;font-size:12px;color:#fff;text-align:left;line-height:30px;}
+#jw_gnb li li a:hover, #jw_gnb li li a:active, #jw_gnb li li a.active {font-weight:600;color:#fff;background:url('../images/bul_dot_white.png') no-repeat 15px 50%;background-color:#0090c8;}
+#jw_gnb li ul:after {display:block;position:absolute;left:50%;top:-6px;width:11px;height:6px;margin-left:-5px;content:'';background:url('../images/arrow_gnb.png') no-repeat 0 0;}
+
+/* contents */
+#jw_contents {width:1000px;margin:0 auto 44px;}
+
+/* ad */
+#ad {position:absolute; top:140px; left:50%; margin-left:-670px; width:150px;height:300px;}
+/* footer */
+#jw_footer {border-top:1px solid #dadada;background-color:#f7f7f7;}
+#jw_footer address {height:84px;padding:20px 0 0 285px;font-weight:700;font-size:12px;color:#666;line-height:18px;background:url('../images/logo_jw_gray.png') no-repeat 0 22px;}
+#jw_footer address .copy {display:block;font-size:12px;color:#999;line-height:24px;text-transform:uppercase;}
+#jw_fnb {border-bottom:1px solid #dadada;}
+#jw_fnb ul {height:40px;}
+#jw_fnb ul:after {display:block;clear:both;content:'';}
+#jw_fnb li {float:left;height:40px;background:url('../images/line_footer.png') no-repeat 0 16px;}
+#jw_fnb li:first-child {background:none;}
+#jw_fnb li:first-child a {padding-left:0;}
+#jw_fnb li a {display:block;height:100%;padding:0 30px;font-weight:700;font-size:12px;line-height:40px;}
