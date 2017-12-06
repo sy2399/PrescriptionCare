@@ -197,7 +197,7 @@ class NetworkX:
 #		for item in results_converted_to_list:
 #			total_count = total_count + item[1]['count']
 
-		start = int(round(time.time() * 1000))
+		#start = int(round(time.time() * 1000))
 		rank = 0
 		for item in results_converted_to_list:
 			percentage = rank/result_len
@@ -219,6 +219,9 @@ class NetworkX:
 
 		#map disease name
 		for item in results_converted_to_list:
+			if (diseasenamedf['icdcode'] != item[0]).all():
+				continue
+
 			idx = diseasenamedf['icdcode'][diseasenamedf['icdcode'] == item[0]].index[0]
 			item[1] = diseasenamedf['namek'][idx]
 		
