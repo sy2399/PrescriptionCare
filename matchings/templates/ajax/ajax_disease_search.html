@@ -128,7 +128,7 @@ $(function(){
 
 	<div id="hiddendiv">
 		<form id = "hiddenform" action = "." method="post">
-{% csrf_token %}
+			{% csrf_token %}
 			<textarea style="width:100%" rows="3" cols="50" id="noticeArea" name = "noticeArea"></textarea><br>
 			<input type = "button" style = "float:right" id="saveBtn"  value="Save">
 		</form>

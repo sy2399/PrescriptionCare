@@ -220,10 +220,10 @@ class NetworkX:
 		#map disease name
 		for item in results_converted_to_list:
 			if (diseasenamedf['icdcode'] != item[0]).all():
-				continue
-
-			idx = diseasenamedf['icdcode'][diseasenamedf['icdcode'] == item[0]].index[0]
-			item[1] = diseasenamedf['namek'][idx]
+				item[1] = "Unknown"
+			else:
+				idx = diseasenamedf['icdcode'][diseasenamedf['icdcode'] == item[0]].index[0]
+				item[1] = diseasenamedf['namek'][idx]
 		
 #		for item in results_converted_to_list:
 #			#map prescription name
@@ -252,12 +252,12 @@ class NetworkX:
 
 			item.append(prescription_code_list)
 
-		print("***************************************************")
 		for item in results_converted_to_list:
 			prescription_name_list = ["Unknown"]
 			for i in np.arange(num):
 
 				if (prescriptiondf['ordercode'] != item[3][i]).all():
+					prescription_name_list.append("Unknown")
 					continue
 				
 				idx = prescriptiondf['ordercode'][prescriptiondf['ordercode'] == item[3][i]].index[0]
@@ -265,6 +265,5 @@ class NetworkX:
 
 			item.append(prescription_name_list)
 
-		print("***************************************************")
 		return results_converted_to_list
 

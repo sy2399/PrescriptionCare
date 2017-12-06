@@ -25,8 +25,6 @@ import pickle
 
 
 #diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist')))
-
-
 prescriptiondf = pd.DataFrame(list(Prescription.objects.all().values('ordercode', 'ordername')))
 #namedf['dxcode'] = namedf['icdcode']
 #del namedf['icdcode']
@@ -34,18 +32,6 @@ prescriptiondf = pd.DataFrame(list(Prescription.objects.all().values('ordercode'
 
 # drop rows which contain nan
 #df = df.dropna(how="any")
-
-
-
-#####Models for main/sub seperateing
-
-#main_NNmodel = NeuralNetwork(1)
-#sub_NNmodel = NeuralNetwork(2)
-#
-#main_NXmodel = NetworkxModel(1)
-#sub_NXmodel = NetworkxModel(2)
-
-#####Modes for non seperating
 
 #NNmodel = NeuralNetwork()
 NXmodel = NetworkX()
@@ -65,29 +51,29 @@ def match_disease(request):
 
 
 	if request.method == "POST":
-		print("##############################")
+#		print("##############################")
 
-		inputPreCode = request.POST.get('inputPreCode', '')
-		inputPreCodeName = request.Post.get('inputPreCodeName', '')
-		checked_discode = request.Post.get('checked_discode', '')
-		checked_disname = request.Post.get('checked_disname', '')
-		notice = request.Post.get('noticeArea', '')
-		flag = request.Post.get('flag', '')
-
-		print(inputPreCode)
-		print('///')
-		print(inputPreCodeName)
-		print('///')
-		print(checked_discode)
-		print('///')
-		print(checked_disname)
-		print('///')
-		print(notice)
-		print('///')
-		print(flag)
-
-		print("##############################")
-
+#		inputPreCode = request.POST.get('inputPreCode', '')
+#		inputPreCodeName = request.Post.get('inputPreCodeName', '')
+#		checked_discode = request.Post.get('checked_discode', '')
+#		checked_disname = request.Post.get('checked_disname', '')
+#		notice = request.Post.get('noticeArea', '')
+#		flag = request.Post.get('flag', '')
+#
+#		print(inputPreCode)
+#		print('///')
+#		print(inputPreCodeName)
+#		print('///')
+#		print(checked_discode)
+#		print('///')
+#		print(checked_disname)
+#		print('///')
+#		print(notice)
+#		print('///')
+#		print(flag)
+#
+#		print("##############################")
+#
 
 		print(request.POST)
 
@@ -115,7 +101,6 @@ def search_disease(request):
 		search_list = ''
 	
 	context = {}
-	search_list = search_list.split(" ")[1]
 	context['search_term'] = search_list
 	#idx = prescriptiondf["ordercode"][prescriptiondf["ordercode"].split(" ")[0]==search_list].index()
 
