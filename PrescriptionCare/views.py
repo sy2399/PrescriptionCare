@@ -14,3 +14,4 @@ class UserCreateView(CreateView):
 
 class UserCreateDone(TemplateView):
 	template_name = 'registration/register_done.html'
+

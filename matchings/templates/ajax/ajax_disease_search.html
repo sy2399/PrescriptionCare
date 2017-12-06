@@ -14,23 +14,6 @@ th, td {
 <!--#resultTable tr:nth-child(even){background-color: #f2f2f2}-->
 </style>
 
-<script type="text/javascript">
-$(function(){
-	var tbl = $('#resultTable');
-	$('#allselectBtn').click(function(){
-		$(":checkbox", tbl).attr("checked", "checked");
-
-
-	});
-
-	$('#alldeselectBtn').click(function(){
-		$(":checkbox", tbl).removeAttr("checked");
-	});
-
-
-});
-
-</script>
 
 
 <script>
@@ -50,18 +33,56 @@ function showPrescription(element,disease){
 	<!--element.style.backgroundColor = "#abd9e9"-->
 
 
-	prescriptionView.innerHTML= "<tr><td>"+ pcode_list[4]+"</td><td>"+ pcode_list[14] +"</td></tr>"
-					+"<tr><td>"+ pcode_list[5]+"</td><td>"+ pcode_list[15] +"</td></tr>"
-					+"<tr><td>"+ pcode_list[6]+"</td><td>"+ pcode_list[16] +"</td></tr>"
-					+"<tr><td>"+ pcode_list[7]+"</td><td>"+ pcode_list[17] +"</td></tr>"
-					+"<tr><td>"+ pcode_list[8]+"</td><td>"+ pcode_list[18] +"</td></tr>"
-					+"<tr><td>"+ pcode_list[9]+"</td><td>"+ pcode_list[19] +"</td></tr>"
-					+"<tr><td>"+ pcode_list[10]+"</td><td>"+ pcode_list[20] +"</td></tr>"
-					+"<tr><td>"+ pcode_list[11]+"</td><td>"+ pcode_list[21] +"</td></tr>"
-					+"<tr><td>"+ pcode_list[12]+"</td><td>"+ pcode_list[22] +"</td></tr>";
+	<!--prescriptionView.innerHTML= "<tr><td>"+ pcode_list[4]+"</td><td>"+ pcode_list[14] +"</td></tr>"-->
+					<!--+"<tr><td>"+ pcode_list[5]+"</td><td>"+ pcode_list[15] +"</td></tr>"-->
+					<!--+"<tr><td>"+ pcode_list[6]+"</td><td>"+ pcode_list[16] +"</td></tr>"-->
+					<!--+"<tr><td>"+ pcode_list[7]+"</td><td>"+ pcode_list[17] +"</td></tr>"-->
+					<!--+"<tr><td>"+ pcode_list[8]+"</td><td>"+ pcode_list[18] +"</td></tr>"-->
+					<!--+"<tr><td>"+ pcode_list[9]+"</td><td>"+ pcode_list[19] +"</td></tr>"-->
+					<!--+"<tr><td>"+ pcode_list[10]+"</td><td>"+ pcode_list[20] +"</td></tr>"-->
+					<!--+"<tr><td>"+ pcode_list[11]+"</td><td>"+ pcode_list[21] +"</td></tr>"-->
+					<!--+"<tr><td>"+ pcode_list[12]+"</td><td>"+ pcode_list[22] +"</td></tr>";-->
 }
 
+$(function(){
+	var tbl = $('#resultTable');
+	$('#allselectBtn').click(function(){
+		$(":checkbox", tbl).attr("checked", "checked");
 
+
+	});
+
+	$('#alldeselectBtn').click(function(){
+		$(":checkbox", tbl).removeAttr("checked");
+	});
+
+	$('#saveBtn').click(function(){
+		var html = ""
+		for (var i = 1; i < $('#resultTable tr').length; i++) {
+
+			var chk = $('#resultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
+			if (chk == true) {
+				var checked_discode = $('#resultTable tr').eq(i).children().eq(1).text();
+				var checked_disname = $('#resultTable tr').eq(i).children().eq(2).text();
+
+				<!--alert(checked_discode + " " + checked_disname);-->
+
+				html += "<input type = 'hidden' class='cheked_discode' value='"+checked_discode +"'>"
+				html += "<input type = 'hidden' class='checked_disname' value='"+checked_disname +"'"
+
+			}
+
+		}
+		html += "<input type='hidden' id = 'inputPreCode' value='{{search_term}}'>"
+		alert(html);
+		$('#hiddenform').html();
+
+		$('#submitForm').submit();
+
+	});
+
+
+});
 
 </script>
 
@@ -107,7 +128,19 @@ function showPrescription(element,disease){
 
 	<br><br>
 	<button id = "reset">Reset</button>
-	<input type = "submit" id="saveBtn" style="float:right" value="Save">
+
+
+
+
+	<form id = "submitForm" action="." method="post">
+		{% csrf_token %}
+
+		<div id="hiddenform"></div>
+		<input type = "button" id="saveBtn" style="float:right" value="Save">
+	</form>
+
+
+
 </div>
 
 <!--<div style = "width:50%;float:left" >-->
