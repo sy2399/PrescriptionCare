@@ -75,7 +75,7 @@ def search_prescription(request):
 	else:
 		search_text = ''
 
-	prescriptions = Prescription.objects.filter(ordercode__contains=search_text)
+	prescriptions = Prescription.objects.filter(Q(ordercode__icontains=search_text) | Q(ordername__icontains=search_text))
 
 	context = {}
 	context['prescriptions'] = prescriptions
