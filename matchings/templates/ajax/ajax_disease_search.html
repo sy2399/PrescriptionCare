@@ -78,19 +78,14 @@ $(function(){
 		$('#hiddenform').html();
 
 		$('#submitForm').submit();
-
 	});
-
-
 });
 
 </script>
 
 <div id = "afterResultView1" style = "">
-
 	<button id = "allselectBtn">전체선택</button>
 	<button id = "alldeselectBtn">전체해제</button>
-
 </div>
 
 <div style="overflow-x:auto;">
@@ -101,8 +96,6 @@ $(function(){
 		<th >Disease</th>
 		<th >Disease name</th>
 		<th >Proportion</th>
-
-
 	</tr>
 	</thead>
 
@@ -129,17 +122,11 @@ $(function(){
 	<br><br>
 	<button id = "reset">Reset</button>
 
-
-
-
 	<form id = "submitForm" action="." method="post">
 		{% csrf_token %}
-
 		<div id="hiddenform"></div>
 		<input type = "button" id="saveBtn" style="float:right" value="Save">
 	</form>
-
-
 
 </div>
 

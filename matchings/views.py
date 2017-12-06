@@ -63,11 +63,15 @@ def match_disease(request):
 	context['prescriptions'] = Prescription.objects.all()
 	context['user'] = request.user
 
+	if request.method == "POST":
+		print(request.POST)
+
 	return render(request, 'disease_search.html', context)
 
 def search_prescription(request):
 	if request.method == "POST":
 		search_text = request.POST['search_text']
+		print(request.POST)
 	else:
 		search_text = ''
 
