@@ -63,7 +63,32 @@ def match_disease(request):
 	context['prescriptions'] = Prescription.objects.all()
 	context['user'] = request.user
 
+
 	if request.method == "POST":
+		print("##############################")
+
+		inputPreCode = request.POST.get('inputPreCode', '')
+		inputPreCodeName = request.Post.get('inputPreCodeName', '')
+		checked_discode = request.Post.get('checked_discode', '')
+		checked_disname = request.Post.get('checked_disname', '')
+		notice = request.Post.get('noticeArea', '')
+		flag = request.Post.get('flag', '')
+
+		print(inputPreCode)
+		print('///')
+		print(inputPreCodeName)
+		print('///')
+		print(checked_discode)
+		print('///')
+		print(checked_disname)
+		print('///')
+		print(notice)
+		print('///')
+		print(flag)
+
+		print("##############################")
+
+
 		print(request.POST)
 
 	return render(request, 'disease_search.html', context)
@@ -71,6 +96,7 @@ def match_disease(request):
 def search_prescription(request):
 	if request.method == "POST":
 		search_text = request.POST['search_text']
+
 		print(request.POST)
 	else:
 		search_text = ''
@@ -89,7 +115,12 @@ def search_disease(request):
 		search_list = ''
 	
 	context = {}
+	search_list = search_list.split(" ")[1]
 	context['search_term'] = search_list
+	#idx = prescriptiondf["ordercode"][prescriptiondf["ordercode"].split(" ")[0]==search_list].index()
+
+
+	# context['search_term'] = Prescription.objects.get()
 
 #for seperating main/sub disease
 #	context['main_NN_disease_list'] = NNmodel.get_disease(dxcode_input=search_list, num=5)

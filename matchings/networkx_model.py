@@ -249,6 +249,7 @@ class NetworkX:
 
 			item.append(prescription_code_list)
 
+		print("***************************************************")
 		for item in results_converted_to_list:
 			prescription_name_list = ["Unknown"]
 			for i in np.arange(num):
@@ -261,5 +262,6 @@ class NetworkX:
 
 			item.append(prescription_name_list)
 
+		print("***************************************************")
 		return results_converted_to_list
 
