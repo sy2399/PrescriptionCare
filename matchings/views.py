@@ -13,7 +13,7 @@ from django.template import RequestContext
 from django.db.models import Q
 
 from django.contrib.auth.models import User
-from matchings.models import Disease, Disease_name, Prescription
+from matchings.models import Disease, Disease_name, Prescription, Review, Notice, Doctor_diagnose 
 from matchings.forms import MatchForm
 
 #from matchings.neural_net_model import NeuralNetwork
@@ -49,33 +49,47 @@ def match_disease(request):
 	context['prescriptions'] = Prescription.objects.all()
 	context['user'] = request.user
 
-
 	if request.method == "POST":
-#		print("##############################")
-
-#		inputPreCode = request.POST.get('inputPreCode', '')
-#		inputPreCodeName = request.Post.get('inputPreCodeName', '')
-#		checked_discode = request.Post.get('checked_discode', '')
-#		checked_disname = request.Post.get('checked_disname', '')
-#		notice = request.Post.get('noticeArea', '')
-#		flag = request.Post.get('flag', '')
-#
-#		print(inputPreCode)
-#		print('///')
-#		print(inputPreCodeName)
-#		print('///')
-#		print(checked_discode)
-#		print('///')
-#		print(checked_disname)
-#		print('///')
-#		print(notice)
-#		print('///')
-#		print(flag)
-#
-#		print("##############################")
-#
-
 		print(request.POST)
+
+		inputPreCode = request.POST.get("inputPreCode")
+		#inputPreName = Prescription.objects.get(ordername=inputPreCode.unsplited).ordername
+		noticeArea = request.POST.get("noticeArea")
+		if request.POST.get("flag") == "option1":
+			flag = False
+		else:
+			flag = True
+		
+		if Notice.objects.filter(Q(ordercode=inputPreCode)).count() == 1:
+			notice = Notice.objects.get(Q(ordercode=inputPreCode))
+			notice.notice_description = noticeArea
+			notice.display_condition = flag
+			notice.save()
+		else:
+			notice = Notice(
+						ordercode=inputPreCode,
+						#ordername=inputPreName,
+						notice_description=noticeArea,
+						display_condition=flag
+					)
+			notice.save()
+
+
+		print(request.POST.getlist("checked_discode"))
+		for checked_dxcode in request.POST.getlist("checked_discode"):
+			print(Review.objects.filter(Q(ordercode=inputPreCode) & Q(dxcode=checked_dxcode)).count())
+			print(checked_dxcode)
+			if Review.objects.filter(Q(ordercode=inputPreCode) & Q(dxcode=checked_dxcode)).count() == 1:
+				review = Review.objects.get(Q(ordercode=inputPreCode) & Q(dxcode=checked_dxcode))
+				review.frequency += 1
+				review.save()
+			else:
+				review = Review(
+							ordercode=inputPreCode,
+							dxcode=checked_dxcode
+						)
+				review.save()
+
 
 	return render(request, 'disease_search.html', context)
 
