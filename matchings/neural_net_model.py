@@ -332,16 +332,16 @@ class NeuralNetwork:
 #		print (count/len(unique_y))
 #		return top_diagnosis
 
-	def get_disease(self, dxcode_input, num):
-		dxcode_input_list = []
-		dxcode_input_list.append(dxcode_input)
+	def get_disease(self, ordercode_input, num):
+		ordercode_input_list = []
+		ordercode_input_list.append(dxcode_input)
 
 		#vect = Vectorization.tfidffVectorization()
 		#원하는 처방 값을 X_list 에 넣기
 		#X_vect = vect.fit(self.X_list)
-		dxcode_vect = self.vect.transform(dxcode_input_list)
+		ordercode_vect = self.vect.transform(ordercode_input_list)
 		with self.graph.as_default():
-			y_pred = self.model.predict(dxcode_vect.toarray())
+			y_pred = self.model.predict(ordercode_vect.toarray())
 
 			all_classes = np.array(self.y_classes)
 			all_classes[np.argmax(y_pred, axis=1)]

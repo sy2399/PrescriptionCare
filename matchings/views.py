@@ -52,8 +52,9 @@ def match_disease(request):
 	if request.method == "POST":
 		print(request.POST)
 
-		inputPreCode = request.POST.get("inputPreCode")
-		#inputPreName = Prescription.objects.get(ordername=inputPreCode.unsplited).ordername
+		inputPreCode = request.POST.get("inputPreCode").split(" ")[1]
+		print(inputPreCode)
+		inputPreName = Prescription.objects.get(Q(ordercode=inputPreCode)).ordername
 		noticeArea = request.POST.get("noticeArea")
 		if request.POST.get("flag") == "option1":
 			flag = False
@@ -68,7 +69,7 @@ def match_disease(request):
 		else:
 			notice = Notice(
 						ordercode=inputPreCode,
-						#ordername=inputPreName,
+						ordername=inputPreName,
 						notice_description=noticeArea,
 						display_condition=flag
 					)
@@ -121,16 +122,7 @@ def search_disease(request):
 
 	# context['search_term'] = Prescription.objects.get()
 
-#for seperating main/sub disease
-#	context['main_NN_disease_list'] = NNmodel.get_disease(dxcode_input=search_list, num=5)
-#	context['sub_NN_disease_list'] = sub_NNmodel.get_disease(dxcode_input=search_list, num=10)
-#	context['main_NX_disease_list'] = main_NXmodel.get_disease(dxcode_input=search_list, num=5)
-#	context['sub_NX_disease_list'] = sub_NXmodel.get_disease(dxcode_input=search_list, num=10)
-
-# for non seperating main/sub disease
-#	context['NN_disease_list'] = NNmodel.get_disease(dxcode_input=search_list, num=10)
-
-	disease_list = NXmodel.get_disease(dxcode_input=search_list, num=10)
+	disease_list = NXmodel.get_disease(ordercode_input=search_list, num=10)
 	context['NX_disease_list'] = disease_list
 
 #	disease_name_list = []
@@ -144,8 +136,8 @@ def search_disease(request):
 
 #	print(search_list)
 #	print(context['disease_list'])
-#	context['neuralnet_disease_list'] = self.NNmodel.get_disease(dxcode_input=schWord)
-#		context['networkx_disease_list'] = self.NXmodel.get_disease(dxcode_input=schWord)
+#	context['neuralnet_disease_list'] = self.NNmodel.get_disease(ordercode_input=schWord)
+#		context['networkx_disease_list'] = self.NXmodel.get_disease(ordercode_input=schWord)
 
 	return render(request, 'ajax/ajax_disease_search.html', context)
 
@@ -163,8 +155,8 @@ class ModelCompareFormView(FormView):
 		context = {}
 		context['form'] = form
 		context['search_term'] = schWord
-		context['neuralnet_disease_list'] = NNmodel.get_disease(dxcode_input=schWord)
-#		context['networkx_disease_list'] = self.NXmodel.get_disease(dxcode_input=schWord)
+		context['neuralnet_disease_list'] = NNmodel.get_disease(ordercode_input=schWord)
+#		context['networkx_disease_list'] = self.NXmodel.get_disease(ordercode_input=schWord)
 
 		return render(self.request, self.template_name, context)
 
@@ -180,11 +172,55 @@ class UserManagement(ListView):
 	def get_queryset(self):
 		return User.objects.filter(is_superuser=False)
 
-class UserService(ListView):
-	template_name = "userservice.html"
+class UserService(FormView):
+	form_class = MatchForm
+	template_name = 'userservice.html'
 
-	def get_queryset(self):
-		return User.objects.filter(is_superuser=False)
+	def form_valid(self, form):
+		schWord = '%s' % self.request.POST['match_word']
+
+		hosp_prescriptions = []
+		for code in schWord.split(" "):
+			if Review.objects.filter(ordercode=code).count() != 1:
+				continue
+			
+			hosp_prescription = Review.objects.get(ordercode=code)
+			hosp_prescriptions.append(hosp_prescription)
+
+		sys_prescriptions = [] 
+		notices = []
+		networkx_disease_lists = []
+		for code in schWord.split(" "):
+			if Prescription.objects.filter(ordercode=code).count() != 1:
+				continue
+			sys_prescription = Prescription.objects.get(ordercode=code)
+			
+			if Notice.objects.filter(ordercode=code).count() == 1:
+				notice = Notice.objects.get(ordercode=code)
+
+				if notice.display_condition == False:
+					continue
+
+				notices.append(notice.notice_description)
+			elif Notice.objects.filter(ordercode=code).count() == 0:
+				notices.append("No message recorded")
+			else:
+				continue
+
+			sys_prescriptions.append(sys_prescription)
+		
+
+			networkx_disease_list = NXmodel.get_disease(ordercode_input=schWord)
+			networkx_disease_lists.append(networkx_disease_list)
+
+		context = {}
+		context["hosp_prescriptions"] = hosp_prescriptions
+		context["sys_prescriptions"] = sys_prescriptions
+		context["notices"] = notices
+		context['networkx_disease_lists'] = networkx_disease_lists
+
+		return render(self.request, self.template_name, context)
+
 
 class m4876_00(TemplateView):
 	template_name = 'm4876.html'

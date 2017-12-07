@@ -169,6 +169,11 @@
 		<h1 class="tit_back">Ontic Smart Support Service <span>(현재 의약품에 대해서만 인정상병정보를 제공합니다)</h1>
 		<div class="layer_contents">
 			<!--// tab -->
+			<form action="." method="post">{% csrf_token %}
+				{{ form.as_table }}					
+				<input type="submit" value="Search" />
+			</form>
+
 			<div class="tit_sWrap">
 				<h4 class="tit_bold_gray">처방목록 (총3건,선택된 처방 총 2건)</h4>
 				<div class="button_box">Reset</div>

@@ -166,24 +166,24 @@ class NetworkX:
 
 
 	#function to get dxcode
-	def find_dxcode(self, disease):
-		return list(self.G.neighbors(disease))
+	def find_dxcode(self, order):
+		return list(self.G.neighbors(order))
 
 
 	##function for searching
-	def get_dxcode_input_list(self, dxcode_input):
-		dxcodes = dxcode_input.split(" ")
+	def get_ordercode_input_list(self, ordercode_input):
+		ordercodes = ordercode_input.split(" ")
 
-		dxcode_input_list = []
-		for dxcode in dxcodes:
-			dxcode_input_list.append(dxcode)
+		ordercode_input_list = []
+		for ordercode in ordercodes:
+			ordercode_input_list.append(ordercode)
 
-		return dxcode_input_list
+		return ordercode_input_list
 
-	def get_disease(self, dxcode_input, num):
+	def get_disease(self, ordercode_input, num):
 
-		dxcode = self.get_dxcode_input_list(dxcode_input)
-		results = list(self.find_disease(dxcode))
+		ordercode = self.get_ordercode_input_list(ordercode_input)
+		results = list(self.find_disease(ordercode))
 		
 		result_len = len(results)
 		selected_results = results[0:num]
