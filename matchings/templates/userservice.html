@@ -174,8 +174,10 @@
 				<input type="submit" value="Search" />
 			</form>
 
+			<br><br>
+
 			<div class="tit_sWrap">
-				<h4 class="tit_bold_gray">처방목록 (총3건,선택된 처방 총 2건)</h4>
+				<h4 class="tit_bold_gray">처방목록</h4>
 				<div class="button_box">Reset</div>
 			</div>
 
@@ -191,53 +193,19 @@
 					</tr>
 				</thead>
 				<tbody style="overflow-y:auto;height:100px;">
+					{% for search_prescription in search_prescription_list %}
 					<tr style="background-color:#ECECEC">
 						<td>
 							<button type="button" class="btn_line_gray">해제</button>
 						</td>
 						<td>외래</td>
-						<td>CCN</td>
-						<td>콜킨정(한국유나이트)</td>
-						<td>고혈압 검사 결과를 첨부하십시오. 기타 사항은 심사과에 문의하시기 바랍니다.</td>
+						<td>{{ search_prescription.ordercode }}</td>
+						<td>{{ search_prescription.ordername }}</td>
+						<td>{{ search_prescription.notice_description }}</td>
 					</tr>
-					<!--<tr>-->
-						<!--<td>-->
-							<!--<button type="button" class="btn_line_gray">선택</button>-->
-						<!--</td>-->
-						<!--<td>외래</td>-->
-						<!--<td>MXL</td>-->
-						<!--<td>맥퍼란정(동화약품)</td>-->
-						<!--<td>고혈압 검사 결과를 첨부하십시오. 기타 사항은 심사과에 문의하시기 바랍니다.</td>-->
-					<!--</tr>-->
-					<!--<tr>-->
-						<!--<td>-->
-							<!--<button type="button" class="btn_line_gray">선택</button>-->
-						<!--</td>-->
-						<!--<td>외래</td>-->
-						<!--<td>MXL</td>-->
-						<!--<td>맥퍼란정(동화약품)</td>-->
-						<!--<td>고혈압 검사 결과를 첨부하십시오. 기타 사항은 심사과에 문의하시기 바랍니다.</td>-->
-					<!--</tr>-->
-					<!--<tr>-->
-						<!--<td>-->
-							<!--<button type="button" class="btn_line_gray">해제</button>-->
-						<!--</td>-->
-						<!--<td>외래</td>-->
-						<!--<td>MXL</td>-->
-						<!--<td>맥퍼란정(동화약품)</td>-->
-						<!--<td>고혈압 검사 결과를 첨부하십시오. 기타 사항은 심사과에 문의하시기 바랍니다.</td>-->
-					<!--</tr>-->
-					<!--<tr>-->
-						<!--<td>-->
-							<!--<button type="button" class="btn_line_gray">해제</button>-->
-						<!--</td>-->
-						<!--<td>외래</td>-->
-						<!--<td>MXL</td>-->
-						<!--<td>맥퍼란정(동화약품)</td>-->
-						<!--<td>고혈압 검사 결과를 첨부하십시오. 기타 사항은 심사과에 문의하시기 바랍니다.</td>-->
-					<!--</tr>-->
-
+					{% endfor %}
 				</tbody>
+
 			</table>
 
 			<!--// process -->

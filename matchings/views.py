@@ -76,10 +76,7 @@ def match_disease(request):
 			notice.save()
 
 
-		print(request.POST.getlist("checked_discode"))
 		for checked_dxcode in request.POST.getlist("checked_discode"):
-			print(Review.objects.filter(Q(ordercode=inputPreCode) & Q(dxcode=checked_dxcode)).count())
-			print(checked_dxcode)
 			if Review.objects.filter(Q(ordercode=inputPreCode) & Q(dxcode=checked_dxcode)).count() == 1:
 				review = Review.objects.get(Q(ordercode=inputPreCode) & Q(dxcode=checked_dxcode))
 				review.frequency += 1
@@ -87,7 +84,8 @@ def match_disease(request):
 			else:
 				review = Review(
 							ordercode=inputPreCode,
-							dxcode=checked_dxcode
+							dxcode=checked_dxcode,
+							#dxcode_name
 						)
 				review.save()
 
@@ -179,15 +177,27 @@ class UserService(FormView):
 	def form_valid(self, form):
 		schWord = '%s' % self.request.POST['match_word']
 
+		print(schWord)
+
+		search_prescription_list = []
+		for code in schWord.split(" "):
+			if Notice.objects.filter(ordercode=code).count() == 0:
+				continue
+			search_prescription = Notice.objects.get(ordercode=code)
+
+			search_prescription_list.append(search_prescription)
+
 		hosp_prescriptions = []
 		for code in schWord.split(" "):
-			if Review.objects.filter(ordercode=code).count() != 1:
+			#print(Review.objects.filter(ordercode=code).count())
+			if Review.objects.filter(ordercode=code).count() == 0:
 				continue
-			
-			hosp_prescription = Review.objects.get(ordercode=code)
-			hosp_prescriptions.append(hosp_prescription)
+		
+			hosp_prescription = Review.objects.filter(ordercode=code)
+			for item in hosp_prescription:
+				hosp_prescriptions.append(item)
 
-		sys_prescriptions = [] 
+		sys_prescriptions = []
 		notices = []
 		networkx_disease_lists = []
 		for code in schWord.split(" "):
@@ -197,11 +207,11 @@ class UserService(FormView):
 			
 			if Notice.objects.filter(ordercode=code).count() == 1:
 				notice = Notice.objects.get(ordercode=code)
+				notices.append(notice.notice_description)
 
 				if notice.display_condition == False:
 					continue
 
-				notices.append(notice.notice_description)
 			elif Notice.objects.filter(ordercode=code).count() == 0:
 				notices.append("No message recorded")
 			else:
@@ -210,14 +220,17 @@ class UserService(FormView):
 			sys_prescriptions.append(sys_prescription)
 		
 
-			networkx_disease_list = NXmodel.get_disease(ordercode_input=schWord)
+			networkx_disease_list = NXmodel.get_disease(ordercode_input=schWord, num=3)
 			networkx_disease_lists.append(networkx_disease_list)
 
 		context = {}
-		context["hosp_prescriptions"] = hosp_prescriptions
+		#context["hosp_prescriptions"] = hosp_prescriptions
 		context["sys_prescriptions"] = sys_prescriptions
-		context["notices"] = notices
+		#context["notices"] = notices
 		context['networkx_disease_lists'] = networkx_disease_lists
+		
+		#context["prescription_list"] = zip(hosp_prescriptions, notices)
+		context["search_prescription_list"] = search_prescription_list
 
 		return render(self.request, self.template_name, context)
 
