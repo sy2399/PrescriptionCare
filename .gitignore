@@ -1,5 +1,4 @@
 *.swp
-*.sqlite3
 *.csv
 *.xlsx
 *.pyc
