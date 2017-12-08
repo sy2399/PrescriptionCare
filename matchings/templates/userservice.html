@@ -228,92 +228,36 @@
 					</tr>
 				</thead>
 				<tbody style="overflow-y:auto;height:150px;">
+		
+					{% for prescription in hosp_prescriptions %}
 					<tr style="background-color:#D3FFFE">
 						<td>
 							<input type="checkbox"/>
 						</td>
 						<td>병원추천</td>
-						<td>CCN</td>
-						<td>M1000-1</td>
-						<td>통풍 윤활낭염. 다발 부위</td>
+						<td>{{ prescription.ordercode }}</td>
+						<td>{{ prescription.dxcode }}</td>
+						<td>{{ prescription.dxcode_name}}</td>
 						<td>IM</td>
 						<td></td>
-						<td></td>
+						<td>{{ prescription.frequency }}</td>
 					</tr>
-					<tr style="background-color:#ECECEC">
-						<td>
-							<input type="checkbox"/>
-						</td>
-						<td>병원추천</td>
-						<td>CCN</td>
-						<td>M1000</td>
-						<td>특발성 통풍. 다발부위</td>
-						<td>IM</td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr style="background-color:#ECECEC">
-						<td>
-							<input type="checkbox"/>
-						</td>
-						<td>시스템 추천</td>
-						<td>CCN</td>
-						<td>R51</td>
-						<td>두통</td>
-						<td>IM</td>
-						<td></td>
-						<td></td>
-					</tr>
+					{% endfor %}	
+					{% for prescription, disease_list in sys_prescriptions %}
 					<tr style="background-color:#D3FFFE">
 						<td>
 							<input type="checkbox"/>
 						</td>
-						<td>시스템 추천</td>
-						<td>CCN</td>
-						<td>K297</td>
-						<td>상세 불명 위염</td>
+						<td>시스템추천</td>
+						<td>{{ prescription.ordercode }}</td>
+						<td>{{ disease_list }}</td>
+						<td></td>
 						<td>IM</td>
 						<td></td>
-						<td></td>
+						<td>{{ prescription.frequency }}</td>
 					</tr>
-					<tr style="background-color:#ECECEC">
-						<td>
-							<input type="checkbox"/>
-						</td>
-						<td>시스템 추천</td>
-						<td>CCN</td>
-						<td>N183-1</td>
-						<td>중증도 감소한 사구체 여과율</td>
-						<td>IM</td>
-						<td></td>
-						<td></td>
-					</tr>
-				<tr style="background-color:#ECECEC">
-						<td>
-							<input type="checkbox"/>
-						</td>
-						<td>시스템 추천</td>
-						<td>CCN</td>
-						<td>N189</td>
-						<td>상세 불명의 만성 콩팥(신장) 기능 상실</td>
-						<td>IM</td>
-						<td></td>
-						<td></td>
-					</tr>
-				<tr style="background-color:#ECECEC">
-						<td>
-							<input type="checkbox"/>
-						</td>
-						<td>시스템 추천</td>
-						<td>CCN</td>
-						<td>I109</td>
-						<td>상세 불명의 고혈압</td>
-						<td>IM</td>
-						<td></td>
-						<td></td>
-					</tr>
-
-
+					{% endfor %}	
+				
 				</tbody>
 			</table>
 			<div class="btn_wrap">

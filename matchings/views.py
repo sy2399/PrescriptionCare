@@ -181,7 +181,7 @@ class UserService(FormView):
 
 		search_prescription_list = []
 		for code in schWord.split(" "):
-			if Notice.objects.filter(ordercode=code).count() == 0:
+			if Notice.objects.filter(ordercode=code).count() != 1:
 				continue
 			search_prescription = Notice.objects.get(ordercode=code)
 
@@ -198,7 +198,6 @@ class UserService(FormView):
 				hosp_prescriptions.append(item)
 
 		sys_prescriptions = []
-		notices = []
 		networkx_disease_lists = []
 		for code in schWord.split(" "):
 			if Prescription.objects.filter(ordercode=code).count() != 1:
@@ -207,7 +206,6 @@ class UserService(FormView):
 			
 			if Notice.objects.filter(ordercode=code).count() == 1:
 				notice = Notice.objects.get(ordercode=code)
-				notices.append(notice.notice_description)
 
 				if notice.display_condition == False:
 					continue
@@ -215,6 +213,7 @@ class UserService(FormView):
 			elif Notice.objects.filter(ordercode=code).count() == 0:
 				notices.append("No message recorded")
 			else:
+				print("More than 2 notice objects has the same ordercode!!!!!!!!!!!!!!!!!!")
 				continue
 
 			sys_prescriptions.append(sys_prescription)
@@ -224,13 +223,14 @@ class UserService(FormView):
 			networkx_disease_lists.append(networkx_disease_list)
 
 		context = {}
-		#context["hosp_prescriptions"] = hosp_prescriptions
-		context["sys_prescriptions"] = sys_prescriptions
-		#context["notices"] = notices
-		context['networkx_disease_lists'] = networkx_disease_lists
+		context["hosp_prescriptions"] = hosp_prescriptions
+
+		context["sys_prescriptions"] = zip(sys_prescriptions, networkx_disease_list)
+		#context['networkx_disease_lists'] = networkx_disease_lists
 		
 		#context["prescription_list"] = zip(hosp_prescriptions, notices)
 		context["search_prescription_list"] = search_prescription_list
+		
 
 		return render(self.request, self.template_name, context)
 
