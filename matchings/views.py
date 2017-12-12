@@ -230,9 +230,7 @@ class UserService(FormView):
 		
 		#context["prescription_list"] = zip(hosp_prescriptions, notices)
 
-		context["search_prescription_list"] = search_prescription_list
-		
-
+		context["search_prescription_list"] =search_prescription_list
 		return render(self.request, self.template_name, context)
 
 
