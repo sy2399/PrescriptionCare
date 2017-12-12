@@ -19,9 +19,10 @@
 				var checkedOrderCode = $(this).val();
 				$(this).parent().parent().css("background-color", "#D3FFFE");
 
+
 				for(var i=1;i<$('#servicePrescriptionTable tr').length;i++){
 					var orderCode = $('#servicePrescriptionTable tr').eq(i).children().eq(2).text();
-					alert(orderCode);
+
 					if(orderCode == checkedOrderCode){
 						$('#servicePrescriptionTable tr').eq(i).children().attr('class', 'btn_line_gray');
 						$('#servicePrescriptionTable tr').eq(i).children().eq(0).attr('class', 'btn_line_gray');
@@ -29,6 +30,18 @@
 					}
 				}
 
+			}else{
+			    $(this).parent().parent().css("background-color", "white");
+			    var checkedOrderCode = $(this).val();
+			    for(var i=1;i<$('#servicePrescriptionTable tr').length;i++){
+					var orderCode = $('#servicePrescriptionTable tr').eq(i).children().eq(2).text();
+
+					if(orderCode == checkedOrderCode){
+						$('#servicePrescriptionTable tr').eq(i).children().attr('class', '');
+						$('#servicePrescriptionTable tr').eq(i).children().eq(0).removeClass('class', 'btn_line_gray');
+						$('#servicePrescriptionTable tr').eq(i).children().eq(0).html('<button type="button" class="btn btn-info">{{i}}</button>');
+					}
+				}
 			}
 		});
 
@@ -240,7 +253,7 @@
 
 					<tr >
 						<td>
-							<button type="button" class="btn btn-info">{{i}}</button>
+							<button type="button" class="btn btn-info">{{index}}</button>
 						</td>
 						<td>외래</td>
 						<td>{{ search_prescription.ordercode }}</td>
