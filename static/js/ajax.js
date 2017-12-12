@@ -14,11 +14,26 @@ $(function(){
 	});
 
     $('#search-prescription-results').on("click", "tr", function(){
+
+
     	var tr = $(this);
 		var td = tr.children();
 		var tmp = " " + td.eq(1).text().split(" ")[0]
-		$('#clickResultView').val($('#clickResultView').val() + tmp);
+       $(this).siblings().css("background-color", "white");
+       $(this).css("background-color", "#D3FFFE");
+
+		$.ajax({
+			type: "POST",
+			url: "search_disease/",
+			data: {
+				'search_list':tmp,
+				'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+			},
+			success: diseaseSearchSuccess,
+			dataType: 'html'
+		});
     });
+
 
 	$('#list_form_button').click(function(){
 		$.ajax({

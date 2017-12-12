@@ -12,7 +12,49 @@
 	<!--<meta name="apple-mobile-web-app-title" content="jw Connected Care System" />-->
 	<!--<title>Ontic Smart Support Service</title>-->
 <!--</head>-->
+<script>
+	$(function(){
+		$('input[type="checkbox"]').change(function() {
+			if(this.checked) {
+				var checkedOrderCode = $(this).val();
+				$(this).parent().parent().css("background-color", "#D3FFFE");
 
+				for(var i=1;i<$('#servicePrescriptionTable tr').length;i++){
+					var orderCode = $('#servicePrescriptionTable tr').eq(i).children().eq(2).text();
+					alert(orderCode);
+					if(orderCode == checkedOrderCode){
+						$('#servicePrescriptionTable tr').eq(i).children().attr('class', 'btn_line_gray');
+						$('#servicePrescriptionTable tr').eq(i).children().eq(0).attr('class', 'btn_line_gray');
+						$('#servicePrescriptionTable tr').eq(i).children().eq(0).html('<button type="button" class="btn_line_gray">해제</button>');
+					}
+				}
+
+			}
+		});
+
+
+		$('#okBtn').click(function(){
+
+			for (var i = 1; i < $('#serviceresultTable tr').length; i++) {
+
+				var chk = $('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
+
+				if (chk == true) {
+					$('#serviceresultTable tr').eq(i).css("background-color", "#D3FFFE");
+					var checked_ordercode = $('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').val();
+					<!--alert(checked_ordercode);-->
+
+
+				}else{
+
+					$('#serviceresultTable tr').eq(i).css("background-color", "white");
+				}
+
+			}
+	});
+});
+
+</script>
 <style>
 	.scrolltbody {
 		display: block;
@@ -171,7 +213,7 @@
 			<!--// tab -->
 			<form action="." method="post">{% csrf_token %}
 				{{ form.as_table }}					
-				<input type="submit" value="Search" />
+				<input type="submit" style = "float:right;"value="Search" />
 			</form>
 
 			<br><br>
@@ -181,7 +223,7 @@
 				<div class="button_box">Reset</div>
 			</div>
 
-			<table class="vType_line mgb20 scrolltbody">
+			<table id = "servicePrescriptionTable" class="vType_line mgb20 scrolltbody">
 				<caption>수금이력</caption>
 				<thead>
 					<tr>
@@ -193,10 +235,12 @@
 					</tr>
 				</thead>
 				<tbody style="overflow-y:auto;height:100px;">
+
 					{% for search_prescription in search_prescription_list %}
-					<tr style="background-color:#ECECEC">
+
+					<tr >
 						<td>
-							<button type="button" class="btn_line_gray">해제</button>
+							<button type="button" class="btn btn-info">{{i}}</button>
 						</td>
 						<td>외래</td>
 						<td>{{ search_prescription.ordercode }}</td>
@@ -214,7 +258,7 @@
 			</div>
 
 
-			<table class="vType_line mgb20 scrolltbody2">
+			<table id = "serviceresultTable" class="vType_line mgb20 scrolltbody2">
 				<thead>
 					<tr>
 						<th>선택</th>
@@ -230,13 +274,13 @@
 				<tbody style="overflow-y:auto;height:150px;">
 		
 					{% for prescription in hosp_prescriptions %}
-					<tr style="background-color:#D3FFFE">
+					<tr style="background-color:white">
 						<td>
-							<input type="checkbox"/>
+							<input type="checkbox" value = "{{ prescription.ordercode }}"/>
 						</td>
 						<td>병원추천</td>
 						<td>{{ prescription.ordercode }}</td>
-						<td>{{ prescription.dxcode }}</td>
+						<td class ="hospitalRecommend">{{ prescription.dxcode }}</td>
 						<td>{{ prescription.dxcode_name}}</td>
 						<td>IM</td>
 						<td></td>
@@ -244,25 +288,29 @@
 					</tr>
 					{% endfor %}	
 					{% for prescription, disease_list in sys_prescriptions %}
-					<tr style="background-color:#D3FFFE">
-						<td>
-							<input type="checkbox"/>
-						</td>
-						<td>시스템추천</td>
-						<td>{{ prescription.ordercode }}</td>
-						<td>{{ disease_list }}</td>
-						<td></td>
-						<td>IM</td>
-						<td></td>
-						<td>{{ prescription.frequency }}</td>
-					</tr>
+						{% for disease in disease_list%}
+
+
+							<tr style="background-color:white">
+								<td>
+									<input type="checkbox" name = "_selected"/>
+								</td>
+								<td>시스템추천</td>
+								<td class = "systemRecommend">{{ prescription.ordercode }}</td>
+								<td>{{ disease.0}}</td>
+								<td>{{ disease.1}}</td>
+								<td>IM</td>
+								<td></td>
+								<td>{{ prescription.frequency}}</td>
+							</tr>
+						{% endfor %}
 					{% endfor %}	
 				
 				</tbody>
 			</table>
 			<div class="btn_wrap">
 				<div class="floatR">
-					<button type="button" class="btn_ico_save w95"><span>확인</span></button>
+					<button type="button" class="btn_ico_save w95" id = "okBtn"><span>확인</span></button>
 					<button type="button" class="btn_ico_cancel w95"><span>취소</span></button>
 				</div>
 			</div>

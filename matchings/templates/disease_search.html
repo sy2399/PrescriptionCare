@@ -83,7 +83,7 @@
 							<label>Prescription:</label>
 							<input type="text" id="search_prescription" name="search_prescription" />
 							<button id="resetBtn">초기화</button>
-								<table class="table table-striped scroll" style="width:100%">
+								<table class="table table scroll" style="width:100%">
 									<thead>
 										<tr>
 											<th>처방번호</th>
@@ -104,21 +104,21 @@
 									{% endif %}
 								</table>
 
-								<div id="list_form" class="form-group">
+								<!--<div id="list_form" class="form-group">-->
 
-									{% csrf_token %}
-									<label>처방 리스트:</label>
-									<input type="text" id="clickResultView">
-									<button id="list_form_button" onclick = "loading()">Submit</button>
-									<button id="list_reset_button">Reset</button>
-								</div>
+									<!--{% csrf_token %}-->
+									<!--<label>처방 리스트:</label>-->
+									<!--<input type="text" id="clickResultView">-->
+									<!--<button id="list_form_button" onclick = "loading()">Submit</button>-->
+									<!--<button id="list_reset_button">Reset</button>-->
+								<!--</div>-->
 
 
 							</div>
 
 							<div class="col-md-6">
-								<div class="table-responsive" id = "resultDiv"></div>
-								<br>
+								<div  id = "resultDiv"></div>
+
 
 
 							</div>

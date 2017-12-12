@@ -229,6 +229,7 @@ class UserService(FormView):
 		#context['networkx_disease_lists'] = networkx_disease_lists
 		
 		#context["prescription_list"] = zip(hosp_prescriptions, notices)
+
 		context["search_prescription_list"] = search_prescription_list
 		
 

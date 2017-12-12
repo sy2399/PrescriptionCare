@@ -11,7 +11,7 @@ th, td {
     padding: 8px;
 }
 
-<!--#resultTable tr:nth-child(even){background-color: #f2f2f2}-->
+#resultTable tr{background-color: white}
 </style>
 
 
@@ -54,20 +54,30 @@ $(function(){
 		$(":checkbox", tbl).removeAttr("checked");
 	});
 
+
+
+
+
+
+
+
+
 	$('#saveBtn').click(function(){
 		var html = ""
 		for (var i = 1; i < $('#resultTable tr').length; i++) {
 
 			var chk = $('#resultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
 			if (chk == true) {
+				$('#resultTable tr').eq(i).css("background-color", "#D3FFFE");
 				var checked_discode = $('#resultTable tr').eq(i).children().eq(1).text();
 				var checked_disname = $('#resultTable tr').eq(i).children().eq(2).text();
 
-				<!--alert(checked_discode + " " + checked_disname);-->
-
+				alert(checked_discode + " " + checked_disname);
 				html += "<input type = 'hidden' name = 'checked_discode' class='cheked_discode' value='"+checked_discode +"'>"
 				html += "<input type = 'hidden' name = 'checked_disname' class='checked_disname' value='"+checked_disname +"'>"
 
+			}else{
+				$('#resultTable tr').eq(i).css("background-color", "white");
 			}
 
 		}
@@ -82,7 +92,20 @@ $(function(){
 		$('#hiddenform').submit();
 
 	});
+
+
 });
+
+function HighlightRow(obj){
+
+	var table = document.getElementById("resultTable");
+	var tr = table.getElementsByTagName("tr");
+	<!--for(var i=0; i<tr.length; i++){-->
+		<!--tr[i].style.background = "white";-->
+	<!--}-->
+	obj.style.backgroundColor = "#D3FFFE";
+
+}
 
 </script>
 
@@ -104,7 +127,7 @@ $(function(){
 
 	<tbody>
 		{% for disease in NX_disease_list %}
-		<tr onclick = "">
+		<tr onclick = "HighlightRow(this)">
 			<td><input type="checkbox" id="checked" name = "_selected_"></td>
 			<td id = "disease0" >{{ disease.0 }}</td>
 			<td id = "disease1" >{{ disease.1 }}</td>
@@ -123,13 +146,14 @@ $(function(){
 	<input type="radio" name="flag_info" value="option1" checked="checked">체크된 진단명만 진료화면에 노출함<br>
 	<input type="radio" name="flag_info" value="option2">모든 진단명을 노출함(체크된 진단명은 리스트 최상단에 노출)
 	<br><br>
-	<button id = "reset" style = "float:left">Reset</button>
 
 
 	<div id="hiddendiv">
 		<form id = "hiddenform" action = "." method="post">
 			{% csrf_token %}
 			<textarea style="width:100%" rows="3" cols="50" id="noticeArea" name = "noticeArea"></textarea><br>
+			<button id = "reset" style = "float:left">Reset</button>
+
 			<input type = "button" style = "float:right" id="saveBtn"  value="Save">
 		</form>
 
