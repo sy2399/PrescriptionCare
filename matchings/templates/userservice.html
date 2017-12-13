@@ -264,11 +264,11 @@
 				</thead>
 				<tbody style="overflow-y:auto;height:100px;">
 
-					{% for search_prescription in search_prescription_list %}
+					{% for idx, search_prescription in search_prescription_list %}
 
 					<tr >
-						<td value = {{search_prescription.id}}>
-							{{search_prescription.id}}
+						<td value = {{ idx }}>
+							{{ idx  }}
 						</td>
 						<td>외래</td>
 						<td>{{ search_prescription.ordercode }}</td>
