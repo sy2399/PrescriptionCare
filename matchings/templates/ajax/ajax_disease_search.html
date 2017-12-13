@@ -54,7 +54,16 @@ $(function(){
 		$(":checkbox", tbl).removeAttr("checked");
 	});
 
+	$('input[type="checkbox"]').change(function() {
+		if(this.checked) {
+			$(this).parent().parent().css("background-color", "#D3FFFE");
 
+		}else{
+			$(this).parent().parent().css("background-color", "white");
+
+		}
+
+	});
 
 
 
