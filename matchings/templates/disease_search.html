@@ -17,11 +17,15 @@
 				$('#search_prescription').val("");
 			});
 
+			var tbl = $('#resultTable');
 			$('#allselectBtn').click(function(){
-
-				  $('input[name=_selected_]').prop('checked', this.checked);
-
+				$(":checkbox", tbl).attr("checked", "checked");
 			});
+
+			$('#alldeselectBtn').click(function(){
+				$(":checkbox", tbl).removeAttr("checked");
+			});
+
 
 
 		});
