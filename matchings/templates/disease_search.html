@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-
+{% load staticfiles %}
+{% block extrastyle %}{% static 'css/jw_front.css' %}{% endblock %}
 {% block title %}Data{% endblock %}
 
 {% block content %}
@@ -9,14 +10,7 @@
 			document.getElementById("loading").style.visibility = "visible";
 		}
 
-		function allSelect(){
 
-		}
-
-
-		function alldeSelect(){
-
-		}
 
 		$(function(){
 			$('#resetBtn').click(function(){
@@ -33,7 +27,172 @@
 		});
 
 	</script>
+<style>
 
+	input[type=text], input[type=password] {
+		width: 50%;
+		height: 33px;
+		margin: 0;
+		padding: 0 9px;
+		font-size: 14px;
+		color: #666;
+		line-height: 28px;
+		border: 1px
+	 	solid #dcdcdc;
+		background: #fff;
+		vertical-align: middle;
+		box-sizing: border-box;
+	}
+	.scrolltbody {
+		display: block;
+	}
+
+	.scrolltbody tbody {
+		display: block;
+		height: 300px;
+		overflow: auto;
+	}
+
+	.scrolltbody th:nth-of-type(1),
+	.scrolltbody td:nth-of-type(1) {
+		width: 80px;
+		border-right: 1px solid #dadada;
+	}
+
+	.scrolltbody th:nth-of-type(2),
+	.scrolltbody td:nth-of-type(2) {
+		width: 80px;
+		border-right: 1px solid #dadada;
+	}
+
+	.scrolltbody th:nth-of-type(3),
+	.scrolltbody td:nth-of-type(3) {
+		width: 80px;
+		border-right: 1px solid #dadada;
+	}
+
+	.scrolltbody th:nth-of-type(4),
+	.scrolltbody td:nth-of-type(4) {
+		width: 150px;
+		border-right: 1px solid #dadada;
+	}
+
+	.scrolltbody th:last-child {
+		width: 460px;
+	}
+
+	.scrolltbody td:last-child {
+		width: calc( 460px - 19px);
+	}
+
+	.scrolltbody td {
+		padding: 0px 0px;
+		height: 30px;
+		text-align: center;
+	}
+
+	.scrolltbody th {
+		text-align: center;
+		padding-left: 0px !important;
+		overflow-x: hidden;
+	}
+	/*-0-----------------------------*/
+
+	.scrolltbody2 {
+		display: block;
+	}
+
+	.scrolltbody2 tbody {
+		display: block;
+		height: 300px;
+		overflow: auto;
+	}
+
+	.scrolltbody2 th:nth-of-type(1),
+	.scrolltbody2 td:nth-of-type(1) {
+		width: 50px;
+		border-right: 1px solid #dadada;
+	}
+
+	.scrolltbody2 th:nth-of-type(2),
+	.scrolltbody2 td:nth-of-type(2) {
+		width: 80px;
+		border-right: 1px solid #dadada;
+	}
+
+	.scrolltbody2 th:nth-of-type(3),
+	.scrolltbody2 td:nth-of-type(3) {
+		width: 245px;
+		border-right: 1px solid #dadada;
+	}
+
+	.scrolltbody2 th:nth-of-type(4),
+	.scrolltbody2 td:nth-of-type(4) {
+		width: 80px;
+		border-right: 1px solid #dadada;
+	}
+
+	.scrolltbody2 th:nth-of-type(5),
+	.scrolltbody2 td:nth-of-type(5) {
+		width: 150px;
+		border-right: 1px solid #dadada;
+	}
+
+	.scrolltbody2 th:nth-of-type(6),
+	.scrolltbody2 td:nth-of-type(6) {
+		width: 60px;
+		border-right: 1px solid #dadada;
+	}
+
+	.scrolltbody2 th:nth-of-type(7),
+	.scrolltbody2 td:nth-of-type(7) {
+		width: 80px;
+		border-right: 1px solid #dadada;
+	}
+
+	.scrolltbody2 th:last-child {
+		width: 245px;
+	}
+
+	.scrolltbody2 td:last-child {
+		width: calc( 245px - 19px);
+	}
+
+	.scrolltbody2 td {
+		padding: 0px 0px;
+		height: 32px;
+		text-align: center;
+		overflow-x: hidden;
+	}
+
+	.scrolltbody2 th {
+		text-align: center;
+		padding-left: 0px !important;
+		overflow-x: hidden;
+	}
+
+	.vType_line th {
+		background-color: #fff;
+		border-bottom: 1px solid #1291E7;
+	}
+
+	.vType_line {
+		border-top: 2px solid #1291E7;
+	}
+
+	.btn_line_gray {
+		width: 50px;
+		height: 28px;
+		margin: 2px;
+		font-size: 12px;
+	}
+
+	.box_layer h1.tit_back {
+		background-color: #1291E7;
+	}
+	.button_box{  width: 60px; height: 30px; background-color: #ECF4F6; border: 1px solid #1291E7; text-align: center;color:#1291E7;cursor: pointer}
+	.tit_back >span { font-size: 14px; color: #D3FFFE; }
+</style>
 	<div class="container-fluid">
 		<div class="row">
 			<nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
@@ -80,11 +239,14 @@
 					<br>
 					<div class="row">
 							<div class="col-md-6" >
-							<label>Prescription:</label>
-							<input type="text" id="search_prescription" name="search_prescription" />
-							    <button id="resetBtn">초기화</button>
-                                <button id="searchBtn">검색</button>
-								<table class="table table scroll" style="width:100%">
+								<div>
+								<label>Prescription:</label>
+								<input type="text" id="search_prescription" name="search_prescription" size="40"/>
+							    <button id="resetBtn"  class="button_box">초기화</button>
+                                <button id="searchBtn" class="button_box">검색</button>
+								</div>
+								<br>
+								<table class="vType_line mgb20 scrolltbody" style="width:100%">
 									<thead>
 										<tr>
 											<th>처방번호</th>
@@ -95,7 +257,7 @@
 									{% if prescriptions %}
 									<tbody id="search-prescription-results">
 									{% for prescription in prescriptions %}
-										<tr>
+										<tr onclick = "loading()">
 											<td>{{ prescription.id }}</td>
 											<td>{{ prescription.ordercode }}</td>
 											<td>{{ prescription.ordername}}</td>
@@ -118,7 +280,62 @@
 							</div>
 
 							<div class="col-md-6">
-								<div  id = "resultDiv"></div>
+								<div id = "afterResultView1" style = "">
+								<button class="button_box"id = "allselectBtn">전체선택</button>
+								<button class="button_box" id = "alldeselectBtn">전체해제</button>
+
+							</div>
+								<br>
+								<div  id = "resultDiv">
+							<div style="overflow-x:auto;">
+							<table  id = "resultTable" class = "vType_line mgb20 scrolltbody2" style="width:100%">
+								<thead>
+								<tr>
+									<th>사용</th>
+									<th >Disease</th>
+									<th >Disease name</th>
+									<th >Proportion</th>
+								</tr>
+								</thead>
+
+								<tbody>
+									{% for disease in NX_disease_list %}
+									<tr>
+										<td><input type="checkbox" id="checked" name = "_selected_"></td>
+										<td id = "disease0" >{{ disease.0 }}</td>
+										<td id = "disease1" >{{ disease.1 }}</td>
+										<td id = "disease2" >{{ disease.2 }}</td>
+									</tr>
+
+								{% endfor %}
+								</tbody>
+
+							</table>
+							</div>
+							<br>
+							<div id = "afterResultView2" style = "">
+								<h6>Notice(상단 체크박스에서 여러 개 선택 시 동일하게 적용됩니다)</h6>
+
+
+								<div id="hiddendiv">
+									<form id = "hiddenform" action = "." method="post">
+										{% csrf_token %}
+										<textarea style="width:100%" rows="3" cols="50" id="noticeArea" name = "noticeArea"></textarea><br>
+										<input type="radio" name="flag_info" value="option1" checked="checked">체크된 진단명만 진료화면에 노출함<br>
+								<input type="radio" name="flag_info" value="option2">모든 진단명을 노출함(체크된 진단명은 리스트 최상단에 노출)<br><br>
+
+										<button id = "reset" class="button_box" style = "float:left">Reset</button>
+
+										<input type = "button" class="button_box" style = "float:right" id="saveBtn"  value="Save">
+									</form>
+
+								</div>
+
+
+							</div>
+
+
+								</div>
 
 
 

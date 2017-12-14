@@ -24,9 +24,9 @@
 						$('#serviceresultTable tr').eq(i).children().css("background-color", "#D3FFFE");
 					}
 					var checkboxOrderCode = $('#serviceresultTable tr').eq(i).children().eq(2).text();
-
 					if(checkedOrderCode == checkboxOrderCode){
 						$('#serviceresultTable tr').eq(i).children().attr('class', 'btn_line_gray');
+						$('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
 					}
 				}
 
@@ -69,14 +69,16 @@
 						$('#servicePrescriptionTable tr').eq(i).children().attr('class', '');
 						$('#servicePrescriptionTable tr').eq(i).children().eq(0).removeClass('class', 'btn_line_gray');
 
-						$('#servicePrescriptionTable tr').eq(i).children().eq(0).html('<button type="button" class="btn btn-info"></button>');
+						$('#servicePrescriptionTable tr').eq(i).children().eq(0).html($('#idx').val());
 					}
 				}
 			}
 		});
 
 
-
+	$("#okBtn").click(function(){
+		alert("저장되었습니다");
+	});
 });
 
 </script>
@@ -233,7 +235,7 @@
 </style>
 
 	<div class="box_layer layer_order_list" style="width:900px; margin:-300px 0 0 -473px">
-		<h1 class="tit_back">Ontic Smart Support Service <span>(현재 의약품에 대해서만 인정상병정보를 제공합니다)</h1>
+		<h1 class="tit_back">Ontic Smart Support Service <span>(현재 의약품에 대해서만 인정상병정보를 제공합니다)</span></h1>
 		<div class="layer_contents">
 			<!--// tab -->
 
@@ -265,9 +267,8 @@
 				<tbody style="overflow-y:auto;height:100px;">
 
 					{% for idx, search_prescription in search_prescription_list %}
-
 					<tr >
-						<td value = {{ idx }}>
+						<td id = "idx" value = {{ idx }}>
 							{{ idx  }}
 						</td>
 						<td>외래</td>
@@ -329,7 +330,7 @@
 								<td>{{ disease.0}}</td>
 								<td>{{ disease.1}}</td>
 								<td>IM</td>
-								<td></td>
+								<td>{{ disease.2}}</td>
 								<td>{{ prescription.frequency}}</td>
 							</tr>
 						{% endfor %}
