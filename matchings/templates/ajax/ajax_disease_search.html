@@ -15,17 +15,15 @@ th, td {
 </style>
 
 
-
 <script>
 function showPrescription(element,disease){
 
 	var dis = disease.toString();
 	var pcode_list = dis.split(",");
-	<!--alert(pcode_list[4]);-->
+	alert(pcode_list[4]);
 	var prescriptionView = document.getElementById("prescriptionView");
-
-    var resultTable = document.getElementById("resultTable");
-    var resultTableTr = resultTable.getElementsByTagName("tr");
+	var resultTable = document.getElementById("resultTable");
+	var resultTableTr = resultTable.getElementsByTagName("tr");
 
     <!--for(var i = 0;i<resultTableTr.length;i++){-->
         <!--resultTableTr[i].style.backgroundColor = "white";-->
@@ -54,14 +52,6 @@ $(function(){
 		$(":checkbox", tbl).removeAttr("checked");
 	});
 
-
-
-
-
-
-
-
-
 	$('#saveBtn').click(function(){
 		var html = ""
 		for (var i = 1; i < $('#resultTable tr').length; i++) {
@@ -72,7 +62,7 @@ $(function(){
 				var checked_discode = $('#resultTable tr').eq(i).children().eq(1).text();
 				var checked_disname = $('#resultTable tr').eq(i).children().eq(2).text();
 
-				alert(checked_discode + " " + checked_disname);
+				//alert(checked_discode + " " + checked_disname);
 				html += "<input type = 'hidden' name = 'checked_discode' class='cheked_discode' value='"+checked_discode +"'>"
 				html += "<input type = 'hidden' name = 'checked_disname' class='checked_disname' value='"+checked_disname +"'>"
 
@@ -81,6 +71,8 @@ $(function(){
 			}
 
 		}
+
+		alert("저장되었습니다.")
 
 		var flag = $(':radio[name="flag_info"]:checked').val();
 		html += "<input type='hidden' id = 'inputPreCode' name = 'inputPreCode' value='{{search_term}}'>"
@@ -92,19 +84,22 @@ $(function(){
 		$('#hiddenform').submit();
 
 	});
-
-
 });
 
 function HighlightRow(obj){
 
-	var table = document.getElementById("resultTable");
-	var tr = table.getElementsByTagName("tr");
+	//var table = document.getElementById("resultTable");
+	//var tr = table.getElementsByTagName("tr");
 	<!--for(var i=0; i<tr.length; i++){-->
 		<!--tr[i].style.background = "white";-->
 	<!--}-->
-	obj.style.backgroundColor = "#D3FFFE";
 
+	if(obj.style.backgroundColor == "") { // if white
+	    obj.style.backgroundColor = "#d3fffe"
+	}
+	else { // otherwise
+	    obj.style.backgroundColor = ""
+	}
 }
 
 </script>
@@ -115,7 +110,7 @@ function HighlightRow(obj){
 </div>
 
 <div style="overflow-x:auto;">
-<table  id = "resultTable" style="width:100%">
+<table id = "resultTable" style="width:100%">
 	<thead>
 	<tr>
 		<th>사용</th>
@@ -126,40 +121,46 @@ function HighlightRow(obj){
 	</thead>
 
 	<tbody>
-		{% for disease in NX_disease_list %}
-		<tr onclick = "HighlightRow(this)">
-			<td><input type="checkbox" id="checked" name = "_selected_"></td>
-			<td id = "disease0" >{{ disease.0 }}</td>
-			<td id = "disease1" >{{ disease.1 }}</td>
-			<td id = "disease2" >{{ disease.2 }}</td>
-		</tr>
-
-	{% endfor %}
+		{% for NX_disease in NX_disease_list %}
+			{% if NX_disease.1 == 1 %}
+			<tr bgcolor="#d3fffe" onclick = "HighlightRow(this)"> <!-- 왜 bgcolor 가 작동을 안하는지 모르겠음 -->
+				<td><input type="checkbox" id="checked" name = "_selected_" checked></td>
+			{% else %}
+			<tr onclick = "HighlightRow(this)">
+				<td><input type="checkbox" id="checked" name = "_selected_"></td>
+			{% endif %}
+				<td id = "disease0" >{{ NX_disease.0.0 }}</td>
+				<td id = "disease1" >{{ NX_disease.0.1 }}</td>
+				<td id = "disease2" >{{ NX_disease.0.2 }}</td>
+			</tr>
+		{% endfor %}
 	</tbody>
 
 </table>
 </div>
 <br>
 <div id = "afterResultView2" style = "">
-	<h6>Notice(상단 체크박스에서 여러 개 선택 시 동일하게 적용됩니다)</h6>
-
-	<input type="radio" name="flag_info" value="option1" checked="checked">체크된 진단명만 진료화면에 노출함<br>
-	<input type="radio" name="flag_info" value="option2">모든 진단명을 노출함(체크된 진단명은 리스트 최상단에 노출)
+	{% if notice.display_condition == 0 %}
+		<input type="radio" name="flag_info" value="option1" checked="checked">체크된 진단명만 진료화면에 노출함<br>
+		<input type="radio" name="flag_info" value="option2">모든 진단명을 노출함(체크된 진단명은 리스트 최상단에 노출)
+	{% else %}
+		<input type="radio" name="flag_info" value="option1">체크된 진단명만 진료화면에 노출함<br>
+		<input type="radio" name="flag_info" value="option2" checked="checked">모든 진단명을 노출함(체크된 진단명은 리스트 최상단에 노출)
+	{% endif %}
 	<br><br>
 
-
+	<h6>Notice(상단 체크박스에서 여러 개 선택 시 동일하게 적용됩니다)</h6>
 	<div id="hiddendiv">
 		<form id = "hiddenform" action = "." method="post">
 			{% csrf_token %}
-			<textarea style="width:100%" rows="3" cols="50" id="noticeArea" name = "noticeArea"></textarea><br>
+			<textarea style="width:100%" rows="3" cols="50" id="noticeArea" name = "noticeArea">{{ notice.notice_description }}</textarea>
+			<br>
 			<button id = "reset" style = "float:left">Reset</button>
 
 			<input type = "button" style = "float:right" id="saveBtn"  value="Save">
 		</form>
 
 	</div>
-
-
 </div>
 
 <!--<div style = "width:50%;float:left" >-->
