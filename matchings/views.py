@@ -52,10 +52,12 @@ def match_disease(request):
 	if request.method == "POST":
 		print(request.POST)
 
-		inputPreCode = request.POST.get("inputPreCode").split(" ")[1]
+		# inputPreCode = request.POST.get("inputPreCode").split(" ")[1]
+		inputPreCode = request.POST.get("inputPreCode")  # .split(" ")[1]
+
 		print(inputPreCode)
 		inputPreName = Prescription.objects.get(Q(ordercode=inputPreCode)).ordername
-		noticeArea = request.POST.get("noticeArea")
+		noticeArea = request.POST.get("noticeArea").strip()
 		if request.POST.get("flag") == "option1":
 			flag = False
 		else:
@@ -109,7 +111,7 @@ def search_prescription(request):
 
 def search_disease(request):
 	if request.method == "POST":
-		search_list = request.POST['search_list']
+		search_list = request.POST['search_list'].strip()
 	else:
 		search_list = ''
 	
@@ -121,7 +123,46 @@ def search_disease(request):
 	# context['search_term'] = Prescription.objects.get()
 
 	disease_list = NXmodel.get_disease(ordercode_input=search_list, num=10)
-	context['NX_disease_list'] = disease_list
+	# context['NX_disease_list'] = disease_list
+	#해당 처방에 대한 Review 정보 받아오기
+	selected_list = []
+	if Review.objects.filter(Q(ordercode=search_list)).count() !=0:
+		reviews = Review.objects.filter(Q(ordercode=search_list))
+		print(reviews)
+
+		#이미 선택된 상병인지 확인을 위한 코드
+		for disease in disease_list:
+			selected=0
+			for review in reviews:
+				if disease[0] == review.dxcode:
+					selected=1
+					break
+			if selected==1:
+				selected_list.append([disease,1])
+			else:
+				selected_list.append([disease,0])
+	else:
+		print("해당 처방 리뷰 정보 없음")
+
+	context['NX_disease_list'] = selected_list
+
+	#해당 처방에 대한 Notice 정보 받아오기
+	if Notice.objects.filter(Q(ordercode=search_list)).count() ==1:#정보가 있으면 (단일만 가능# )
+		notice = Notice.objects.get(Q(ordercode=search_list))
+		print(notice.notice_description)
+		context['notice'] = notice
+	else:
+		print("해당 처방 Notice 정보 없음")
+		context['notice'] = ''
+
+
+
+
+
+
+
+
+
 
 #	disease_name_list = []
 #

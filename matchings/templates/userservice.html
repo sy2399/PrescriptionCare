@@ -13,7 +13,9 @@
 	<!--<title>Ontic Smart Support Service</title>-->
 <!--</head>-->
 <script>
-	$(function(){
+	 $(document).ready(function(){
+
+
 		$('input[type="checkbox"]').change(function() {
 			if(this.checked) {
 				var checkedOrderCode = $(this).val();
@@ -23,12 +25,12 @@
 					var chk = $('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
 					if(chk){
 						$('#serviceresultTable tr').eq(i).children().css("background-color", "#D3FFFE");
+					}else{
+						var checkboxOrderCode = $('#serviceresultTable tr').eq(i).children().eq(2).text();
+						if(checkedOrderCode == checkboxOrderCode){
+							$('#serviceresultTable tr').eq(i).children().attr('class', 'btn_line_gray');
+							$('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').attr("disabled", true);
 					}
-					var checkboxOrderCode = $('#serviceresultTable tr').eq(i).children().eq(2).text();
-					if(checkedOrderCode == checkboxOrderCode){
-						$('#serviceresultTable tr').eq(i).children().attr('class', 'btn_line_gray');
-						$('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').attr("disabled", true);
-
 
 					}
 				}
@@ -48,7 +50,6 @@
 				}
 
 			}else{
-			    $(this).parent().parent().css("background-color", "white");
 			    var checkedOrderCode = $(this).val();
 
 			    for(var i=1;i<$('#serviceresultTable tr').length;i++){
@@ -66,40 +67,66 @@
 
 			    for(var i=1;i<$('#servicePrescriptionTable tr').length;i++){
 					var orderCode = $('#servicePrescriptionTable tr').eq(i).children().eq(2).text();
+					var idx = $('#serviceresultTable tr').eq(i).children().eq(0).val();
 
 					if(orderCode == checkedOrderCode){
 						$('#servicePrescriptionTable tr').eq(i).children().attr('class', '');
 						$('#servicePrescriptionTable tr').eq(i).children().eq(0).removeClass('class', 'btn_line_gray');
 
-						$('#servicePrescriptionTable tr').eq(i).children().eq(0).html($('#idx').val());
+						$('#servicePrescriptionTable tr').eq(i).children().eq(0).html($('#idx').text(idx));
 					}
 				}
 			}
+
+
 		});
 
+		$("#resetBtn").click(function(){
 
-	$("#okBtn").click(function(){
-		<!--체크된 상병값 가져오기-->
-		html = "";
-		for(var i=1;i<$('#serviceresultTable tr').length;i++){
-					var chk = $('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
-					if(chk){
-						var prescriptionCode =  $('#serviceresultTable tr').eq(i).children().eq(2).text();
-						var diseaseCode = $('#serviceresultTable tr').eq(i).children().eq(3).text();
+			for(var i=1;i<$('#servicePrescriptionTable tr').length;i++){
+						var orderCode = $('#servicePrescriptionTable tr').eq(i).children().eq(2).text();
+						var idx = $('#servicePrescriptionTable tr').eq(i).children().eq(0).val();
+						$('#servicePrescriptionTable tr').eq(i).children().attr('class', '');
+						$('#servicePrescriptionTable tr').eq(i).children().eq(0).removeClass('class', 'btn_line_gray');
 
-						html += "<input type = 'hidden' name = 'checked_discode' class='cheked_discode' value='"+diseaseCode +"'>"
-						html += "<input type = 'hidden' name = 'checked_precode' class='checked_disname' value='"+prescriptionCode +"'>"
+						$('#servicePrescriptionTable tr').eq(i).children().eq(0).text(idx);
+
+			}
+			 for(var i=1;i<$('#serviceresultTable tr').length;i++){
+				$("#serviceresultTable tr").eq(i).children().find('input[type="checkbox"]').prop("checked", false);
+				$('#serviceresultTable tr').eq(i).children().css("background-color", "white");
+				$('#serviceresultTable tr').eq(i).children().removeClass('class', 'btn_line_gray');
+				$('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').attr("disabled", false);
 
 
-					}
+
+			}
+
+
+		});
+
+		$("#okBtn").click(function(){
+			<!--체크된 상병값 가져오기-->
+			html = "";
+			for(var i=1;i<$('#serviceresultTable tr').length;i++){
+				var chk = $('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
+				if(chk){
+					var prescriptionCode =  $('#serviceresultTable tr').eq(i).children().eq(2).text();
+					var diseaseCode = $('#serviceresultTable tr').eq(i).children().eq(3).text();
+
+					html += "<input type = 'hidden' name = 'checked_discode' class='cheked_discode' value='"+diseaseCode +"'>"
+					html += "<input type = 'hidden' name = 'checked_precode' class='checked_disname' value='"+prescriptionCode +"'>"
+
 
 				}
-		$("#hiddenForm").append(html);
-		$("#hiddenForm").submit();
-		alert($("#hiddenForm").html());
-		alert("저장되었습니다");
+
+			}
+			$("#hiddenForm").append(html);
+			$("#hiddenForm").submit();
+			alert($("#hiddenForm").html());
+			alert("저장되었습니다");
+		});
 	});
-});
 
 </script>
 <style>
@@ -284,7 +311,7 @@
 
 			<div class="tit_sWrap">
 				<h4 class="tit_bold_gray">처방목록</h4>
-				<div class="button_box">Reset</div>
+				<div class="button_box" id = "resetBtn">Reset</div>
 			</div>
 
 			<table id = "servicePrescriptionTable" class="vType_line mgb20 scrolltbody">
@@ -302,7 +329,7 @@
 
 					{% for idx, search_prescription in search_prescription_list %}
 					<tr >
-						<td id = "idx" value = {{ idx }}>
+						<td id = "idx" value = "{{ idx }}">
 							{{ idx  }}
 						</td>
 						<td>외래</td>
@@ -327,12 +354,12 @@
 					<tr>
 						<th>선택</th>
 						<th>구분</th>
-						<th>처방명 ▼</th>
+						<th>처방명 </th>
 						<th>상병코드</th>
-						<th>상병명 ▼</th>
+						<th>상병명</th>
 						<th>과</th>
 						<th>정확도</th>
-						<th>사용빈도</th>
+						<th>사용빈도▼</th>
 					</tr>
 				</thead>
 				<tbody style="overflow-y:auto;height:150px;">

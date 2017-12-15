@@ -178,11 +178,15 @@ function showPrescription(element,disease){
 $(function(){
 	var tbl = $('#resultTable');
 	$('#allselectBtn').click(function(){
-		$(":checkbox", tbl).attr("checked", "checked");
+		$(":checkbox", tbl).attr("checked", true);
+		$('#resultTable tr').css("background-color", "#D3FFFE");
+
 	});
 
 	$('#alldeselectBtn').click(function(){
-		$(":checkbox", tbl).removeAttr("checked");
+		$(":checkbox", tbl).attr("checked", false);
+		$('#resultTable tr').css("background-color", "white");
+
 	});
 
 	$('input[type="checkbox"]').change(function() {
@@ -267,12 +271,19 @@ function HighlightRow(obj){
 	</thead>
 
 	<tbody>
-		{% for disease in NX_disease_list %}
-		<tr>
-			<td><input type="checkbox" id="checked" name = "_selected_"></td>
-			<td id = "disease0" >{{ disease.0 }}</td>
-			<td id = "disease1" >{{ disease.1 }}</td>
-			<td id = "disease2" >{{ disease.2 }}</td>
+		{% for NX_disease in NX_disease_list %}
+		{% if NX_disease.1 == 1 %}
+			<tr style = "background-color:#d3fffe">
+				<td><input type="checkbox" id="checked" name = "_selected_" checked="true"></td>
+		{% else %}
+
+			<tr>
+			<td><input type="checkbox" id="checked" name = "_selected_" checke="false"></td>
+
+			{% endif %}
+			<td id = "disease0" >{{ NX_disease.0.0 }}</td>
+			<td id = "disease1" >{{ NX_disease.0.1 }}</td>
+			<td id = "disease2" >{{ NX_disease.0.2 }}</td>
 		</tr>
 
 	{% endfor %}
@@ -288,13 +299,20 @@ function HighlightRow(obj){
 	<div id="hiddendiv">
 		<form id = "hiddenform" action = "." method="post">
 			{% csrf_token %}
-			<textarea style="width:100%" rows="3" cols="50" id="noticeArea" name = "noticeArea"></textarea><br>
-			<input type="radio" name="flag_info" value="option1" checked="checked">체크된 진단명만 진료화면에 노출함<br>
-	<input type="radio" name="flag_info" value="option2">모든 진단명을 노출함(체크된 진단명은 리스트 최상단에 노출)<br><br>
+			<textarea style="width:100%" rows="3" cols="50" id="noticeArea" name = "noticeArea">{{ notice.notice_description }}</textarea><br>
 
+			{% if notice.display_condition == 0 %}
+				<input type="radio" name="flag_info" value="option1" checked="checked">체크된 진단명만 진료화면에 노출함<br>
+				<input type="radio" name="flag_info" value="option2">모든 진단명을 노출함(체크된 진단명은 리스트 최상단에 노출)<br><br>
+			{% else %}
+			<input type="radio" name="flag_info" value="option1" >체크된 진단명만 진료화면에 노출함<br>
+				<input type="radio" name="flag_info" value="option2" checked="checked">모든 진단명을 노출함(체크된 진단명은 리스트 최상단에 노출)<br><br>
+
+			{% endif %}
 			<button id = "reset" class="button_box" style = "float:left">Reset</button>
 
 			<input type = "button" class="button_box" style = "float:right" id="saveBtn"  value="Save">
+
 		</form>
 
 	</div>

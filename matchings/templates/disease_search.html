@@ -19,11 +19,11 @@
 
 			var tbl = $('#resultTable');
 			$('#allselectBtn').click(function(){
-				$(":checkbox", tbl).attr("checked", "checked");
+				$(":checkbox", tbl).prop("checked", true);
 			});
 
 			$('#alldeselectBtn').click(function(){
-				$(":checkbox", tbl).removeAttr("checked");
+				$(":checkbox", tbl).prop("checked", false);
 			});
 
 
