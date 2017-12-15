@@ -12,9 +12,24 @@
 	<!--<meta name="apple-mobile-web-app-title" content="jw Connected Care System" />-->
 	<!--<title>Ontic Smart Support Service</title>-->
 <!--</head>-->
+ <script type="text/javascript" src="{% static 'js/jquery.tablesorter.min.js' %}"></script>
 <script>
+
+
+
+
+
 	 $(document).ready(function(){
 
+		$.tablesorter.addParser({
+			id:'NumberSort',
+			is:function(s){return false;},
+			format:function(s){return s.replace(/,/g,"");},
+			type:'numeric'
+		});
+		$("#serviceresultTable").tablesorter({
+			header:{8:{sorter:'NumberSort'}}
+		});
 
 		$('input[type="checkbox"]').change(function() {
 			if(this.checked) {
@@ -28,6 +43,7 @@
 					}else{
 						var checkboxOrderCode = $('#serviceresultTable tr').eq(i).children().eq(2).text();
 						if(checkedOrderCode == checkboxOrderCode){
+							$('#serviceresultTable tr').eq(i).children().css("background-color", "");
 							$('#serviceresultTable tr').eq(i).children().attr('class', 'btn_line_gray');
 							$('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').attr("disabled", true);
 					}
@@ -57,10 +73,13 @@
 					if(!chk){
 						$('#serviceresultTable tr').eq(i).children().css("background-color", "white");
 					}
+
 					var checkboxOrderCode = $('#serviceresultTable tr').eq(i).children().eq(2).text();
 
 					if(checkedOrderCode == checkboxOrderCode){
 						$('#serviceresultTable tr').eq(i).children().removeClass('class', 'btn_line_gray');
+						$('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').attr("disabled", false);
+
 					}
 				}
 
@@ -73,7 +92,7 @@
 						$('#servicePrescriptionTable tr').eq(i).children().attr('class', '');
 						$('#servicePrescriptionTable tr').eq(i).children().eq(0).removeClass('class', 'btn_line_gray');
 
-						$('#servicePrescriptionTable tr').eq(i).children().eq(0).html($('#idx').text(idx));
+						$('#servicePrescriptionTable tr').eq(i).children().eq(0).text(idx);
 					}
 				}
 			}
@@ -126,9 +145,12 @@
 			alert($("#hiddenForm").html());
 			alert("저장되었습니다");
 		});
+
+
 	});
 
 </script>
+
 <style>
 	input[type=text], input[type=password] {
 		width: 75%;
@@ -329,7 +351,7 @@
 
 					{% for idx, search_prescription in search_prescription_list %}
 					<tr >
-						<td id = "idx" value = "{{ idx }}">
+						<td value = "{{ idx }}">
 							{{ idx  }}
 						</td>
 						<td>외래</td>
@@ -349,7 +371,7 @@
 			</div>
 
 
-			<table id = "serviceresultTable" class="vType_line mgb20 scrolltbody2">
+			<table id = "serviceresultTable" class="vType_line mgb20 scrolltbody2 tablesorter">
 				<thead>
 					<tr>
 						<th>선택</th>
