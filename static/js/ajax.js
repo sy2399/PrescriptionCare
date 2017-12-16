@@ -14,8 +14,6 @@ $(function(){
 	});
 
     $('#search-prescription-results').on("click", "tr", function(){
-
-
     	var tr = $(this);
 		var td = tr.children();
 		var tmp = " " + td.eq(1).text().split(" ")[0]

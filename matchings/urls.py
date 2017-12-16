@@ -11,7 +11,7 @@ urlpatterns = [
 	url(r'^model_comparison/', views.ModelCompareFormView.as_view(), name='models_test'),
 	url(r'^userstatics/$', views.UserStatics.as_view(), name='userstatics'),
 	url(r'^usermanagement/$', views.UserManagement.as_view(), name='usermanagement'),
-	url(r'^userservice/$', views.UserService.as_view(), name='userservice'),
+	url(r'^userservice/$', views.userservice, name='userservice'),
 
 	url(r'^m4876_00/$', views.m4876_00.as_view(), name='m4876_00'),
 	url(r'^m4876_01/$', views.m4876_01.as_view(), name='m4876_01'),

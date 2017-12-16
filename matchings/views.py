@@ -140,23 +140,24 @@ def search_disease(request):
 
 	#해당 처방에 대한 Review 정보 받아오기
 	selected_list = []
-	if Review.objects.filter(Q(ordercode=search_list)).count() != 0:
-		reviews = Review.objects.filter(Q(ordercode=search_list))
-		print(reviews)
+	#if Review.objects.filter(Q(ordercode=search_list)).count() != 0:
+	reviews = Review.objects.filter(Q(ordercode=search_list))
+	print(reviews)
 
-		#이미 선택된 상병인지 확인을 위한 코드
-		for disease in disease_list: # disease list is always filled with onl 1 item
-			selected = 0
-			for review in reviews:
-				if disease[0] == review.dxcode:
-					selected = 1
-					break
-			if selected == 1:
-				selected_list.append([disease, 1])
-			else:
-				selected_list.append([disease, 0])
-	else:
-		print("해당 처방 리뷰 정보 없음")
+	#이미 선택된 상병인지 확인을 위한 코드
+	for disease in disease_list: # disease list is always filled with onl 1 item
+		selected = 0
+		for review in reviews:
+			if disease[0] == review.dxcode:
+				selected = 1
+				break
+		if selected == 1:
+			selected_list.append([disease, 1])
+		else:
+			selected_list.append([disease, 0])
+		
+	#else:
+	#	print("해당 처방 리뷰 정보 없음")
 
 	context['NX_disease_list'] = selected_list
 
@@ -165,26 +166,26 @@ def search_disease(request):
 		
 	# 해당 처방에 대한 Review 정보 받아오기
 	selected_list = []
-	if Review.objects.filter(Q(ordercode=search_list)).count() != 0: # 정보가 있으면 (복수 가능)
-		reviews = Review.objects.filter(Q(ordercode=search_list))
-		print(reviews)
+	#if Review.objects.filter(Q(ordercode=search_list)).count() != 0: # 정보가 있으면 (복수 가능)
+	reviews = Review.objects.filter(Q(ordercode=search_list))
+	print(reviews)
 
-		# 이미 선택된 상병인지 확인을 위한 코드
-		for disease in disease_list:
-			selected = 0
-			for review in reviews:
-				if disease[0] == review.dxcode:
-					selected = 1
-					break
-			if selected == 1:
-				selected_list.append([disease, 1])
-			else:
-				selected_list.append([disease, 0])
-	else:
-		print("해당처방 리뷰 정보 없음")
+	# 이미 선택된 상병인지 확인을 위한 코드
+	for disease in disease_list:
+		selected = 0
+		for review in reviews:
+			if disease[0] == review.dxcode:
+				selected = 1
+				break
+		if selected == 1:
+			selected_list.append([disease, 1])
+		else:
+			selected_list.append([disease, 0])
+#	else:
+#		print("해당처방 리뷰 정보 없음")
 
 	context['NX_disease_list'] = selected_list
-
+	
 	######################################################
 	# 해당 처방에 대한 Notice 정보 받아오기
 	if Notice.objects.filter(Q(ordercode=search_list)).count() == 1: # 정보가 있으면 (단일만 가능)
@@ -247,68 +248,78 @@ class UserManagement(ListView):
 	def get_queryset(self):
 		return User.objects.filter(is_superuser=False)
 
-class UserService(FormView):
-	form_class = MatchForm
-	template_name = 'userservice.html'
 
-	def form_valid(self, form):
-		schWord = '%s' % self.request.POST['match_word']
+def userservice(request):
+	if request.method == 'POST':
+		schWord = '%s' % request.POST['match_word']
+	else:
+		schWord = ''
 
-		print(schWord)
+	print(schWord)
 
-		search_prescription_list = []
-		for code in schWord.split(" "):
-			if Notice.objects.filter(ordercode=code).count() != 1:
-				continue
-			search_prescription = Notice.objects.get(ordercode=code)
+	search_prescription_list = []
+	for code in schWord.split(" "):
+		if Notice.objects.filter(ordercode=code).count() != 1:
+			continue
+		search_prescription = Notice.objects.get(ordercode=code)
 
-			search_prescription_list.append(search_prescription)
+		search_prescription_list.append(search_prescription)
 
-		hosp_prescriptions = []
-		for code in schWord.split(" "):
-			#print(Review.objects.filter(ordercode=code).count())
-			if Review.objects.filter(ordercode=code).count() == 0:
-				continue
+	hosp_prescriptions = []
+	for code in schWord.split(" "):
+		#print(Review.objects.filter(ordercode=code).count())
+		if Review.objects.filter(ordercode=code).count() == 0:
+			continue
 
-			hosp_prescription = Review.objects.filter(ordercode=code)
-			for item in hosp_prescription:
-				hosp_prescriptions.append(item)
+		hosp_prescription = Review.objects.filter(ordercode=code)
+		for item in hosp_prescription:
+			hosp_prescriptions.append(item)
 
-		sys_prescriptions = []
-		networkx_disease_lists = []
-		for code in schWord.split(" "):
-			if Prescription.objects.filter(ordercode=code).count() != 1:
-				continue
-			sys_prescription = Prescription.objects.get(ordercode=code)
+	sys_prescriptions = []
+	networkx_disease_lists = []
+	for code in schWord.split(" "):
+		if Prescription.objects.filter(ordercode=code).count() != 1:
+			continue
+		sys_prescription = Prescription.objects.get(ordercode=code)
 
-			if Notice.objects.filter(ordercode=code).count() == 1:
-				notice = Notice.objects.get(ordercode=code)
+		if Notice.objects.filter(ordercode=code).count() == 1:
+			notice = Notice.objects.get(ordercode=code)
 
-				if notice.display_condition == False:
-					continue
-
-			elif Notice.objects.filter(ordercode=code).count() == 0:
-				notices.append("No message recorded")
-			else:
-				print("More than 2 notice objects has the same ordercode!!!!!!!!!!!!!!!!!!")
+			if notice.display_condition == False:
 				continue
 
-			sys_prescriptions.append(sys_prescription)
+		elif Notice.objects.filter(ordercode=code).count() == 0:
+			notices.append("No message recorded")
+		else:
+			print("More than 2 notice objects has the same ordercode!!!!!!!!!!!!!!!!!!")
+			continue
+
+		sys_prescriptions.append(sys_prescription)
 
 
-			networkx_disease_list = NXmodel.get_disease(ordercode_input=schWord, num=3)
-			networkx_disease_lists.append(networkx_disease_list)
+		networkx_disease_list = NXmodel.get_disease(ordercode_input=schWord, num=3)
+		networkx_disease_lists.append(networkx_disease_list)
 
-		context = {}
-		context["hosp_prescriptions"] = hosp_prescriptions
+	context = {}
+	context["hosp_prescriptions"] = hosp_prescriptions
 
-		context["sys_prescriptions"] = zip(sys_prescriptions, networkx_disease_lists)
-		#context['networkx_disease_lists'] = networkx_disease_lists
+	context["sys_prescriptions"] = zip(sys_prescriptions, networkx_disease_lists)
+	#context['networkx_disease_lists'] = networkx_disease_lists
 
-		#context["prescription_list"] = zip(hosp_prescriptions, notices)
+	#context["prescription_list"] = zip(hosp_prescriptions, notices)
 
-		context["search_prescription_list"] = zip(np.arange(1, 1 + len(search_prescription_list)).tolist(), search_prescription_list)
-		return render(self.request, self.template_name, context)
+	context["search_prescription_list"] = zip(np.arange(1, 1 + len(search_prescription_list)).tolist(), search_prescription_list)
+
+
+	return render(request, 'userservice.html', context)
+
+def check_diagnose(request):
+	#if request.method == 'POST':
+		
+
+	return render(request, 'userservice.html')
+
+
 
 
 class m4876_00(TemplateView):
