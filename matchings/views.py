@@ -256,9 +256,24 @@ def userservice(request):
 		else:
 			schWord = ''
 
-			print(request.POST)			
+			print(request.POST)
+			for ordercode, dxcode in zip(request.POST.getlist('checked_precode'), request.POST.getlist('checked_discode')):
 
+				print(ordercode, dxcode)
+				print(Doctor_diagnose.objects.filter(Q(ordercode=ordercode) & Q(dxcode=dxcode)).count())
 
+				if Doctor_diagnose.objects.filter(Q(ordercode=ordercode) & Q(dxcode=dxcode)).count() != 0:
+					diag = Doctor_diagnose.objects.get(Q(ordercode=ordercode) & Q(dxcode=dxcode))
+					diag.frequency += 1
+					diag.save()
+				else:
+					print("dfasdfasdf")
+					diag = Doctor_diagnose(
+								ordercode = ordercode,
+								dxcode = dxcode,
+								frequency = 1
+							)
+					diag.save()
 	else:
 		schWord = ''
 
