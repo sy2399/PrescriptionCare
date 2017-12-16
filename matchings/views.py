@@ -251,7 +251,14 @@ class UserManagement(ListView):
 
 def userservice(request):
 	if request.method == 'POST':
-		schWord = '%s' % request.POST['match_word']
+		if request.POST.get('match_word') is not None:
+			schWord = '%s' % request.POST['match_word']
+		else:
+			schWord = ''
+
+			print(request.POST)			
+
+
 	else:
 		schWord = ''
 
