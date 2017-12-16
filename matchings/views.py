@@ -289,7 +289,8 @@ def userservice(request):
 				continue
 
 		elif Notice.objects.filter(ordercode=code).count() == 0:
-			notices.append("No message recorded")
+		#	notice.append("No message recorded")
+			print("No dxcode " + code + " in notice!!")
 		else:
 			print("More than 2 notice objects has the same ordercode!!!!!!!!!!!!!!!!!!")
 			continue
@@ -301,6 +302,7 @@ def userservice(request):
 		networkx_disease_lists.append(networkx_disease_list)
 
 	context = {}
+	context['schword'] = schWord
 	context["hosp_prescriptions"] = hosp_prescriptions
 
 	context["sys_prescriptions"] = zip(sys_prescriptions, networkx_disease_lists)
