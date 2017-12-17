@@ -333,7 +333,6 @@ def userservice(request):
 
 		networkx_disease_list = NXmodel.get_disease(ordercode_input=code, num=3)
 		networkx_disease_lists.append(networkx_disease_list)
-		print(networkx_disease_list)		
 
 		for item in networkx_disease_list:
 			if Doctor_diagnose.objects.filter(Q(ordercode=code) & Q(dxcode=item[0])).count() == 0:
@@ -341,7 +340,6 @@ def userservice(request):
 			else:
 				item.append(Doctor_diagnose.objects.get(Q(ordercode=code) & Q(dxcode=item[0])).frequency)
 			
-
 	context = {}
 	context['schword'] = schWord
 	context["search_prescription_list"] = zip(np.arange(1, 1 + len(search_prescription_list)).tolist(), search_prescription_list)
@@ -351,7 +349,6 @@ def userservice(request):
 	#context['networkx_disease_lists'] = networkx_disease_lists
 
 	#context["prescription_list"] = zip(hosp_prescriptions, notices)
-	print(sys_prescriptions_fre)
 
 
 	return render(request, 'userservice.html', context)
