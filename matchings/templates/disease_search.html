@@ -11,18 +11,42 @@
 		}
 
 		$(function(){
+		    <!--
 			$('#resetBtn').click(function(){
 				$('#search_prescription').val("");
 			});
 
-			var tbl = $('#resultTable');
-			$('#allselectBtn').click(function(){
-				$(":checkbox", tbl).prop("checked", true);
+			$('#allselectBtn').click(function() {
+
+                var checkboxes = $('#resultTable tr')
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].type == 'checkbox') {
+                        checkboxes[i].checked = true;
+                    }
+                }
 			});
 
 			$('#alldeselectBtn').click(function(){
-				$(":checkbox", tbl).prop("checked", false);
+
+			    var checkboxes = $('#resultTable tr')
+			    for (var i = 0; i < checkboxes.length; i++) {
+             		if (checkboxes[i].type == 'checkbox') {
+                        checkboxes[i].checked = false;
+                    }
+             	}
 			});
+			-->
+
+			<!--
+			var tbl = $('#resultTable');
+			$('#allselectBtn').click(function(){
+				tbl.find(":checkbox").prop("checked", true);
+			});
+
+			$('#alldeselectBtn').click(function(){
+				tbl.find(":checkbox").prop("checked", false);
+			});
+			-->
 		});
 
 	</script>
@@ -206,20 +230,24 @@
 						<!--<a class="nav-link" href="{% url 'matchings:models_test' %}">Compare Models</a>-->
 					<!--</li>
 					-->
+					<!--
 					<li class="nav-item">
 						<a class="nav-link" href="">HOME</a>
 					</li>
+					-->
 					<li class="nav-item">
 						<a class="nav-link active" href="{% url 'matchings:match_disease' %}">인정상병관리<span class="sr-only">(current)</span></a>
 					</li>
+					<!--
 					<li class="nav-item">
 						<a class="nav-link" href="{% url 'matchings:userstatics' %}">사용 통계</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="{% url 'matchings:usermanagement' %}">계정 관리</a>
 					</li>
+					-->
 					<li class="nav-item">
-						<a class="nav-link" href="{% url 'matchings:userservice' %}">고객 서비스</a>
+						<a class="nav-link" href="{% url 'matchings:userservice' %}" target="_blank">고객 서비스</a>
 					</li>
 				</ul>
 
@@ -244,15 +272,21 @@
 								</div>
 								<br>
 								<table class="vType_line mgb20 scrolltbody" style="width:100%">
-									<thead>
+									<!-- khan: alignment 가 안맞아 임시 수정 -->
+									<!--<thead>
 										<tr>
 											<th>처방번호</th>
 											<th>처방코드</th>
 											<th>처방설명</th>
 										</tr>
-									</thead>
-									{% if prescriptions %}
+									</thead>-->
 									<tbody id="search-prescription-results">
+									<tr>
+										<th>처방번호</th>
+										<th>처방코드</th>
+										<th>처방설명</th>
+									</tr>
+									{% if prescriptions %}
 										{% for prescription in prescriptions %}
 										<tr onclick = "loading()">
 											<td>{{ prescription.id }}</td>
@@ -278,23 +312,29 @@
 
 							<div class="col-md-6">
 								<div id = "afterResultView1" style = "">
-								<button class="button_box"id = "allselectBtn">전체선택</button>
+								<button class="button_box" id = "allselectBtn">전체선택</button>
 								<button class="button_box" id = "alldeselectBtn">전체해제</button>
 							</div>
 							<br>
 							<div id = "resultDiv">
 								<div style="overflow-x:auto;">
 									<table id = "resultTable" class = "vType_line mgb20 scrolltbody2" style="width:100%">
-										<thead>
+										<!-- khan: alignment 가 안맞아 임시 수정 -->
+										<!--<thead>
 											<tr>
 												<th>사용</th>
 												<th>Disease</th>
 												<th>Disease name</th>
 												<th>Proportion</th>
 											</tr>
-										</thead>
-
+										</thead>-->
 										<tbody>
+											<tr>
+												<th>사용</th>
+												<th>상병코드</th>
+												<th>상병명</th>
+												<th>정확도</th>
+											</tr>
 											{% for disease in NX_disease_list %}
 											<tr>
 												<td><input type="checkbox" id="checked" name = "_selected_"></td>
@@ -309,7 +349,6 @@
 								<br>
 								<div id = "afterResultView2" style = "">
 									<h6>Notice(상단 체크박스에서 여러 개 선택 시 동일하게 적용됩니다)</h6>
-
 
 									<div id="hiddendiv">
 										<form id = "hiddenform" action = "." method="post">

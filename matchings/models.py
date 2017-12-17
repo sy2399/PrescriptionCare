@@ -23,7 +23,7 @@ class Notice(models.Model):
 class Doctor_diagnose(models.Model):
 	ordercode = models.CharField(max_length=128) # 처방 코드
 	dxcode = models.CharField(max_length=1024) # 상병 코드
-	frequency = models.CharField(max_length=16) # 처방-상병 관계 빈도수 (사용빈도 값을 위해 사용될 예정)
+	frequency = models.IntegerField(default=0) # 처방-상병 관계 빈도수 (사용빈도 값을 위해 사용될 예정)
 
 class Review(models.Model):
 	ordercode = models.CharField(max_length=128) # 처방 코드

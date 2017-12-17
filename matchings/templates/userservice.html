@@ -12,11 +12,10 @@
 	<!--<meta name="apple-mobile-web-app-title" content="jw Connected Care System" />-->
 	<!--<title>Ontic Smart Support Service</title>-->
 <!--</head>-->
- <script type="text/javascript" src="{% static 'js/jquery.tablesorter.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.tablesorter.min.js' %}"></script>
 <script>
 
 	 $(document).ready(function(){
-
 		$.tablesorter.addParser({
 			id:'NumberSort',
 			is:function(s){return false;},
@@ -29,35 +28,41 @@
 
 		$('input[type="checkbox"]').change(function() {
 			if(this.checked) {
-				var checkedOrderCode = $(this).val();
-				var arr = $('input[type="checkbox"]:checked').serializeArray().map(function(item) { return item.text });
 
+			    var checkedOrderCode = $(this).val();
+				<!--var arr = $('input[type="checkbox"]:checked').serializeArray().map(function(item) { return item.text });-->
+
+				<!-- 상병 추천 테이블 -->
 				for(var i=1;i<$('#serviceresultTable tr').length;i++){
 					var chk = $('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
+
 					if(chk){
+					    <!-- checked 항목 색깔 바꾸기 -->
 						$('#serviceresultTable tr').eq(i).children().css("background-color", "#D3FFFE");
 					}else{
+					    <!-- checked 항목 색깔 회색으로 바꾸기 -->
 						var checkboxOrderCode = $('#serviceresultTable tr').eq(i).children().eq(2).text();
-						if(checkedOrderCode == checkboxOrderCode){
-							$('#serviceresultTable tr').eq(i).children().css("background-color", "");
-							$('#serviceresultTable tr').eq(i).children().attr('class', 'btn_line_gray');
-							$('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').attr("disabled", true);
-					}
 
+						if(checkedOrderCode == checkboxOrderCode){
+							<!--$('#serviceresultTable tr').eq(i).children().attr('class', 'btn_line_gray');-->
+							$('#serviceresultTable tr').eq(i).children().css("background-color", "#DCDCDC");
+							$('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').attr("disabled", true);
+						}
 					}
 				}
 
 				<!--$(this).parent().parent().removeClass('class', 'btn_line_gray');-->
 				<!--$(this).parent().parent().css("background-color", "#D3FFFE");-->
 
-
+				<!-- 처방 목록 테이블 -->
 				for(var i=1;i<$('#servicePrescriptionTable tr').length;i++){
 					var orderCode = $('#servicePrescriptionTable tr').eq(i).children().eq(2).text();
 
 					if(orderCode == checkedOrderCode){
 						$('#servicePrescriptionTable tr').eq(i).children().attr('class', 'btn_line_gray');
 						$('#servicePrescriptionTable tr').eq(i).children().eq(0).attr('class', 'btn_line_gray');
-						$('#servicePrescriptionTable tr').eq(i).children().eq(0).html('<button type="button" class="btn_line_gray">해제</button>');
+						<!--$('#servicePrescriptionTable tr').eq(i).children().css("background-color", "#DCDCDC");-->
+						<!--$('#servicePrescriptionTable tr').eq(i).children().eq(0).html('<button type="button" class="btn_line_gray">해제</button>');-->
 					}
 				}
 
@@ -75,10 +80,8 @@
 					if(checkedOrderCode == checkboxOrderCode){
 						$('#serviceresultTable tr').eq(i).children().removeClass('class', 'btn_line_gray');
 						$('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').attr("disabled", false);
-
 					}
 				}
-
 
 			    for(var i=1;i<$('#servicePrescriptionTable tr').length;i++){
 					var orderCode = $('#servicePrescriptionTable tr').eq(i).children().eq(2).text();
@@ -87,24 +90,20 @@
 					if(orderCode == checkedOrderCode){
 						$('#servicePrescriptionTable tr').eq(i).children().attr('class', '');
 						$('#servicePrescriptionTable tr').eq(i).children().eq(0).removeClass('class', 'btn_line_gray');
-
-						$('#servicePrescriptionTable tr').eq(i).children().eq(0).text(idx);
+						<!--$('#servicePrescriptionTable tr').eq(i).children().eq(0).text(idx);-->
 					}
 				}
 			}
-
-
 		});
 
 		$("#resetBtn").click(function(){
 
 			for(var i=1;i<$('#servicePrescriptionTable tr').length;i++){
-						var orderCode = $('#servicePrescriptionTable tr').eq(i).children().eq(2).text();
-						var idx = $('#servicePrescriptionTable tr').eq(i).children().eq(0).val();
-						$('#servicePrescriptionTable tr').eq(i).children().attr('class', '');
-						$('#servicePrescriptionTable tr').eq(i).children().eq(0).removeClass('class', 'btn_line_gray');
-
-						$('#servicePrescriptionTable tr').eq(i).children().eq(0).text(idx);
+				var orderCode = $('#servicePrescriptionTable tr').eq(i).children().eq(2).text();
+				var idx = $('#servicePrescriptionTable tr').eq(i).children().eq(0).val();
+				$('#servicePrescriptionTable tr').eq(i).children().attr('class', '');
+				$('#servicePrescriptionTable tr').eq(i).children().eq(0).removeClass('class', 'btn_line_gray');
+				$('#servicePrescriptionTable tr').eq(i).children().eq(0).text(idx);
 
 			}
 			 for(var i=1;i<$('#serviceresultTable tr').length;i++){
@@ -112,32 +111,41 @@
 				$('#serviceresultTable tr').eq(i).children().css("background-color", "white");
 				$('#serviceresultTable tr').eq(i).children().removeClass('class', 'btn_line_gray');
 				$('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').attr("disabled", false);
-
-
-
 			}
-
-
 		});
 
 		$("#okBtn").click(function(){
-			<!--체크된 상병값 가져오기-->
-			html = "";
-			for(var i = 1; i < $('#serviceresultTable tr').length; i++){
-				var chk = $('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
-				if(chk){
-					var prescriptionCode =  $('#serviceresultTable tr').eq(i).children().eq(2).text();
-					var diseaseCode = $('#serviceresultTable tr').eq(i).children().eq(3).text();
 
-					html += "<input type = 'hidden' name = 'checked_discode' class='cheked_discode' value='"+diseaseCode +"'>"
-					html += "<input type = 'hidden' name = 'checked_precode' class='checked_disname' value='"+prescriptionCode +"'>"
+			if (confirm('저장하시겠습니까?')) {
+			    <!--체크된 상병값 가져오기-->``
+				html = "";
+				for(var i = 1; i < $('#serviceresultTable tr').length; i++){
+					var chk = $('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
+					if(chk){
+						var prescriptionCode =  $('#serviceresultTable tr').eq(i).children().eq(2).text();
+						var diseaseCode = $('#serviceresultTable tr').eq(i).children().eq(3).text();
+
+						html += "<input type = 'hidden' name = 'checked_discode' class='cheked_discode' value='"+diseaseCode +"'>"
+						html += "<input type = 'hidden' name = 'checked_precode' class='checked_disname' value='"+prescriptionCode +"'>"
+					}
 				}
+				$("#hiddenForm").append(html);
+				$("#hiddenForm").submit();
+				//alert($("#hiddenForm").html());
+				alert("저장되었습니다");
+
+			} else {
+    			// Do nothing!
 			}
-			$("#hiddenForm").append(html);
-			$("#hiddenForm").submit();
-			alert($("#hiddenForm").html());
-			alert("저장되었습니다");
 		});
+
+		 $("#cancelBtn").click(function(){
+			if (confirm('취소하시겠습니까?')) {
+				location.reload(); // 페이지 새로 연다
+			} else {
+    			// Do nothing!
+			}
+         });
 	});
 
 </script>
@@ -315,16 +323,16 @@
 
 			<form action="." method="post">
 				{% csrf_token %}
-				Disease: <input type="text" name="match_word">
+				처방 검색 : <input type="text" name="match_word">
 				<input type="submit" class = "button_box" style = "float:right;"value="Search" />
 			</form>
 
-			<p>Search: {{ schword }}</p>
+			<p>입력된 처방: {{ schword }}</p>
 			<br><br>
 
 			<div class="tit_sWrap">
 				<h4 class="tit_bold_gray">처방목록</h4>
-				<div class="button_box" id = "resetBtn">Reset</div>
+				<!--<div class="button_box" id = "resetBtn">Reset</div>-->
 			</div>
 
 			<table id = "servicePrescriptionTable" class="vType_line mgb20 scrolltbody">
@@ -372,11 +380,11 @@
 						<th>상병명</th>
 						<th>과</th>
 						<th>정확도</th>
-						<th>사용빈도▼</th>
+						<!--<th>사용빈도▼</th>-->
+						<th>사용빈도</th>
 					</tr>
 				</thead>
 				<tbody style="overflow-y:auto;height:150px;">
-		
 					{% for prescription, name, freq in hosp_prescriptions %}
 					<tr style="background-color:white">
 						<td>
@@ -387,28 +395,24 @@
 						<td value = {{ prescription.dxcode }}>{{ prescription.dxcode }}</td>
 						<td>{{ name}}</td>
 						<td>IM</td>
-						<td>--</td>
+						<td>- </td>
 						<td>{{ freq }}</td>
 					</tr>
 					{% endfor %}	
-					{% for prescription, disease_list in sys_prescriptions %}
-						{% for disease in disease_list %}
-
-							<tr style="background-color:white">
-								<td>
-									<input type="checkbox" name = "_selected"/>
-								</td>
-								<td>시스템추천</td>
-								<td value = {{ prescription.ordercode }}>{{ prescription.ordercode }}</td>
-								<td>{{ disease.0}}</td>
-								<td>{{ disease.1}}</td>
-								<td>IM</td>
-								<td>{{ disease.2}}</td>
-								<td>{{ disease.5 }}</td>
-							</tr>
-						{% endfor %}
-					{% endfor %}	
-				
+					{% for prescription, disease in sys_prescriptions %}
+					<tr style="background-color:white">
+						<td>
+							<input type="checkbox" name = "_selected" value = "{{ prescription.ordercode }}"/>
+						</td>
+						<td>시스템추천</td>
+						<td value = {{ prescription.ordercode }}>{{ prescription.ordercode }}</td>
+						<td>{{ disease.0 }}</td>
+						<td>{{ disease.1 }}</td>
+						<td>IM</td>
+						<td>{{ disease.2 }}</td>
+						<td>{{ disease.5 }}</td>
+					</tr>
+					{% endfor %}
 				</tbody>
 			</table>
 			<div class="btn_wrap">
@@ -416,7 +420,7 @@
 					<form id = "hiddenForm" action="." method = "post">
 					{% csrf_token %}
 						<button type="button" class="btn_ico_save w95" id = "okBtn"><span>확인</span></button>
-						<button type="button" class="btn_ico_cancel w95"><span>취소</span></button>
+						<button type="button" class="btn_ico_cancel w95" id = "cancelBtn"><span>취소</span></button>
 					</form>
 				</div>
 			</div>

@@ -1,6 +1,7 @@
 <!--{% load staticfiles %}-->
 <!--{% block extrastyle %}{% static 'css/jw_front.css' %}{% endblock %}-->
 {% block content %}
+<!--
 <style>
 #resultTable {
     border-collapse: collapse;
@@ -14,6 +15,7 @@ th, td {
 
 #resultTable tr{background-color: white}
 </style>
+-->
 <style>
 	.scrolltbody {
 		display: block;
@@ -175,6 +177,7 @@ function showPrescription(element,disease){
 
 $(function(){
 	var tbl = $('#resultTable');
+	<!--
 	$('#allselectBtn').click(function(){
 		$(":checkbox", tbl).attr("checked", true);
 		$('#resultTable tr').css("background-color", "#D3FFFE");
@@ -186,6 +189,7 @@ $(function(){
 		$('#resultTable tr').css("background-color", "white");
 
 	});
+	-->
 
 	$('input[type="checkbox"]').change(function() {
 		if(this.checked) {
@@ -195,41 +199,40 @@ $(function(){
 			$(this).parent().parent().css("background-color", "white");
 
 		}
-
 	});
 
-
 	$('#saveBtn').click(function(){
-		var html = ""
-		for (var i = 1; i < $('#resultTable tr').length; i++) {
+	    if (confirm('저장하시겠습니까?')) {
+			var html = ""
+			for (var i = 1; i < $('#resultTable tr').length; i++) {
 
-			var chk = $('#resultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
-			if (chk == true) {
-				$('#resultTable tr').eq(i).css("background-color", "#D3FFFE");
-				var checked_discode = $('#resultTable tr').eq(i).children().eq(1).text();
-				var checked_disname = $('#resultTable tr').eq(i).children().eq(2).text();
+				var chk = $('#resultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
+				if (chk == true) {
+					$('#resultTable tr').eq(i).css("background-color", "#D3FFFE");
+					var checked_discode = $('#resultTable tr').eq(i).children().eq(1).text();
+					var checked_disname = $('#resultTable tr').eq(i).children().eq(2).text();
 
-				//alert(checked_discode + " " + checked_disname);
-				html += "<input type = 'hidden' name = 'checked_discode' class='cheked_discode' value='"+checked_discode +"'>"
-				html += "<input type = 'hidden' name = 'checked_disname' class='checked_disname' value='"+checked_disname +"'>"
+					//alert(checked_discode + " " + checked_disname);
+					html += "<input type = 'hidden' name = 'checked_discode' class='cheked_discode' value='"+checked_discode +"'>"
+					html += "<input type = 'hidden' name = 'checked_disname' class='checked_disname' value='"+checked_disname +"'>"
 
-			}else{
-				$('#resultTable tr').eq(i).css("background-color", "white");
+				}else{
+					$('#resultTable tr').eq(i).css("background-color", "white");
+				}
 			}
 
+			alert("저장되었습니다.")
+
+			var flag = $(':radio[name="flag_info"]:checked').val();
+			html += "<input type='hidden' id = 'inputPreCode' name = 'inputPreCode' value='{{search_term}}'>"
+			html += "<input type='hidden' id = 'inputPreCodeName' name = 'inputPreCodeName' value=''>"
+			html += "<input type='hidden' id = 'flag' name = 'flag' value="+flag+">"
+
+			$('#hiddenform').append(html);
+			$('#hiddenform').submit();
+		} else {
+			// Do nothing!
 		}
-
-		alert("저장되었습니다.")
-
-		var flag = $(':radio[name="flag_info"]:checked').val();
-		html += "<input type='hidden' id = 'inputPreCode' name = 'inputPreCode' value='{{search_term}}'>"
-		html += "<input type='hidden' id = 'inputPreCodeName' name = 'inputPreCodeName' value=''>"
-		html += "<input type='hidden' id = 'flag' name = 'flag' value="+flag+">"
-
-		$('#hiddenform').append(html);
-
-		$('#hiddenform').submit();
-
 	});
 });
 
@@ -254,63 +257,55 @@ function HighlightRow(obj){
 <!--<div id = "afterResultView1" style = "">-->
 	<!--<button class="btn btn-default"id = "allselectBtn">전체선택</button>-->
 	<!--<button class="btn btn-default" id = "alldeselectBtn">전체해제</button>-->
-
 <!--</div>-->
-
-<div style="overflow-x:auto;">
-<table  id = "resultTable" class = "vType_line mgb20 scrolltbody2" style="width:100%">
-<table id = "resultTable" style="width:100%">
-	<thead>
-	<tr>
-		<th>사용</th>
-		<th >Disease</th>
-		<th >Disease name</th>
-		<th >Proportion</th>
-	</tr>
-	</thead>
-
-	<tbody>
-		{% for NX_disease in NX_disease_list %}
-			
-		{% if NX_disease.1 == 1 %}
-			<tr bgcolor="#d3fffe" onclick = "HighlightRow(this)"> <!-- 왜 bgcolor 가 작동을 안하는지 모르겠음 -->
-				<td><input type="checkbox" id="checked" name = "_selected_" checked></td>
-		{% else %}
-			<tr onclick = "HighlightRow(this)">
-				<td><input type="checkbox" id="checked" name = "_selected_"></td>
-			{% endif %}
-				<td id = "disease0" >{{ NX_disease.0.0 }}</td>
-				<td id = "disease1" >{{ NX_disease.0.1 }}</td>
-				<td id = "disease2" >{{ NX_disease.0.2 }}</td>
-			</tr>
-		{% endfor %}
-	</tbody>
-
-</table>
+<!--<div style="overflow-x:auto;">-->
+<div>
+	<table id = "resultTable" class = "vType_line mgb20 scrolltbody2" style="width:100%">
+		<!-- khan: alignment 가 안맞아 thead, th 삭제 -->
+		<tbody>
+		<tr>
+			<th>사용</th>
+			<th>상병코드</th>
+			<th>상병명</th>
+			<th>정확도</th>
+		</tr>
+			{% for NX_disease in NX_disease_list %}
+				{% if NX_disease.0.1 != "Unknown" %} <!-- if unknown, pass -->
+					{% if NX_disease.1 == 1 %}
+						<!--<tr style="background-color:#d3fffe" onclick = "HighlightRow(this)">-->
+						<tr style="background-color:#d3fffe">
+							<td><input type="checkbox" id="checked" name = "_selected_" checked></td>
+					{% else %}
+						<!--<tr onclick = "HighlightRow(this)">-->
+						<tr>
+							<td><input type="checkbox" id="checked" name = "_selected_"></td>
+					{% endif %}
+							<td id = "disease0">{{ NX_disease.0.0 }}</td>
+							<td id = "disease1">{{ NX_disease.0.1 }}</td>
+							<td id = "disease2">{{ NX_disease.0.2 }}</td>
+						</tr>
+				{% endif %}
+			{% endfor %}
+		</tbody>
+	</table>
 </div>
-<br>
 <div id = "afterResultView2" style = "">
 	<h6>Notice(상단 체크박스에서 여러 개 선택 시 동일하게 적용됩니다)</h6>
-
 
 	<div id="hiddendiv">
 		<form id = "hiddenform" action = "." method="post">
 			{% csrf_token %}
-			<textarea style="width:100%" rows="3" cols="50" id="noticeArea" name = "noticeArea">{{ notice.notice_description }}</textarea><br>
+				<textarea style="width:100%" rows="3" cols="50" id="noticeArea" name = "noticeArea">{{ notice.notice_description }}</textarea><br>
 
 			{% if notice.display_condition == 0 %}
-			<input type="radio" name="flag_info" value="option1" checked="checked">체크된 진단명만 진료화면에 노출함<br>
-			<input type="radio" name="flag_info" value="option2">모든 진단명을 노출함(체크된 진단명은 리스트 최상단에 노출)<br><br>
+				<input type="radio" name="flag_info" value="option1" checked="checked">체크된 진단명만 진료화면에 노출함<br>
+				<input type="radio" name="flag_info" value="option2">모든 진단명을 노출함(체크된 진단명은 리스트 최상단에 노출)<br><br>
 			{% else %}
-			<input type="radio" name="flag_info" value="option1" >체크된 진단명만 진료화면에 노출함<br>
-			<input type="radio" name="flag_info" value="option2" checked="checked">모든 진단명을 노출함(체크된 진단명은 리스트 최상단에 노출)<br><br>
-
+				<input type="radio" name="flag_info" value="option1" >체크된 진단명만 진료화면에 노출함<br>
+				<input type="radio" name="flag_info" value="option2" checked="checked">모든 진단명을 노출함(체크된 진단명은 리스트 최상단에 노출)<br><br>
 			{% endif %}
-			
-			<button id = "reset" class="button_box" style = "float:left">Reset</button>
-
-			<input type = "button" class="button_box" style = "float:right" id="saveBtn"  value="Save">
-		
+				<button id = "reset" class="button_box" style = "float:left">Reset</button>
+				<input type = "button" class="button_box" style = "float:right" id="saveBtn"  value="Save">
 			<br><br>
 		</form>
 		
