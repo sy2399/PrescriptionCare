@@ -343,7 +343,7 @@
 					{% for idx, search_prescription in search_prescription_list %}
 					<tr >
 						<td value = "{{ idx }}">
-							{{ idx  }}
+							{{ idx }}
 						</td>
 						<td>외래</td>
 						<td>{{ search_prescription.ordercode }}</td>
@@ -377,7 +377,7 @@
 				</thead>
 				<tbody style="overflow-y:auto;height:150px;">
 		
-					{% for prescription in hosp_prescriptions %}
+					{% for prescription, name, freq in hosp_prescriptions %}
 					<tr style="background-color:white">
 						<td>
 							<input type="checkbox" value = "{{ prescription.ordercode }}"/>
@@ -385,14 +385,14 @@
 						<td>병원추천</td>
 						<td>{{ prescription.ordercode }}</td>
 						<td value = {{ prescription.dxcode }}>{{ prescription.dxcode }}</td>
-						<td>{{ prescription.dxcode_name}}</td>
+						<td>{{ name}}</td>
 						<td>IM</td>
-						<td></td>
-						<td>{{ prescription.frequency }}</td>
+						<td>--</td>
+						<td>{{ freq }}</td>
 					</tr>
 					{% endfor %}	
 					{% for prescription, disease_list in sys_prescriptions %}
-						{% for disease in disease_list%}
+						{% for disease in disease_list %}
 
 							<tr style="background-color:white">
 								<td>
@@ -404,7 +404,7 @@
 								<td>{{ disease.1}}</td>
 								<td>IM</td>
 								<td>{{ disease.2}}</td>
-								<td>{{ prescription.frequency}}</td>
+								<td>{{ disease.5 }}</td>
 							</tr>
 						{% endfor %}
 					{% endfor %}	

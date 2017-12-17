@@ -36,6 +36,8 @@ prescriptiondf = pd.DataFrame(list(Prescription.objects.all().values('ordercode'
 #NNmodel = NeuralNetwork()
 NXmodel = NetworkX()
 
+diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
+
 class datashow(ListView):
 	template_name = 'datashow.html'
 
@@ -258,16 +260,11 @@ def userservice(request):
 
 			print(request.POST)
 			for ordercode, dxcode in zip(request.POST.getlist('checked_precode'), request.POST.getlist('checked_discode')):
-
-				print(ordercode, dxcode)
-				print(Doctor_diagnose.objects.filter(Q(ordercode=ordercode) & Q(dxcode=dxcode)).count())
-
 				if Doctor_diagnose.objects.filter(Q(ordercode=ordercode) & Q(dxcode=dxcode)).count() != 0:
 					diag = Doctor_diagnose.objects.get(Q(ordercode=ordercode) & Q(dxcode=dxcode))
 					diag.frequency += 1
 					diag.save()
 				else:
-					print("dfasdfasdf")
 					diag = Doctor_diagnose(
 								ordercode = ordercode,
 								dxcode = dxcode,
@@ -288,6 +285,8 @@ def userservice(request):
 		search_prescription_list.append(search_prescription)
 
 	hosp_prescriptions = []
+	hosp_disease_name_list = []
+	hosp_prescriptions_fre = []
 	for code in schWord.split(" "):
 		#print(Review.objects.filter(ordercode=code).count())
 		if Review.objects.filter(ordercode=code).count() == 0:
@@ -296,9 +295,22 @@ def userservice(request):
 		hosp_prescription = Review.objects.filter(ordercode=code)
 		for item in hosp_prescription:
 			hosp_prescriptions.append(item)
-
+	
+			#hosp_disease_name_list.append(Disease_name.objects.get(icdcode=item.dxcode).namek)
+			if (diseasenamedf['icdcode'] != item.dxcode).all():
+				hosp_disease_name_list.append("Unknown")
+			else:
+				idx = diseasenamedf['icdcode'][diseasenamedf['icdcode'] == item.dxcode].index[0]
+				hosp_disease_name_list.append(diseasenamedf['namek'][idx])
+	
+			if Doctor_diagnose.objects.filter(Q(ordercode=item.ordercode) & Q(dxcode=item.dxcode)).count() == 0:
+				hosp_prescriptions_fre.append(0)
+			else:
+				hosp_prescriptions_fre.append(Doctor_diagnose.objects.get(Q(ordercode=item.ordercode) & Q(dxcode=item.dxcode)).frequency)
+		
 	sys_prescriptions = []
 	networkx_disease_lists = []
+	sys_prescriptions_fre = []
 	for code in schWord.split(" "):
 		if Prescription.objects.filter(ordercode=code).count() != 1:
 			continue
@@ -319,20 +331,27 @@ def userservice(request):
 
 		sys_prescriptions.append(sys_prescription)
 
-
-		networkx_disease_list = NXmodel.get_disease(ordercode_input=schWord, num=3)
+		networkx_disease_list = NXmodel.get_disease(ordercode_input=code, num=3)
 		networkx_disease_lists.append(networkx_disease_list)
+		print(networkx_disease_list)		
+
+		for item in networkx_disease_list:
+			if Doctor_diagnose.objects.filter(Q(ordercode=code) & Q(dxcode=item[0])).count() == 0:
+				item.append(0)
+			else:
+				item.append(Doctor_diagnose.objects.get(Q(ordercode=code) & Q(dxcode=item[0])).frequency)
+			
 
 	context = {}
 	context['schword'] = schWord
-	context["hosp_prescriptions"] = hosp_prescriptions
-
+	context["search_prescription_list"] = zip(np.arange(1, 1 + len(search_prescription_list)).tolist(), search_prescription_list)
+	
+	context["hosp_prescriptions"] = zip(hosp_prescriptions, hosp_disease_name_list, hosp_prescriptions_fre)
 	context["sys_prescriptions"] = zip(sys_prescriptions, networkx_disease_lists)
 	#context['networkx_disease_lists'] = networkx_disease_lists
 
 	#context["prescription_list"] = zip(hosp_prescriptions, notices)
-
-	context["search_prescription_list"] = zip(np.arange(1, 1 + len(search_prescription_list)).tolist(), search_prescription_list)
+	print(sys_prescriptions_fre)
 
 
 	return render(request, 'userservice.html', context)
