@@ -162,40 +162,40 @@
 
                 }
             }
+            else {
+            	 if(confirm("저장하시겠습니까?")) {
+					 <!--체크된 상병값 가져오기-->
+					html = "";
+					for(var i = 1; i < $('#serviceresultTable tr').length; i++){
+						var chk = $('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
+						if(chk){
+							var prescriptionCode =  $('#serviceresultTable tr').eq(i).children().eq(2).text();
+							var diseaseCode = $('#serviceresultTable tr').eq(i).children().eq(3).text();
 
-			<!--if (confirm('저장하시겠습니까?')) {-->
-			    <!--&lt;!&ndash;체크된 상병값 가져오기&ndash;&gt;-->
-				<!--html = "";-->
-				<!--for(var i = 1; i < $('#serviceresultTable tr').length; i++){-->
-					<!--var chk = $('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');-->
-					<!--if(chk){-->
-						<!--var prescriptionCode =  $('#serviceresultTable tr').eq(i).children().eq(2).text();-->
-						<!--var diseaseCode = $('#serviceresultTable tr').eq(i).children().eq(3).text();-->
+							html += "<input type = 'hidden' name = 'checked_discode' class='cheked_discode' value='"+diseaseCode +"'>"
+							html += "<input type = 'hidden' name = 'checked_precode' class='checked_disname' value='"+prescriptionCode +"'>"
+						}
+					}
+					$("#hiddenForm").append(html);
+					$("#hiddenForm").submit();
+					//alert($("#hiddenForm").html());
+					alert("저장되었습니다");
+                }
+                else {
 
-						<!--html += "<input type = 'hidden' name = 'checked_discode' class='cheked_discode' value='"+diseaseCode +"'>"-->
-						<!--html += "<input type = 'hidden' name = 'checked_precode' class='checked_disname' value='"+prescriptionCode +"'>"-->
-					<!--}-->
-				<!--}-->
-				<!--$("#hiddenForm").append(html);-->
-				<!--$("#hiddenForm").submit();-->
-				<!--//alert($("#hiddenForm").html());-->
-				<!--alert("저장되었습니다");-->
-
-			<!--} else {-->
-    			<!--// Do nothing!-->
-			<!--}-->
+                }
+            }
 		});
 
-		 $("#cancelBtn").click(function(){
+		$("#cancelBtn").click(function(){
 			if (confirm('취소하시겠습니까?')) {
 				location.reload(); // 페이지 새로 연다
 			} else {
     			// Do nothing!
 			}
          });
-
-
 	});
+
 	function release(orderCode){
 
 	    for(var i=1;i<$('#servicePrescriptionTable tr').length;i++){
