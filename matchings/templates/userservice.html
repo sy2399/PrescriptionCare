@@ -140,7 +140,10 @@
 
 		$("#okBtn").click(function(){
 
-            if({{schword_cnt}} > prescriptionChecked){
+		    if (prescriptionChecked == 0) {
+				alert("선택된 상병이 없습니다.");
+			}
+            else if({{schword_cnt}} > prescriptionChecked){
                 if(confirm("처방약제에 대해 누락된 상병이 존재합니다. 그대로 저장하시겠습니까?")){
                      <!--체크된 상병값 가져오기-->
                     html = "";
@@ -477,11 +480,11 @@
 				</tbody>
 			</table>
 			<div class="btn_wrap">
-				<div class="floatR">
+				<div class="floatC" style="text-align:center">
 					<form id = "hiddenForm" action="." method = "post">
 					{% csrf_token %}
-						<button type="button" class="btn_ico_save w95 textC" id = "okBtn"><span>확인</span></button>
-						<button type="button" class="btn_ico_cancel w95 textC" id = "cancelBtn"><span>취소</span></button>
+						<button type="button" class="btn_ico_save" id = "okBtn">확인</button>
+						<button type="button" class="btn_ico_cancel" id = "cancelBtn">취소</button>
 					</form>
 				</div>
 			</div>
