@@ -1,14 +1,11 @@
 {% if prescriptions.count > 0 %}
-
 {% for prescription in prescriptions %}
-<tr>
-	<td id = "prescriptionId">{{ prescription.id }}</td>
-	<td id = "prescriptionCode">{{ prescription.ordercode }}</td>
-	<td id = "prescriptionName">{{ prescription.ordername }}</td>
-</tr>
-
+	<tr>
+		<td id = "prescriptionId">{{ prescription.id }}</td>
+		<td id = "prescriptionCode">{{ prescription.ordercode }}</td>
+		<td id = "prescriptionName">{{ prescription.ordername }}</td>
+	</tr>
 {% endfor %}
-
 {% else %}
-<li>Nothing to show!!</li>
+	<li>Nothing to show</li>
 {% endif %}

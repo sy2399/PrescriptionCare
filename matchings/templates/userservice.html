@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block extrastyle %}{% static 'css/jw_front.css' %}{% endblock %}
-
 {% block content %}
 <!--<head>-->
 	<!--<meta charset="utf-8">-->
@@ -14,6 +13,9 @@
 <!--</head>-->
 <script type="text/javascript" src="{% static 'js/jquery.tablesorter.min.js' %}"></script>
 <script>
+
+	<!-- 선택 처방 갯수 글로벌 변수로 선언 -->
+	var prescriptionChecked = 0;
 
 	 $(document).ready(function(){
 		$.tablesorter.addParser({
@@ -28,7 +30,6 @@
 
 		$('input[type="checkbox"]').change(function() {
 			if(this.checked) {
-
 			    var checkedOrderCode = $(this).val();
 				<!--var arr = $('input[type="checkbox"]:checked').serializeArray().map(function(item) { return item.text });-->
 
@@ -44,6 +45,7 @@
 						var checkboxOrderCode = $('#serviceresultTable tr').eq(i).children().eq(2).text();
 
 						if(checkedOrderCode == checkboxOrderCode){
+
 							<!--$('#serviceresultTable tr').eq(i).children().attr('class', 'btn_line_gray');-->
 							$('#serviceresultTable tr').eq(i).children().css("background-color", "#DCDCDC");
 							$('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').attr("disabled", true);
@@ -59,11 +61,16 @@
 					var orderCode = $('#servicePrescriptionTable tr').eq(i).children().eq(2).text();
 
 					if(orderCode == checkedOrderCode){
+
+						<!-- 선택 처방 갯수 업데이트 -->
+						prescriptionChecked += 1;
+
 						$('#servicePrescriptionTable tr').eq(i).children().attr('class', 'btn_line_gray');
 						$('#servicePrescriptionTable tr').eq(i).children().eq(0).attr('class', 'btn_line_gray');
 						<!--$('#servicePrescriptionTable tr').eq(i).children().css("background-color", "#DCDCDC");-->
-						<!--$('#servicePrescriptionTable tr').eq(i).children().eq(0).html('<button type="button" class="btn_line_gray">해제</button>');-->
-					}
+						$('#servicePrescriptionTable tr').eq(i).children().eq(0).html(
+						    '<button type="button" class="btn_line_gray" id="release_btn" value="' + orderCode + '">해제</button>');
+						}
 				}
 
 			}else{
@@ -88,12 +95,22 @@
 					var idx = $('#serviceresultTable tr').eq(i).children().eq(0).val();
 
 					if(orderCode == checkedOrderCode){
-						$('#servicePrescriptionTable tr').eq(i).children().attr('class', '');
+
+						<!-- 선택 처방 갯수 업데이트 -->
+					    prescriptionChecked -= 1;
+
+					    $('#servicePrescriptionTable tr').eq(i).children().attr('class', '');
 						$('#servicePrescriptionTable tr').eq(i).children().eq(0).removeClass('class', 'btn_line_gray');
-						<!--$('#servicePrescriptionTable tr').eq(i).children().eq(0).text(idx);-->
+						$('#servicePrescriptionTable tr').eq(i).children().eq(0).text(i);
 					}
 				}
 			}
+			<!-- 처방 목록 텍스트 업데이트 -->
+			$('#prescription_text_2').text('선택된 처방 총 ' + prescriptionChecked +'건)');
+		});
+
+		$("#release_btn").click(function() {
+
 		});
 
 		$("#resetBtn").click(function(){
@@ -103,7 +120,7 @@
 				var idx = $('#servicePrescriptionTable tr').eq(i).children().eq(0).val();
 				$('#servicePrescriptionTable tr').eq(i).children().attr('class', '');
 				$('#servicePrescriptionTable tr').eq(i).children().eq(0).removeClass('class', 'btn_line_gray');
-				$('#servicePrescriptionTable tr').eq(i).children().eq(0).text(idx);
+				$('#servicePrescriptionTable tr').eq(i).children().eq(0).text(i);
 
 			}
 			 for(var i=1;i<$('#serviceresultTable tr').length;i++){
@@ -112,12 +129,18 @@
 				$('#serviceresultTable tr').eq(i).children().removeClass('class', 'btn_line_gray');
 				$('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').attr("disabled", false);
 			}
+
+			<!-- 처방 목록 텍스트 업데이트 -->
+			$('#prescription_text_2').text('선택된 처방 총 0건)');
+			prescriptionChecked = 0;
 		});
 
 		$("#okBtn").click(function(){
 
+
+
 			if (confirm('저장하시겠습니까?')) {
-			    <!--체크된 상병값 가져오기-->``
+			    <!--체크된 상병값 가져오기-->
 				html = "";
 				for(var i = 1; i < $('#serviceresultTable tr').length; i++){
 					var chk = $('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
@@ -171,7 +194,6 @@
 
 	.scrolltbody tbody {
 		display: block;
-		height: 300px;
 		overflow: auto;
 	}
 
@@ -200,16 +222,16 @@
 	}
 
 	.scrolltbody th:last-child {
-		width: 460px;
+		width: 470px;
 	}
 
 	.scrolltbody td:last-child {
-		width: calc( 460px - 19px);
+		width: 470px;
 	}
 
 	.scrolltbody td {
 		padding: 0px 0px;
-		height: 20px;
+		height: 30px;
 		text-align: center;
 	}
 
@@ -232,7 +254,7 @@
 
 	.scrolltbody2 th:nth-of-type(1),
 	.scrolltbody2 td:nth-of-type(1) {
-		width: 30px;
+		width: 50px;
 		border-right: 1px solid #dadada;
 	}
 
@@ -244,7 +266,7 @@
 
 	.scrolltbody2 th:nth-of-type(3),
 	.scrolltbody2 td:nth-of-type(3) {
-		width: 120px;
+		width: 80px;
 		border-right: 1px solid #dadada;
 	}
 
@@ -256,13 +278,13 @@
 
 	.scrolltbody2 th:nth-of-type(5),
 	.scrolltbody2 td:nth-of-type(5) {
-		width: 150px;
+		width: 400px;
 		border-right: 1px solid #dadada;
 	}
 
 	.scrolltbody2 th:nth-of-type(6),
 	.scrolltbody2 td:nth-of-type(6) {
-		width: 60px;
+		width: 80px;
 		border-right: 1px solid #dadada;
 	}
 
@@ -270,14 +292,6 @@
 	.scrolltbody2 td:nth-of-type(7) {
 		width: 80px;
 		border-right: 1px solid #dadada;
-	}
-
-	.scrolltbody2 th:last-child {
-		width: 245px;
-	}
-
-	.scrolltbody2 td:last-child {
-		width: calc( 245px - 19px);
 	}
 
 	.scrolltbody2 td {
@@ -295,7 +309,6 @@
 
 	.vType_line th {
 		background-color: #fff;
-		border-bottom: 1px solid #1291E7;
 	}
 
 	.vType_line {
@@ -314,11 +327,12 @@
 	}
 	.button_box{ float: right; width: 60px; height: 25px; background-color: #ECF4F6; border: 1px solid #1291E7; text-align: center;color:#1291E7;cursor: pointer}
 	.tit_back >span { font-size: 14px; color: #D3FFFE; }
+
 </style>
 
-	<div class="box_layer layer_order_list" style="width:900px; margin:-300px 0 0 -473px">
+	<div class="box_layer layer_order_list" style="width:900px; height:610px; margin:-300px 0 0 -473px">
 		<h1 class="tit_back">Ontic Smart Support Service <span>(현재 의약품에 대해서만 인정상병정보를 제공합니다)</span></h1>
-		<div class="layer_contents">
+		<div class="layer_contents" style="width:900px; height:600px;">
 			<!--// tab -->
 
 			<form action="." method="post">
@@ -326,28 +340,25 @@
 				처방 검색 : <input type="text" name="match_word">
 				<input type="submit" class = "button_box" style = "float:right;"value="Search" />
 			</form>
-
-			<p>입력된 처방: {{ schword }}</p>
-			<br><br>
+			<!-- {{ schword }} -->
+			<br>
 
 			<div class="tit_sWrap">
-				<h4 class="tit_bold_gray">처방목록</h4>
-				<!--<div class="button_box" id = "resetBtn">Reset</div>-->
+				<h4 class="tit_bold_gray" id="prescription_text_1">처방목록 (총 {{schword_cnt}}건, &nbsp;</h4>
+				<h4 class="tit_bold_gray" id="prescription_text_2">선택된 처방 총 0건)</h4>
+				<div class="button_box" id = "resetBtn">Reset</div>
 			</div>
 
 			<table id = "servicePrescriptionTable" class="vType_line mgb20 scrolltbody">
 				<caption>수금이력</caption>
 				<thead>
-					<tr>
-						<th>NO</th>
-						<th>처방유형</th>
-						<th>처방코드</th>
-						<th>처방명</th>
-						<th>Notice</th>
-					</tr>
+					<th>NO</th>
+					<th>처방유형</th>
+					<th>처방코드</th>
+					<th>처방명</th>
+					<th>Notice</th>
 				</thead>
-				<tbody style="overflow-y:auto;height:100px;">
-
+				<tbody style="overflow-y:auto;">
 					{% for idx, search_prescription in search_prescription_list %}
 					<tr >
 						<td value = "{{ idx }}">
@@ -364,6 +375,7 @@
 
 			</table>
 
+			<br>
 			<!--// process -->
 			<div class="tit_sWrap">
 				<h4 class="tit_bold_gray">상병추천</h4>
@@ -372,17 +384,15 @@
 
 			<table id = "serviceresultTable" class="vType_line mgb20 scrolltbody2 tablesorter">
 				<thead>
-					<tr>
-						<th>선택</th>
-						<th>구분</th>
-						<th>처방명 </th>
-						<th>상병코드</th>
-						<th>상병명</th>
-						<th>과</th>
-						<th>정확도</th>
-						<!--<th>사용빈도▼</th>-->
-						<th>사용빈도</th>
-					</tr>
+					<th>선택</th>
+					<th>구분</th>
+					<th>처방명</th>
+					<th>상병코드</th>
+					<th>상병명</th>
+					<!--<th>과</th>-->
+					<th>정확도</th>
+					<!--<th>사용빈도▼</th>-->
+					<th>사용빈도</th>
 				</thead>
 				<tbody style="overflow-y:auto;height:150px;">
 					{% for prescription, name, freq in hosp_prescriptions %}
@@ -390,11 +400,11 @@
 						<td>
 							<input type="checkbox" value = "{{ prescription.ordercode }}"/>
 						</td>
-						<td>병원추천</td>
+						<td><font color="#dc143c"><b>병원추천</b></font></td>
 						<td>{{ prescription.ordercode }}</td>
 						<td value = {{ prescription.dxcode }}>{{ prescription.dxcode }}</td>
 						<td>{{ name}}</td>
-						<td>IM</td>
+						<!--<td>IM</td>-->
 						<td>- </td>
 						<td>{{ freq }}</td>
 					</tr>
@@ -408,7 +418,7 @@
 						<td value = {{ prescription.ordercode }}>{{ prescription.ordercode }}</td>
 						<td>{{ disease.0 }}</td>
 						<td>{{ disease.1 }}</td>
-						<td>IM</td>
+						<!--<td>IM</td>-->
 						<td>{{ disease.2 }}</td>
 						<td>{{ disease.5 }}</td>
 					</tr>
@@ -419,8 +429,8 @@
 				<div class="floatR">
 					<form id = "hiddenForm" action="." method = "post">
 					{% csrf_token %}
-						<button type="button" class="btn_ico_save w95" id = "okBtn"><span>확인</span></button>
-						<button type="button" class="btn_ico_cancel w95" id = "cancelBtn"><span>취소</span></button>
+						<button type="button" class="btn_ico_save w95 textC" id = "okBtn"><span>확인</span></button>
+						<button type="button" class="btn_ico_cancel w95 textC" id = "cancelBtn"><span>취소</span></button>
 					</form>
 				</div>
 			</div>

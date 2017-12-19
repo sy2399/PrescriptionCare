@@ -25,6 +25,7 @@ $(function(){
 			url: "search_disease/",
 			data: {
 				'search_list':tmp,
+
 				'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
 			},
 			success: diseaseSearchSuccess,
@@ -58,7 +59,6 @@ function prescriptionSearchSuccess(data, textStatus, jqXHR){
 function diseaseSearchSuccess(data, textStatus, jqXHR){
     $('#loading').attr('style', 'visibility:hidden');
 	$('#resultDiv').html(data);
-
 }
 
 function connectionSearchSuccess(data, textStatus, jqXHR){

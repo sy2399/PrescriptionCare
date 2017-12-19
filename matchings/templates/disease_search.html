@@ -2,56 +2,9 @@
 {% load staticfiles %}
 {% block extrastyle %}{% static 'css/jw_front.css' %}{% endblock %}
 {% block title %}Data{% endblock %}
-
 {% block content %}
-
-	<script type="text/javascript">
-		function loading(){
-			document.getElementById("loading").style.visibility = "visible";
-		}
-
-		$(function(){
-		    <!--
-			$('#resetBtn').click(function(){
-				$('#search_prescription').val("");
-			});
-
-			$('#allselectBtn').click(function() {
-
-                var checkboxes = $('#resultTable tr')
-                for (var i = 0; i < checkboxes.length; i++) {
-                    if (checkboxes[i].type == 'checkbox') {
-                        checkboxes[i].checked = true;
-                    }
-                }
-			});
-
-			$('#alldeselectBtn').click(function(){
-
-			    var checkboxes = $('#resultTable tr')
-			    for (var i = 0; i < checkboxes.length; i++) {
-             		if (checkboxes[i].type == 'checkbox') {
-                        checkboxes[i].checked = false;
-                    }
-             	}
-			});
-			-->
-
-			<!--
-			var tbl = $('#resultTable');
-			$('#allselectBtn').click(function(){
-				tbl.find(":checkbox").prop("checked", true);
-			});
-
-			$('#alldeselectBtn').click(function(){
-				tbl.find(":checkbox").prop("checked", false);
-			});
-			-->
-		});
-
-	</script>
 	<style>
-	input[type=text], input[type=password] {
+		input[type=text], input[type=password] {
 		width: 50%;
 		height: 33px;
 		margin: 0;
@@ -92,18 +45,12 @@
 		border-right: 1px solid #dadada;
 	}
 
-	.scrolltbody th:nth-of-type(4),
-	.scrolltbody td:nth-of-type(4) {
-		width: 150px;
-		border-right: 1px solid #dadada;
-	}
-
 	.scrolltbody th:last-child {
-		width: 460px;
+		width: 410px;
 	}
 
 	.scrolltbody td:last-child {
-		width: calc( 460px - 19px);
+		width: 410px;
 	}
 
 	.scrolltbody td {
@@ -131,19 +78,19 @@
 
 	.scrolltbody2 th:nth-of-type(1),
 	.scrolltbody2 td:nth-of-type(1) {
-		width: 50px;
+		width: 60px;
 		border-right: 1px solid #dadada;
 	}
 
 	.scrolltbody2 th:nth-of-type(2),
 	.scrolltbody2 td:nth-of-type(2) {
-		width: 80px;
+		width: 100px;
 		border-right: 1px solid #dadada;
 	}
 
 	.scrolltbody2 th:nth-of-type(3),
 	.scrolltbody2 td:nth-of-type(3) {
-		width: 245px;
+		width: 400px;
 		border-right: 1px solid #dadada;
 	}
 
@@ -153,30 +100,12 @@
 		border-right: 1px solid #dadada;
 	}
 
-	.scrolltbody2 th:nth-of-type(5),
-	.scrolltbody2 td:nth-of-type(5) {
-		width: 150px;
-		border-right: 1px solid #dadada;
-	}
-
-	.scrolltbody2 th:nth-of-type(6),
-	.scrolltbody2 td:nth-of-type(6) {
-		width: 60px;
-		border-right: 1px solid #dadada;
-	}
-
-	.scrolltbody2 th:nth-of-type(7),
-	.scrolltbody2 td:nth-of-type(7) {
-		width: 80px;
-		border-right: 1px solid #dadada;
-	}
-
 	.scrolltbody2 th:last-child {
-		width: 245px;
+		width: 80px;
 	}
 
 	.scrolltbody2 td:last-child {
-		width: calc( 245px - 19px);
+		width: 80px;
 	}
 
 	.scrolltbody2 td {
@@ -192,9 +121,14 @@
 		overflow-x: hidden;
 	}
 
+
+	<!-- scrollbody3 -->
+
+
+	<!-- end scrollbody3 -->
+
 	.vType_line th {
 		background-color: #fff;
-		border-bottom: 1px solid #1291E7;
 	}
 
 	.vType_line {
@@ -211,10 +145,68 @@
 	.box_layer h1.tit_back {
 		background-color: #1291E7;
 	}
-	.button_box{  width: 60px; height: 30px; background-color: #ECF4F6; border: 1px solid #1291E7; text-align: center;color:#1291E7;cursor: pointer}
-	.tit_back >span { font-size: 14px; color: #D3FFFE; }
-
+	.button_box {
+		width: 60px;
+		height: 30px;
+		background-color: #ECF4F6;
+		border: 1px solid #1291E7;
+		text-align: center;
+		color:#1291E7;
+		cursor: pointer
+	}
+	.tit_back >span {
+		font-size: 14px;
+		color: #D3FFFE;
+	}
 	</style>
+
+	<script type="text/javascript">
+		function loading(){
+		    document.getElementById("loading").style.visibility = "visible";
+		}
+
+		$(function(){
+			$('#reset_Btn').click(function(){
+				$('#search_prescription').val("");
+				$('#search-prescription-results').empty();
+				$('#search-disease-results').empty();
+			});
+
+			<!--
+			$('#allselectBtn').click(function() {
+
+                var checkboxes = $('#resultTable tr')
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].type == 'checkbox') {
+                        checkboxes[i].checked = true;
+                    }
+                }
+			});
+
+			$('#alldeselectBtn').click(function(){
+
+			    var checkboxes = $('#resultTable tr')
+			    for (var i = 0; i < checkboxes.length; i++) {
+             		if (checkboxes[i].type == 'checkbox') {
+                        checkboxes[i].checked = false;
+                    }
+             	}
+			});
+			-->
+
+			<!--
+			var tbl = $('#resultTable');
+			$('#allselectBtn').click(function(){
+				tbl.find(":checkbox").prop("checked", true);
+			});
+
+			$('#alldeselectBtn').click(function(){
+				tbl.find(":checkbox").prop("checked", false);
+			});
+			-->
+		});
+
+	</script>
 	
 	<div class="container-fluid">
 		<div class="row">
@@ -263,41 +255,39 @@
 
 					<br>
 					<div class="row">
-						<div class="col-md-6" >
+						<div class="col-md-6">
 							<div>
-								<label>Prescription:</label>
+								<label>Prescription: </label>
 								<input type="text" id="search_prescription" name="search_prescription" size="40"/>
-							    <button id="resetBtn"  class="button_box">초기화</button>
+							    <button id="resetBtn" class="button_box">초기화</button>
                                 <button id="searchBtn" class="button_box">검색</button>
+							</div>
+							<br>
+								<div class="tit_sWrap">
+									<h4 class="tit_bold_gray" id="prescription_text_1">총 0개 데이터 검색됨</h4>
 								</div>
-								<br>
+
 								<table class="vType_line mgb20 scrolltbody" style="width:100%">
-									<!-- khan: alignment 가 안맞아 임시 수정 -->
-									<!--<thead>
-										<tr>
-											<th>처방번호</th>
-											<th>처방코드</th>
-											<th>처방설명</th>
-										</tr>
-									</thead>-->
-									<tbody id="search-prescription-results">
-									<tr>
+									<thead>
 										<th>처방번호</th>
 										<th>처방코드</th>
 										<th>처방설명</th>
-									</tr>
-									{% if prescriptions %}
-										{% for prescription in prescriptions %}
+									</thead>
+									<tbody id="search-prescription-results">
+
+									<!--{% if prescriptions %}
+										{% for prescription in prescriptions %}-->
 										<tr onclick = "loading()">
+											<!--
 											<td>{{ prescription.id }}</td>
 											<td>{{ prescription.ordercode }}</td>
 											<td>{{ prescription.ordername}}</td>
+											-->
 										</tr>
-										{% endfor %}
+										<!--{% endfor %}-->
 									</tbody>
 								{% endif %}
 								</table>
-
 								<!--<div id="list_form" class="form-group">-->
 
 									<!--{% csrf_token %}-->
@@ -307,7 +297,6 @@
 									<!--<button id="list_reset_button">Reset</button>-->
 								<!--</div>-->
 
-
 							</div>
 
 							<div class="col-md-6">
@@ -316,25 +305,19 @@
 								<button class="button_box" id = "alldeselectBtn">전체해제</button>
 							</div>
 							<br>
+							<div class="tit_sWrap">
+								<h4 class="tit_bold_gray" id="prescription_text_2">총 0개 데이터 검색됨</h4>
+							</div>
 							<div id = "resultDiv">
 								<div style="overflow-x:auto;">
-									<table id = "resultTable" class = "vType_line mgb20 scrolltbody2" style="width:100%">
-										<!-- khan: alignment 가 안맞아 임시 수정 -->
-										<!--<thead>
-											<tr>
-												<th>사용</th>
-												<th>Disease</th>
-												<th>Disease name</th>
-												<th>Proportion</th>
-											</tr>
-										</thead>-->
-										<tbody>
-											<tr>
-												<th>사용</th>
-												<th>상병코드</th>
-												<th>상병명</th>
-												<th>정확도</th>
-											</tr>
+									<table id = "resultTable" class = "vType_line scrolltbody2" style="width:100%">
+										<thead>
+											<th>사용</th>
+											<th>상병코드</th>
+											<th>상병명</th>
+											<th>정확도</th>
+										</thead>
+										<tbody id="search-disease-results">
 											{% for disease in NX_disease_list %}
 											<tr>
 												<td><input type="checkbox" id="checked" name = "_selected_"></td>
@@ -354,11 +337,11 @@
 										<form id = "hiddenform" action = "." method="post">
 											{% csrf_token %}
 											<textarea style="width:100%" rows="3" cols="50" id="noticeArea" name = "noticeArea"></textarea><br>
-											<input type="radio" name="flag_info" value="option1" checked="checked">체크된 진단명만 진료화면에 노출함<br>
-											<input type="radio" name="flag_info" value="option2">모든 진단명을 노출함(체크된 진단명은 리스트 최상단에 노출)
+											<input type="radio" name="flag_info" value="option1" checked="checked">&nbsp;진단명만 진료화면에 노출함<br>
+											<input type="radio" name="flag_info" value="option2">&nbsp;모든 진단명을 노출함(체크된 진단명은 리스트 최상단에 노출)
 											<br><br>
-											<button id = "reset" class="button_box" style = "float:left">Reset</button>
-											<input type = "button" class="button_box" style = "float:right" id="saveBtn"  value="Save">
+											<input type="button" class="button_box" style="float:left" id="reset_Btn" value="초기화"/>
+											<input type="button" class="button_box" style="float:right" id="saveBtn"  value="저장"/>
 										</form>	
 									</div>
 								</div>

@@ -1,22 +1,22 @@
 <!--{% load staticfiles %}-->
 <!--{% block extrastyle %}{% static 'css/jw_front.css' %}{% endblock %}-->
+{% load staticfiles %}
 {% block content %}
-<!--
-<style>
-#resultTable {
-    border-collapse: collapse;
-    width: 100%;
-}
 
-th, td {
-    text-align: left;
-    padding: 8px;
-}
-
-#resultTable tr{background-color: white}
-</style>
--->
 <style>
+		input[type=text], input[type=password] {
+		width: 50%;
+		height: 33px;
+		margin: 0;
+		padding: 0 9px;
+		font-size: 14px;
+		color: #666;
+		line-height: 28px;
+		border: 1px solid #dcdcdc;
+		background: #fff;
+		vertical-align: middle;
+		box-sizing: border-box;
+	}
 	.scrolltbody {
 		display: block;
 	}
@@ -35,7 +35,7 @@ th, td {
 
 	.scrolltbody th:nth-of-type(2),
 	.scrolltbody td:nth-of-type(2) {
-		width: 100px;
+		width: 80px;
 		border-right: 1px solid #dadada;
 	}
 
@@ -45,18 +45,12 @@ th, td {
 		border-right: 1px solid #dadada;
 	}
 
-	.scrolltbody th:nth-of-type(4),
-	.scrolltbody td:nth-of-type(4) {
-		width: 150px;
-		border-right: 1px solid #dadada;
-	}
-
 	.scrolltbody th:last-child {
-		width: 460px;
+		width: 410px;
 	}
 
 	.scrolltbody td:last-child {
-		width: calc( 460px - 19px);
+		width: 410px;
 	}
 
 	.scrolltbody td {
@@ -84,7 +78,7 @@ th, td {
 
 	.scrolltbody2 th:nth-of-type(1),
 	.scrolltbody2 td:nth-of-type(1) {
-		width: 50px;
+		width: 60px;
 		border-right: 1px solid #dadada;
 	}
 
@@ -96,7 +90,7 @@ th, td {
 
 	.scrolltbody2 th:nth-of-type(3),
 	.scrolltbody2 td:nth-of-type(3) {
-		width: 300px;
+		width: 400px;
 		border-right: 1px solid #dadada;
 	}
 
@@ -106,9 +100,12 @@ th, td {
 		border-right: 1px solid #dadada;
 	}
 
+	.scrolltbody2 th:last-child {
+		width: 80px;
+	}
 
 	.scrolltbody2 td:last-child {
-		width: calc( 245px - 19px);
+		width: 80px;
 	}
 
 	.scrolltbody2 td {
@@ -124,9 +121,14 @@ th, td {
 		overflow-x: hidden;
 	}
 
+
+	<!-- scrollbody3 -->
+
+
+	<!-- end scrollbody3 -->
+
 	.vType_line th {
 		background-color: #fff;
-		border-bottom: 1px solid #1291E7;
 	}
 
 	.vType_line {
@@ -143,9 +145,22 @@ th, td {
 	.box_layer h1.tit_back {
 		background-color: #1291E7;
 	}
-	.button_box{ width: 60px; height: 30px; background-color: #ECF4F6; border: 1px solid #1291E7; text-align: center;color:#1291E7;cursor: pointer}
-	.tit_back >span { font-size: 14px; color: #D3FFFE; }
-</style>
+	.button_box {
+		width: 60px;
+		height: 30px;
+		background-color: #ECF4F6;
+		border: 1px solid #1291E7;
+		text-align: center;
+		color:#1291E7;
+		cursor: pointer
+	}
+	.tit_back >span {
+		font-size: 14px;
+		color: #D3FFFE;
+	}
+	</style>
+
+
 
 <script>
 function showPrescription(element,disease){
@@ -174,7 +189,6 @@ function showPrescription(element,disease){
 					<!--+"<tr><td>"+ pcode_list[12]+"</td><td>"+ pcode_list[22] +"</td></tr>";-->
 }
 
-
 $(function(){
 	var tbl = $('#resultTable');
 	<!--
@@ -201,37 +215,64 @@ $(function(){
 		}
 	});
 
+	$('#reset_Btn').click(function(){
+	    $('#search_prescription').val("");
+	    $('#search-prescription-results').empty();
+	    $('#search-disease-results').empty();
+	});
+
 	$('#saveBtn').click(function(){
-	    if (confirm('저장하시겠습니까?')) {
-			var html = ""
-			for (var i = 1; i < $('#resultTable tr').length; i++) {
 
-				var chk = $('#resultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
-				if (chk == true) {
-					$('#resultTable tr').eq(i).css("background-color", "#D3FFFE");
-					var checked_discode = $('#resultTable tr').eq(i).children().eq(1).text();
-					var checked_disname = $('#resultTable tr').eq(i).children().eq(2).text();
-
-					//alert(checked_discode + " " + checked_disname);
-					html += "<input type = 'hidden' name = 'checked_discode' class='cheked_discode' value='"+checked_discode +"'>"
-					html += "<input type = 'hidden' name = 'checked_disname' class='checked_disname' value='"+checked_disname +"'>"
-
-				}else{
-					$('#resultTable tr').eq(i).css("background-color", "white");
-				}
+	    var is_checked = false;
+	    for (var i = 1; i < $('#resultTable tr').length; i++) {
+            var chk = $('#resultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
+            if (chk == true) {
+                is_checked = true;
+                break;
 			}
+        }
 
-			alert("저장되었습니다.")
+        if (is_checked == false) {
+			if (confirm('선택된 상병이 없습니다.')) {
 
-			var flag = $(':radio[name="flag_info"]:checked').val();
-			html += "<input type='hidden' id = 'inputPreCode' name = 'inputPreCode' value='{{search_term}}'>"
-			html += "<input type='hidden' id = 'inputPreCodeName' name = 'inputPreCodeName' value=''>"
-			html += "<input type='hidden' id = 'flag' name = 'flag' value="+flag+">"
+            }
+            else {
 
-			$('#hiddenform').append(html);
-			$('#hiddenform').submit();
-		} else {
+			}
+		}
+		else {
+
+	        if (confirm('저장하시겠습니까?')) {
+				var html = ""
+				for (var i = 1; i < $('#resultTable tr').length; i++) {
+
+					var chk = $('#resultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
+					if (chk == true) {
+						$('#resultTable tr').eq(i).css("background-color", "#D3FFFE");
+						var checked_discode = $('#resultTable tr').eq(i).children().eq(1).text();
+						var checked_disname = $('#resultTable tr').eq(i).children().eq(2).text();
+
+						//alert(checked_discode + " " + checked_disname);
+						html += "<input type = 'hidden' name = 'checked_discode' class='cheked_discode' value='"+checked_discode +"'>"
+						html += "<input type = 'hidden' name = 'checked_disname' class='checked_disname' value='"+checked_disname +"'>"
+
+					}else{
+						$('#resultTable tr').eq(i).css("background-color", "white");
+					}
+				}
+
+				alert("저장되었습니다.")
+
+				var flag = $(':radio[name="flag_info"]:checked').val();
+				html += "<input type='hidden' id = 'inputPreCode' name = 'inputPreCode' value='{{search_term}}'>"
+				html += "<input type='hidden' id = 'inputPreCodeName' name = 'inputPreCodeName' value=''>"
+				html += "<input type='hidden' id = 'flag' name = 'flag' value="+flag+">"
+
+				$('#hiddenform').append(html);
+				$('#hiddenform').submit();
+			} else {
 			// Do nothing!
+			}
 		}
 	});
 });
@@ -252,6 +293,8 @@ function HighlightRow(obj){
 	}
 }
 
+$("#prescription_text_2").text("총 {{ NX_disease_list_cnt }}개 데이터 검색됨");
+
 </script>
 
 <!--<div id = "afterResultView1" style = "">-->
@@ -261,14 +304,13 @@ function HighlightRow(obj){
 <!--<div style="overflow-x:auto;">-->
 <div>
 	<table id = "resultTable" class = "vType_line mgb20 scrolltbody2" style="width:100%">
-		<!-- khan: alignment 가 안맞아 thead, th 삭제 -->
-		<tbody>
-		<tr>
+		<thead>
 			<th>사용</th>
 			<th>상병코드</th>
 			<th>상병명</th>
 			<th>정확도</th>
-		</tr>
+		</thead>
+		<tbody id="search-disease-results">
 			{% for NX_disease in NX_disease_list %}
 				{% if NX_disease.0.1 != "Unknown" %} <!-- if unknown, pass -->
 					{% if NX_disease.1 == 1 %}
@@ -304,8 +346,8 @@ function HighlightRow(obj){
 				<input type="radio" name="flag_info" value="option1" >체크된 진단명만 진료화면에 노출함<br>
 				<input type="radio" name="flag_info" value="option2" checked="checked">모든 진단명을 노출함(체크된 진단명은 리스트 최상단에 노출)<br><br>
 			{% endif %}
-				<button id = "reset" class="button_box" style = "float:left">Reset</button>
-				<input type = "button" class="button_box" style = "float:right" id="saveBtn"  value="Save">
+				<input type="button" class="button_box" style="float:left" id="reset_Btn" value="초기화"/>
+				<input type="button" class="button_box" style="float:right" id="saveBtn"  value="저장"/>
 			<br><br>
 		</form>
 		
