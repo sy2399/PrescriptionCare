@@ -267,6 +267,7 @@
 									<h4 class="tit_bold_gray" id="prescription_text_1">총 0개 데이터 검색됨</h4>
 								</div>
 
+							<div id = "preResultDiv">
 								<table class="vType_line mgb20 scrolltbody" style="width:100%">
 									<thead>
 										<th>처방번호</th>
@@ -277,7 +278,7 @@
 
 									<!--{% if prescriptions %}
 										{% for prescription in prescriptions %}-->
-										<tr onclick = "loading()">
+										<tr>
 											<!--
 											<td>{{ prescription.id }}</td>
 											<td>{{ prescription.ordercode }}</td>
@@ -288,6 +289,7 @@
 									</tbody>
 								{% endif %}
 								</table>
+							</div>
 								<!--<div id="list_form" class="form-group">-->
 
 									<!--{% csrf_token %}-->

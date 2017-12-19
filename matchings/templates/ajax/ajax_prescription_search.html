@@ -1,11 +1,210 @@
-{% if prescriptions.count > 0 %}
-{% for prescription in prescriptions %}
-	<tr>
-		<td id = "prescriptionId">{{ prescription.id }}</td>
-		<td id = "prescriptionCode">{{ prescription.ordercode }}</td>
-		<td id = "prescriptionName">{{ prescription.ordername }}</td>
-	</tr>
-{% endfor %}
-{% else %}
-	<li>Nothing to show</li>
-{% endif %}
+{% load staticfiles %}
+{% block content %}
+<script>
+    $(function(){
+         $('#search-prescription-results').on("click", "tr", function(){
+            var tr = $(this);
+            var td = tr.children();
+            var tmp = " " + td.eq(1).text().split(" ")[0]
+           $(this).siblings().css("background-color", "white");
+           $(this).css("background-color", "#D3FFFE");
+
+            $.ajax({
+                type: "POST",
+                url: "search_disease/",
+                data: {
+                    'search_list':tmp,
+
+                    'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+                },
+                success: diseaseSearchSuccess,
+                dataType: 'html'
+            });
+        });
+    $("#prescription_text_1").text("총 {{ prescriptions_cnt }}개 데이터 검색됨");
+    });
+
+    function diseaseSearchSuccess(data, textStatus, jqXHR){
+    $('#loading').attr('style', 'visibility:hidden');
+	$('#resultDiv').html(data);
+    }
+</script>
+<style>
+		input[type=text], input[type=password] {
+		width: 50%;
+		height: 33px;
+		margin: 0;
+		padding: 0 9px;
+		font-size: 14px;
+		color: #666;
+		line-height: 28px;
+		border: 1px solid #dcdcdc;
+		background: #fff;
+		vertical-align: middle;
+		box-sizing: border-box;
+	}
+	.scrolltbody {
+		display: block;
+	}
+
+	.scrolltbody tbody {
+		display: block;
+		height: 300px;
+		overflow: auto;
+	}
+
+	.scrolltbody th:nth-of-type(1),
+	.scrolltbody td:nth-of-type(1) {
+		width: 80px;
+		border-right: 1px solid #dadada;
+	}
+
+	.scrolltbody th:nth-of-type(2),
+	.scrolltbody td:nth-of-type(2) {
+		width: 80px;
+		border-right: 1px solid #dadada;
+	}
+
+	.scrolltbody th:nth-of-type(3),
+	.scrolltbody td:nth-of-type(3) {
+		width: 80px;
+		border-right: 1px solid #dadada;
+	}
+
+	.scrolltbody th:last-child {
+		width: 410px;
+	}
+
+	.scrolltbody td:last-child {
+		width: 410px;
+	}
+
+	.scrolltbody td {
+		padding: 0px 0px;
+		height: 30px;
+		text-align: center;
+	}
+
+	.scrolltbody th {
+		text-align: center;
+		padding-left: 0px !important;
+		overflow-x: hidden;
+	}
+	/*-0-----------------------------*/
+
+	.scrolltbody2 {
+		display: block;
+	}
+
+	.scrolltbody2 tbody {
+		display: block;
+		height: 300px;
+		overflow: auto;
+	}
+
+	.scrolltbody2 th:nth-of-type(1),
+	.scrolltbody2 td:nth-of-type(1) {
+		width: 60px;
+		border-right: 1px solid #dadada;
+	}
+
+	.scrolltbody2 th:nth-of-type(2),
+	.scrolltbody2 td:nth-of-type(2) {
+		width: 100px;
+		border-right: 1px solid #dadada;
+	}
+
+	.scrolltbody2 th:nth-of-type(3),
+	.scrolltbody2 td:nth-of-type(3) {
+		width: 400px;
+		border-right: 1px solid #dadada;
+	}
+
+	.scrolltbody2 th:nth-of-type(4),
+	.scrolltbody2 td:nth-of-type(4) {
+		width: 80px;
+		border-right: 1px solid #dadada;
+	}
+
+	.scrolltbody2 th:last-child {
+		width: 80px;
+	}
+
+	.scrolltbody2 td:last-child {
+		width: 80px;
+	}
+
+	.scrolltbody2 td {
+		padding: 0px 0px;
+		height: 32px;
+		text-align: center;
+		overflow-x: hidden;
+	}
+
+	.scrolltbody2 th {
+		text-align: center;
+		padding-left: 0px !important;
+		overflow-x: hidden;
+	}
+
+
+	<!-- scrollbody3 -->
+
+
+	<!-- end scrollbody3 -->
+
+	.vType_line th {
+		background-color: #fff;
+	}
+
+	.vType_line {
+		border-top: 2px solid #1291E7;
+	}
+
+	.btn_line_gray {
+		width: 50px;
+		height: 28px;
+		margin: 2px;
+		font-size: 12px;
+	}
+
+	.box_layer h1.tit_back {
+		background-color: #1291E7;
+	}
+	.button_box {
+		width: 60px;
+		height: 30px;
+		background-color: #ECF4F6;
+		border: 1px solid #1291E7;
+		text-align: center;
+		color:#1291E7;
+		cursor: pointer
+	}
+	.tit_back >span {
+		font-size: 14px;
+		color: #D3FFFE;
+	}
+</style>
+<table id = "prescriptionSearchTable" class = "vType_line mgb20 scrolltbody" style="width:100%">
+
+
+    <thead>
+    <th>처방번호</th>
+    <th>처방코드</th>
+    <th>처방설명</th>
+	</thead>
+    <tbody id="search-prescription-results">
+        {% if prescriptions.count > 0 %}
+        {% for prescription in prescriptions %}
+            <tr onclick = "loading()">
+                <td id = "prescriptionId">{{ prescription.id }}</td>
+                <td id = "prescriptionCode">{{ prescription.ordercode }}</td>
+                <td id = "prescriptionName">{{ prescription.ordername }}</td>
+            </tr>
+        {% endfor %}
+        {% else %}
+            <li>Nothing to show</li>
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}

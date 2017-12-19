@@ -53,7 +53,7 @@ $(function(){
 });
 
 function prescriptionSearchSuccess(data, textStatus, jqXHR){
-	$('#search-prescription-results').html(data);
+	$('#preResultDiv').html(data);
 }
 
 function diseaseSearchSuccess(data, textStatus, jqXHR){
