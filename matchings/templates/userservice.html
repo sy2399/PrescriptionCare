@@ -68,8 +68,9 @@
 						$('#servicePrescriptionTable tr').eq(i).children().attr('class', 'btn_line_gray');
 						$('#servicePrescriptionTable tr').eq(i).children().eq(0).attr('class', 'btn_line_gray');
 						<!--$('#servicePrescriptionTable tr').eq(i).children().css("background-color", "#DCDCDC");-->
+						var parameter = "'"+orderCode + "'";
 						$('#servicePrescriptionTable tr').eq(i).children().eq(0).html(
-						    '<button type="button" class="btn_line_gray" id="release_btn" value="' + orderCode + '">해제</button>');
+						    '<button type="button" class="btn_line_gray" class="release_btn"  onclick = "release('+parameter+')">해제</button>');
 						}
 				}
 
@@ -78,11 +79,15 @@
 
 			    for(var i=1;i<$('#serviceresultTable tr').length;i++){
 					var chk = $('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
+					var checkboxOrderCode = $('#serviceresultTable tr').eq(i).children().eq(2).text();
 					if(!chk){
-						$('#serviceresultTable tr').eq(i).children().css("background-color", "white");
+
+					    if(checkedOrderCode == checkboxOrderCode){
+						    $('#serviceresultTable tr').eq(i).children().css("background-color", "white");
+						}
 					}
 
-					var checkboxOrderCode = $('#serviceresultTable tr').eq(i).children().eq(2).text();
+
 
 					if(checkedOrderCode == checkboxOrderCode){
 						$('#serviceresultTable tr').eq(i).children().removeClass('class', 'btn_line_gray');
@@ -109,9 +114,7 @@
 			$('#prescription_text_2').text('선택된 처방 총 ' + prescriptionChecked +'건)');
 		});
 
-		$("#release_btn").click(function() {
 
-		});
 
 		$("#resetBtn").click(function(){
 
@@ -137,29 +140,50 @@
 
 		$("#okBtn").click(function(){
 
+            if({{schword_cnt}} > prescriptionChecked){
+                if(confirm("처방약제에 대해 누락된 상병이 존재합니다. 그대로 저장하시겠습니까?")){
+                     <!--체크된 상병값 가져오기-->
+                    html = "";
+                    for(var i = 1; i < $('#serviceresultTable tr').length; i++){
+                        var chk = $('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
+                        if(chk){
+                            var prescriptionCode =  $('#serviceresultTable tr').eq(i).children().eq(2).text();
+                            var diseaseCode = $('#serviceresultTable tr').eq(i).children().eq(3).text();
 
+                            html += "<input type = 'hidden' name = 'checked_discode' class='cheked_discode' value='"+diseaseCode +"'>"
+                            html += "<input type = 'hidden' name = 'checked_precode' class='checked_disname' value='"+prescriptionCode +"'>"
+                        }
+                    }
+                    $("#hiddenForm").append(html);
+                    $("#hiddenForm").submit();
+                    //alert($("#hiddenForm").html());
+                    alert("저장되었습니다");
+                }else{
 
-			if (confirm('저장하시겠습니까?')) {
-			    <!--체크된 상병값 가져오기-->
-				html = "";
-				for(var i = 1; i < $('#serviceresultTable tr').length; i++){
-					var chk = $('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
-					if(chk){
-						var prescriptionCode =  $('#serviceresultTable tr').eq(i).children().eq(2).text();
-						var diseaseCode = $('#serviceresultTable tr').eq(i).children().eq(3).text();
+                }
+            }
 
-						html += "<input type = 'hidden' name = 'checked_discode' class='cheked_discode' value='"+diseaseCode +"'>"
-						html += "<input type = 'hidden' name = 'checked_precode' class='checked_disname' value='"+prescriptionCode +"'>"
-					}
-				}
-				$("#hiddenForm").append(html);
-				$("#hiddenForm").submit();
-				//alert($("#hiddenForm").html());
-				alert("저장되었습니다");
+			<!--if (confirm('저장하시겠습니까?')) {-->
+			    <!--&lt;!&ndash;체크된 상병값 가져오기&ndash;&gt;-->
+				<!--html = "";-->
+				<!--for(var i = 1; i < $('#serviceresultTable tr').length; i++){-->
+					<!--var chk = $('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');-->
+					<!--if(chk){-->
+						<!--var prescriptionCode =  $('#serviceresultTable tr').eq(i).children().eq(2).text();-->
+						<!--var diseaseCode = $('#serviceresultTable tr').eq(i).children().eq(3).text();-->
 
-			} else {
-    			// Do nothing!
-			}
+						<!--html += "<input type = 'hidden' name = 'checked_discode' class='cheked_discode' value='"+diseaseCode +"'>"-->
+						<!--html += "<input type = 'hidden' name = 'checked_precode' class='checked_disname' value='"+prescriptionCode +"'>"-->
+					<!--}-->
+				<!--}-->
+				<!--$("#hiddenForm").append(html);-->
+				<!--$("#hiddenForm").submit();-->
+				<!--//alert($("#hiddenForm").html());-->
+				<!--alert("저장되었습니다");-->
+
+			<!--} else {-->
+    			<!--// Do nothing!-->
+			<!--}-->
 		});
 
 		 $("#cancelBtn").click(function(){
@@ -169,7 +193,34 @@
     			// Do nothing!
 			}
          });
+
+
 	});
+	function release(orderCode){
+
+	    for(var i=1;i<$('#servicePrescriptionTable tr').length;i++){
+			var orderCode2 = $('#servicePrescriptionTable tr').eq(i).children().eq(2).text();
+		    var idx = $('#serviceresultTable tr').eq(i).children().eq(0).val();
+
+			if(orderCode2 == orderCode.toString()){
+
+				$('#servicePrescriptionTable tr').eq(i).children().attr('class', '');
+				$('#servicePrescriptionTable tr').eq(i).children().eq(0).removeClass('class', 'btn_line_gray');
+				$('#servicePrescriptionTable tr').eq(i).children().eq(0).text(i);
+			}
+		}
+
+		for(var i=1;i<$('#serviceresultTable tr').length;i++){
+			var checkboxOrderCode = $('#serviceresultTable tr').eq(i).children().eq(2).text();
+		    if(orderCode.toString() == checkboxOrderCode){
+				$('#serviceresultTable tr').eq(i).children().css("background-color", "white");
+				$('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').prop("checked", false);
+				$('#serviceresultTable tr').eq(i).children().find('input[type="checkbox"]').attr("disabled", false);
+			}
+		}
+		prescriptionChecked -= 1;
+		$('#prescription_text_2').text('선택된 처방 총 ' + prescriptionChecked +'건)');
+	}
 
 </script>
 
