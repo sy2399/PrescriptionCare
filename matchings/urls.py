@@ -12,7 +12,7 @@ urlpatterns = [
 	url(r'^userstatics/$', views.UserStatics.as_view(), name='userstatics'),
 	url(r'^usermanagement/$', views.UserManagement.as_view(), name='usermanagement'),
 	url(r'^userservice/$', views.userservice, name='userservice'),
-
+	url(r'^updatemodel/$', views.updatemodel, name='updatemodel'),
 	url(r'^m4876_00/$', views.m4876_00.as_view(), name='m4876_00'),
 	url(r'^m4876_01/$', views.m4876_01.as_view(), name='m4876_01'),
 ]

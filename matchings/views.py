@@ -381,3 +381,6 @@ class m4876_00(TemplateView):
 
 class m4876_01(TemplateView):
 	template_name = 'm4876_01.html'
+
+def updatemodel(request):
+	return render(request, 'update_model.html')
