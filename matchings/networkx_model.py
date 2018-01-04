@@ -225,45 +225,29 @@ class NetworkX:
 				idx = diseasenamedf['icdcode'][diseasenamedf['icdcode'] == item[0]].index[0]
 				item[1] = diseasenamedf['namek'][idx]
 		
+		##################################################
+		#	prescriptions related to founded disease
+		##################################################
 #		for item in results_converted_to_list:
-#			#map prescription name
-#			prescription_list = []
-#			for ordercode in self.find_dxcode(item[0])[:num]:
-#				flag = False
-#				for idx, j in prescriptiondf.iterrows():
-#					dict_for_order = {}
+#			prescription_code_list = []
+#			for prescription_code in self.find_dxcode(item[0])[:num]:
+#				prescription_code_list.append(prescription_code)
 #
-#					if ordercode.split(" ") == j['ordercode'].split(" "):
-#						dict_for_order = {'ordercode': ordercode, 'ordername': j['ordercode']}
-#						flag = True
-#						break
 #
-#				if flag is False:
-#					dict_for_order = {'ordercode': ordercode, 'ordername': "Unknown"}
-#				prescription_list.append(dict_for_order)
+#			item.append(prescription_code_list)
 #
-#			item.append(prescription_list)
-
-		for item in results_converted_to_list:
-			prescription_code_list = []
-			for prescription_code in self.find_dxcode(item[0])[:num]:
-				prescription_code_list.append(prescription_code)
-
-
-			item.append(prescription_code_list)
-
-		for item in results_converted_to_list:
-			prescription_name_list = ["Unknown"]
-			for i in np.arange(num):
-
-				if (prescriptiondf['ordercode'] != item[3][i]).all():
-					prescription_name_list.append("Unknown")
-					continue
-				
-				idx = prescriptiondf['ordercode'][prescriptiondf['ordercode'] == item[3][i]].index[0]
-				prescription_name_list.append(prescriptiondf['ordername'][idx])
-
-			item.append(prescription_name_list)
+#		for item in results_converted_to_list:
+#			prescription_name_list = ["Unknown"]
+#			for i in np.arange(num):
+#
+#				if (prescriptiondf['ordercode'] != item[3][i]).all():
+#					prescription_name_list.append("Unknown")
+#					continue
+#				
+#				idx = prescriptiondf['ordercode'][prescriptiondf['ordercode'] == item[3][i]].index[0]
+#				prescription_name_list.append(prescriptiondf['ordername'][idx])
+#
+#			item.append(prescription_name_list)
 
 		return results_converted_to_list
 

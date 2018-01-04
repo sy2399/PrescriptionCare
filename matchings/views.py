@@ -16,7 +16,7 @@ from django.contrib.auth.models import User
 from matchings.models import Disease, Disease_name, Prescription, Review, Notice, Doctor_diagnose
 from matchings.forms import MatchForm
 
-#from matchings.neural_net_model import NeuralNetwork
+from matchings.neural_net_model import NeuralNetwork
 from matchings.networkx_model import NetworkX
 
 import pandas as pd
@@ -26,14 +26,11 @@ import pickle
 
 #diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist')))
 prescriptiondf = pd.DataFrame(list(Prescription.objects.all().values('ordercode', 'ordername')))
-#namedf['dxcode'] = namedf['icdcode']
-#del namedf['icdcode']
-#df = pd.merge(df, namedf, on='dxcode')
 
 # drop rows which contain nan
-#df = df.dropna(how="any")
+prescriptiondf = prescriptiondf.dropna(how="any")
 
-#NNmodel = NeuralNetwork()
+NNmodel = NeuralNetwork()
 NXmodel = NetworkX()
 
 diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
@@ -101,6 +98,7 @@ def match_disease(request):
 
 	return render(request, 'disease_search.html', context)
 
+#상병 검색시
 def search_prescription(request):
 	if request.method == "POST":
 		search_text = request.POST['search_text']
@@ -109,6 +107,7 @@ def search_prescription(request):
 	else:
 		search_text = ''
 
+	#상병의 이름 혹은 코드 중 seach_text가 포함된 상병들을 찾아냄	
 	prescriptions = Prescription.objects.filter(Q(ordercode__icontains=search_text) | Q(ordername__icontains=search_text))
 
 	context = {}
@@ -117,6 +116,7 @@ def search_prescription(request):
 
 	return render(request, 'ajax/ajax_prescription_search.html', context)
 
+#처방을 클릭해서 상병을 검색할 경우
 def search_disease(request):
 	if request.method == "POST":
 		search_list = request.POST['search_list'].strip()
@@ -125,24 +125,25 @@ def search_disease(request):
 
 	context = {}
 	context['search_term'] = search_list
-	#idx = prescriptiondf["ordercode"][prescriptiondf["ordercode"].split(" ")[0]==search_list].index()
-	# context['search_term'] = Prescription.objects.get()
 
 	######################################################
 	#  Added by khan Dec. 14 2017
 	######################################################
-	print("search_list: ", search_list)
-	disease_list = NXmodel.get_disease(ordercode_input=search_list, num=10)
-	context['NX_disease_list'] = disease_list
+	#print("search_list: ", search_list)
+	context['NN_disease_list'] = NNmodel.get_disease(ordercode_input=search_list, num=10)
+	context['NX_disease_list'] = NXmodel.get_disease(ordercode_input=search_list, num=10)
+
+	print("NN: ", context['NN_disease_list'])
+	print("NX: ", context['NX_disease_list'])
 
 	#해당 처방에 대한 Review 정보 받아오기
 	selected_list = []
-	#if Review.objects.filter(Q(ordercode=search_list)).count() != 0:
 	reviews = Review.objects.filter(Q(ordercode=search_list))
-	print(reviews)
+	#print(reviews)
 
 	#이미 선택된 상병인지 확인을 위한 코드
-	for disease in disease_list: # disease list is always filled with onl 1 item
+	disease_list = context['NX_disease_list']
+	for disease in disease_list: # disease list is always filled with only 1 item
 		selected = 0
 		for review in reviews:
 			if disease[0] == review.dxcode:
@@ -153,9 +154,6 @@ def search_disease(request):
 		else:
 			selected_list.append([disease, 0])
 		
-	#else:
-	#	print("해당 처방 리뷰 정보 없음")
-
 	context['NX_disease_list'] = selected_list
 
 	#해당 처방에 대한 Notice 정보 받아오기
@@ -214,6 +212,11 @@ def search_disease(request):
 
 	return render(request, 'ajax/ajax_disease_search.html', context)
 
+
+######################################################
+#	Code for webpage that compares NN and NX model   #
+######################################################
+
 class ModelCompareFormView(FormView):
 	form_class = MatchForm
 	template_name = 'models_test_page.html'
@@ -233,6 +236,9 @@ class ModelCompareFormView(FormView):
 
 		return render(self.request, self.template_name, context)
 
+
+
+
 class UserStatics(ListView):
 	template_name = 'userstatics.html'
 
@@ -244,6 +250,8 @@ class UserManagement(ListView):
 
 	def get_queryset(self):
 		return User.objects.filter(is_superuser=False)
+
+
 
 def userservice(request):
 	if request.method == 'POST':

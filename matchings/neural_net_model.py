@@ -23,13 +23,15 @@ import keras
 import tensorflow as tf
 
 import pickle
+import joblib
 import h5py
 from keras.models import model_from_json
 
-from matchings.models import Disease
+from matchings.models import Disease, Disease_name
 
 # get data
 df = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist')))
+diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
 
 # add column names
 df.columns = ["주상병", "처방코드"]
@@ -147,20 +149,24 @@ class NeuralNetwork:
 			# for non seperating main/ sub disease	
 			with open("static/NNmodel_data/y_classes.txt", 'r') as y:
 				self.y_classes = y.read().splitlines()
-		
-			with open("static/NNmodel_data/vectorizer.pickle", "rb") as f:
-				vectorizer = pickle.load(f)
+			print("y_classes Checked")
+
+			#with open("static/NNmodel_data/vectorizer.pickle", "rb") as f:
+				#vectorizer = pickle.load(f)
+			vectorizer = joblib.load("static/NNmodel_data/vectorizer.pkl")
+			print("vetorizer Checked")
 		
 			self.vect = vectorizer
 
 			json_file = open("static/NNmodel_data/NN_model.json", "r")
+			print("json Checked")
 			loaded_N_model_json = json_file.read()
 			json_file.close()
 
 			loaded_model = model_from_json(loaded_N_model_json)
 
 			loaded_model.load_weights("static/NNmodel_data/NN_model.h5")
-		
+			print("h5 Checked")
 	
 			self.graph = tf.get_default_graph()
 			self.model = loaded_model
@@ -175,15 +181,12 @@ class NeuralNetwork:
 			#X = tempdf[["처방코드"]]
 			#y = tempdf[["주상병"]]
 
-
 			#for non seperating main/sub disease
 			X = df[["처방코드"]]
 			y = df[["주상병"]]
 
-
-
 			X_list = X.values.ravel()
-			num_features = len(set("".join(X_list[0:len(X_list)+1])))
+			num_features = len(set("".join(X_list[0:len(X_list) + 1])))
 			
 			self.vect = Vectorization.tfidffVectorization()
 
@@ -202,7 +205,6 @@ class NeuralNetwork:
 
 			callback1 = keras.callbacks.EarlyStopping(monitor='val_loss', patience=3)
 			self.train_and_fit_model(self.X_train, self.y_train_idx, self.y_classes, 100, 100, 0.1, [callback1])
-
 
 			#save model as file
 
@@ -238,13 +240,14 @@ class NeuralNetwork:
 #				self.model.save_weights("static/sub_NN_model.h5")
 
 			
-			pickle.dump(self.vect, open("static/NNmodel_data/vectorizer.pickle", "wb"))
+			#pickle.dump(self.vect, open("static/NNmodel_data/vectorizer.pickle", "wb"))
+			with open("static/NNmodel_data/vectorizer.pkl", "wb") as handle:
+				joblib.dump(self.vect, handle, compress=True)
 
 			y_class_file = open('static/NNmodel_data/y_classes.txt', 'w')
 
 			for item in self.y_classes:
 				y_class_file.write("%s\n" % item)
-
 
 			NN_model_json = self.model.to_json()
 			with open("static/NNmodel_data/NN_model.json", "w") as json_file:
@@ -334,7 +337,7 @@ class NeuralNetwork:
 
 	def get_disease(self, ordercode_input, num):
 		ordercode_input_list = []
-		ordercode_input_list.append(dxcode_input)
+		ordercode_input_list.append(ordercode_input)
 
 		#vect = Vectorization.tfidffVectorization()
 		#원하는 처방 값을 X_list 에 넣기
@@ -342,6 +345,7 @@ class NeuralNetwork:
 		ordercode_vect = self.vect.transform(ordercode_input_list)
 		with self.graph.as_default():
 			y_pred = self.model.predict(ordercode_vect.toarray())
+			print("y:", y_pred)
 
 			all_classes = np.array(self.y_classes)
 			all_classes[np.argmax(y_pred, axis=1)]
@@ -349,7 +353,34 @@ class NeuralNetwork:
 			for i in range(0, len(y_pred)):
 				top_index = np.argsort(y_pred[i])[::-1][:num]# find the index of top ?? value
 				top_diagnosis = all_classes[top_index]
+				#top_relations = y_pred[i][top_index]
 
-			return top_diagnosis.tolist()
+			selected_results = top_diagnosis.tolist()
+
+			print("sel: ", top_diagnosis)
+#			print("ret: ", top_relations)
+
+			results_converted_to_list = []
+			for i in range(0, len(top_diagnosis)):
+				code = top_diagnosis[i].split(" ")[0]
+				if i > 4:
+					relation = 'High'
+				else:
+					relation = 'Very High'
+			
+				if (diseasenamedf['icdcode'] != code).all():
+					code_name = "Unknown"
+				else:
+					idx = diseasenamedf['icdcode'][diseasenamedf['icdcode'] == code].index[0]
+					code_name = diseasenamedf['namek'][idx]
+
+				item = []
+				item.append(code)
+				item.append(code_name)
+				item.append(relation)
+
+				results_converted_to_list.append(item)
+			
+			return results_converted_to_list
 
 
