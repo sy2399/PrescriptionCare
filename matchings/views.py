@@ -130,42 +130,47 @@ def search_disease(request):
 	#  Added by khan Dec. 14 2017
 	######################################################
 	#print("search_list: ", search_list)
-	context['NN_disease_list'] = NNmodel.get_disease(ordercode_input=search_list, num=10)
-	context['NX_disease_list'] = NXmodel.get_disease(ordercode_input=search_list, num=10)
+	NN_disease_list = NNmodel.get_disease(ordercode_input=search_list, num=10)
+	NX_disease_list = NXmodel.get_disease(ordercode_input=search_list, num=5)
 
-	print("NN: ", context['NN_disease_list'])
-	print("NX: ", context['NX_disease_list'])
+	print("NN: ", NN_disease_list)
+	print("")
+	print("NX: ", NX_disease_list)
+	print("")
+	#####################################################
+	#	Code for comparing results of NN, NX			#
+	#####################################################
+
+	disease_list = []
+	for item in NN_disease_list[0:5]:
+		disease_list.append(item)
+
+	print(disease_list)
+
+	for item in NX_disease_list:
+		exist_flag = False
+		for code in NN_disease_list[0:5]:
+			print("item: ", item[0], "code: ", code[0])
+			if item[0] == code[0]:
+				exist_flag = True
+				break
+
+		if exist_flag == False:
+			disease_list.append(item)
+
+	for item in NN_disease_list[5:10]:
+		if len(disease_list) < 10:
+			disease_list.append(item)
+		else:
+			break
+	print("disease_list: ", disease_list)
 
 	#해당 처방에 대한 Review 정보 받아오기
-	selected_list = []
 	reviews = Review.objects.filter(Q(ordercode=search_list))
+	selected_list = []
 	#print(reviews)
 
 	#이미 선택된 상병인지 확인을 위한 코드
-	disease_list = context['NX_disease_list']
-	for disease in disease_list: # disease list is always filled with only 1 item
-		selected = 0
-		for review in reviews:
-			if disease[0] == review.dxcode:
-				selected = 1
-				break
-		if selected == 1:
-			selected_list.append([disease, 1])
-		else:
-			selected_list.append([disease, 0])
-		
-	context['NX_disease_list'] = selected_list
-
-	#해당 처방에 대한 Notice 정보 받아오기
-	#if Notice.objects.filter(Q(ordercode=search_list)).count() == 1:#정보가 있으면 (단일만 가능# )
-		
-	# 해당 처방에 대한 Review 정보 받아오기
-	selected_list = []
-	#if Review.objects.filter(Q(ordercode=search_list)).count() != 0: # 정보가 있으면 (복수 가능)
-	reviews = Review.objects.filter(Q(ordercode=search_list))
-	print(reviews)
-
-	# 이미 선택된 상병인지 확인을 위한 코드
 	for disease in disease_list:
 		selected = 0
 		for review in reviews:
@@ -176,12 +181,11 @@ def search_disease(request):
 			selected_list.append([disease, 1])
 		else:
 			selected_list.append([disease, 0])
-#	else:
-#		print("해당처방 리뷰 정보 없음")
-	context['NX_disease_list'] = selected_list
-	context['NX_disease_list_cnt'] = len(selected_list)
-	
-	######################################################
+		
+	print("sel_list: ", selected_list)
+
+	context['disease_list'] = selected_list
+	context['disease_list_cnt'] = len(selected_list)
 	# 해당 처방에 대한 Notice 정보 받아오기
 	if Notice.objects.filter(Q(ordercode=search_list)).count() == 1: # 정보가 있으면 (단일만 가능)
 		notice = Notice.objects.get(Q(ordercode=search_list))
@@ -195,28 +199,12 @@ def search_disease(request):
 	# End by khan
 	######################################################
 
-
-#	disease_name_list = []
-#
-#	connection = {}
-#
-#	for i in np.arange(len(disease_list)):
-#		connection[i] = NXmodel.find_dxcode(disease_list[i][0])[:10]
-#
-#	context['connection'] = connection
-
-#	print(search_list)
-#	print(context['disease_list'])
-#	context['neuralnet_disease_list'] = self.NNmodel.get_disease(ordercode_input=schWord)
-#		context['networkx_disease_list'] = self.NXmodel.get_disease(ordercode_input=schWord)
-
 	return render(request, 'ajax/ajax_disease_search.html', context)
 
 
 ######################################################
 #	Code for webpage that compares NN and NX model   #
 ######################################################
-
 class ModelCompareFormView(FormView):
 	form_class = MatchForm
 	template_name = 'models_test_page.html'

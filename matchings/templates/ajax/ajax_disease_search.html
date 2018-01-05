@@ -293,7 +293,7 @@ function HighlightRow(obj){
 	}
 }
 
-$("#prescription_text_2").text("총 {{ NX_disease_list_cnt }}개 데이터 검색됨");
+$("#prescription_text_2").text("총 {{ disease_list_cnt }}개 데이터 검색됨");
 
 </script>
 
@@ -311,9 +311,9 @@ $("#prescription_text_2").text("총 {{ NX_disease_list_cnt }}개 데이터 검�
 			<th>정확도</th>
 		</thead>
 		<tbody id="search-disease-results">
-			{% for NX_disease in NX_disease_list %}
-				{% if NX_disease.0.1 != "Unknown" %} <!-- if unknown, pass -->
-					{% if NX_disease.1 == 1 %}
+			{% for disease in disease_list %}
+				{% if disease.0.1 != "Unknown" %} <!-- if unknown, pass -->
+					{% if disease.1 == 1 %}
 						<!--<tr style="background-color:#d3fffe" onclick = "HighlightRow(this)">-->
 						<tr style="background-color:#d3fffe">
 							<td><input type="checkbox" id="checked" name = "_selected_" checked></td>
@@ -322,9 +322,9 @@ $("#prescription_text_2").text("총 {{ NX_disease_list_cnt }}개 데이터 검�
 						<tr>
 							<td><input type="checkbox" id="checked" name = "_selected_"></td>
 					{% endif %}
-							<td id = "disease0">{{ NX_disease.0.0 }}</td>
-							<td id = "disease1">{{ NX_disease.0.1 }}</td>
-							<td id = "disease2">{{ NX_disease.0.2 }}</td>
+							<td id = "disease0">{{ disease.0.0 }}</td>
+							<td id = "disease1">{{ disease.0.1 }}</td>
+							<td id = "disease2">{{ disease.0.2 }}</td>
 						</tr>
 				{% endif %}
 			{% endfor %}

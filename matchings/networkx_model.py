@@ -214,7 +214,7 @@ class NetworkX:
 				relation = "Very Low"
 
 			#item[1]['proportion'] = item[1]['count'] / total_count
-			item.append(relation)
+			item.append("X: " + relation)
 
 
 		#map disease name

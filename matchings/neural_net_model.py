@@ -345,7 +345,6 @@ class NeuralNetwork:
 		ordercode_vect = self.vect.transform(ordercode_input_list)
 		with self.graph.as_default():
 			y_pred = self.model.predict(ordercode_vect.toarray())
-			print("y:", y_pred)
 
 			all_classes = np.array(self.y_classes)
 			all_classes[np.argmax(y_pred, axis=1)]
@@ -357,7 +356,7 @@ class NeuralNetwork:
 
 			selected_results = top_diagnosis.tolist()
 
-			print("sel: ", top_diagnosis)
+#			print("sel: ", top_diagnosis)
 #			print("ret: ", top_relations)
 
 			results_converted_to_list = []
