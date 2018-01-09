@@ -37,6 +37,15 @@ thres_diseasedf = diseasedf[diseasedf.frequency > 1000]
 
 diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
 
+def get_data():
+	diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist', 'frequency')))
+	diseasedf = diseasedf.dropna(how="any")
+
+	thres_diseasedf = diseasedf[diseasedf.frequency > 1000]
+
+	diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
+
+
 
 class Vectorization:
 
@@ -107,7 +116,6 @@ class NeuralNetwork:
 	def __init__(self):
 
 		try:
-
 			with open("static/NNmodel_data/y_classes.txt", 'r') as y:
 				self.y_classes = y.read().splitlines()
 			print("y_classes Checked")
@@ -119,10 +127,10 @@ class NeuralNetwork:
 
 			json_file = open("static/NNmodel_data/NN_model.json", "r")
 			print("json Checked")
-			loaded_N_model_json = json_file.read()
+			loaded_NN_model_json = json_file.read()
 			json_file.close()
 
-			loaded_model = model_from_json(loaded_N_model_json)
+			loaded_model = model_from_json(loaded_NN_model_json)
 
 			loaded_model.load_weights("static/NNmodel_data/NN_model.h5")
 			print("h5 Checked")
@@ -133,47 +141,55 @@ class NeuralNetwork:
 
 		except:
 			print("NN: DO not have required files")
-
-			X = thres_diseasedf[["dxcode"]]
-			y = thres_diseasedf[["presciptionlist"]]
-
-			X_list = X.values.ravel()
-			num_features = len(set("".join(X_list[0:len(X_list) + 1])))
-			
-			self.vect = Vectorization.tfidffVectorization()
-
-			self.vect.fit(X_list)
-			X_vect = self.vect.transform(X_list)
-
-			#Training and Testing Data Preparation
-			self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X_vect, y.values, test_size=0.10, random_state=0)
-			
-			self.y_classes = list(set(y.values.ravel()))
-			self.y_train_idx = []
-
-			for item in self.y_train:
-				self.index = self.y_classes.index(item)
-				self.y_train_idx.append(self.index)
-
-			callback1 = keras.callbacks.EarlyStopping(monitor='val_loss', patience=3)
-			self.train_and_fit_model(self.X_train, self.y_train_idx, self.y_classes, 100, 100, 0.1, [callback1])
-
-			######################################################
-			#	save model as file
-			######################################################
-			with open("static/NNmodel_data/vectorizer.pkl", "wb") as handle:
-				joblib.dump(self.vect, handle, compress=True)
-
-			y_class_file = open('static/NNmodel_data/y_classes.txt', 'w')
-
-			for item in self.y_classes:
-				y_class_file.write("%s\n" % item)
-
-			NN_model_json = self.model.to_json()
-			with open("static/NNmodel_data/NN_model.json", "w") as json_file:
-				json_file.write(NN_model_json)
+			self.make_model()			
 		
-			self.model.save_weights("static/NNmodel_data/NN_model.h5")
+	def make_model(self):
+		print("NN: making new model")
+		
+		get_data()
+
+		X = thres_diseasedf[["dxcode"]]
+		y = thres_diseasedf[["prescriptionlist"]]
+
+		X_list = X.values.ravel()
+		num_features = len(set("".join(X_list[0:len(X_list) + 1])))
+		
+		self.vect = Vectorization.tfidffVectorization()
+
+		self.vect.fit(X_list)
+		X_vect = self.vect.transform(X_list)
+
+		#Training and Testing Data Preparation
+		self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X_vect, y.values, test_size=0.10, random_state=0)
+		
+		self.y_classes = list(set(y.values.ravel()))
+		self.y_train_idx = []
+
+		for item in self.y_train:
+			self.index = self.y_classes.index(item)
+			self.y_train_idx.append(self.index)
+			print("aaa")
+
+		callback1 = keras.callbacks.EarlyStopping(monitor='val_loss', patience=3)
+		self.train_and_fit_model(self.X_train, self.y_train_idx, self.y_classes, 100, 100, 0.1, [callback1])
+
+		######################################################
+		#	save model as file
+		######################################################
+		with open("static/NNmodel_data/vectorizer.pkl", "wb") as handle:
+			joblib.dump(self.vect, handle, compress=True)
+
+		y_class_file = open('static/NNmodel_data/y_classes.txt', 'w')
+
+		for item in self.y_classes:
+			y_class_file.write("%s\n" % item)
+
+		NN_model_json = self.model.to_json()
+		with open("static/NNmodel_data/NN_model.json", "w") as json_file:
+			json_file.write(NN_model_json)
+	
+		self.model.save_weights("static/NNmodel_data/NN_model.h5")
+
 
 
 	# construct model

@@ -30,10 +30,23 @@ for item in prescriptiondf['ordercode'].str.split(" "):
 	tls.append(item[0])
 prescriptiondf['ordercode'] = pd.Series(data = tls)
 
+def get_data():
+	diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist', 'frequency') ))
+	diseasedf = diseasedf.dropna(how="any")
+
+	thres_diseasedf = diseasedf[diseasedf.frequency <= 1000]
+
+	diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
+
+	prescriptiondf = pd.DataFrame(list(Prescription.objects.all().values('ordercode', 'ordername')))
+	tls = []
+	for item in prescriptiondf['ordercode'].str.split(" "):
+		tls.append(item[0])
+	prescriptiondf['ordercode'] = pd.Series(data = tls)
+
 
 class NetworkX:
 	def __init__(self):
-
 		try:
 			json_file = open("static/NXmodel_data/NX_model.json", "r")
 
@@ -46,62 +59,67 @@ class NetworkX:
 
 		except:
 			print("NX: Do not have required files")
+			self.make_model()
 
-			X_list, y_list = self.create_input_list(thres_diseasedf)
-				
-			edges = {}
-			for i in range(len(X_list)):
-				dxcode = X_list[i].strip().split(" ")
-				disease = y_list[i]
-				
-				for j in dxcode:
-					edge = disease + " " + j
-					if edge not in edges: edges[edge] = 1
-					else: edges[edge] += 1
+	def make_model(self):
+		print("NX: making new model")
 
-			edge_data = pd.DataFrame(columns=['source', 'target', 'edge_count'], index=np.arange(len(edges)))
+		get_data()
 
-			i = 0
-			for edge in edges.keys():
-				s, t = edge.split(' ')
-				edge_data['source'][i] = s
-				edge_data['target'][i] = t
-				edge_data['edge_count'][i] = edges[edge]
-				i += 1
-				print(i)
+		X_list, y_list = self.create_input_list(thres_diseasedf)
+			
+		edges = {}
+		for i in range(len(X_list)):
+			dxcode = X_list[i].strip().split(" ")
+			disease = y_list[i]
+			
+			for j in dxcode:
+				edge = disease + " " + j
+				if edge not in edges: edges[edge] = 1
+				else: edges[edge] += 1
 
-			source = {}
-			i = 0
-			for index, row in edge_data.iterrows():
-				if row['source'] not in source: 
-					source[row['source']] = row['edge_count'] 
-				else:
-					source[row['source']] += row['edge_count']
-				i += 1
-				print(i)
+		edge_data = pd.DataFrame(columns=['source', 'target', 'edge_count'], index=np.arange(len(edges)))
 
-			source_count = pd.DataFrame([source]).T
-			source_count.columns = ['source_count']
-			edge_df = edge_data.join(source_count, how='inner', on='source', sort=True)
-			edge_df = edge_df.sort_index()
+		i = 0
+		for edge in edges.keys():
+			s, t = edge.split(' ')
+			edge_data['source'][i] = s
+			edge_data['target'][i] = t
+			edge_data['edge_count'][i] = edges[edge]
+			i += 1
+			print(i)
 
-			DG = nx.DiGraph()
+		source = {}
+		i = 0
+		for index, row in edge_data.iterrows():
+			if row['source'] not in source: 
+				source[row['source']] = row['edge_count'] 
+			else:
+				source[row['source']] += row['edge_count']
+			i += 1
+			print(i)
 
-			for index, row in edge_df.iterrows():
-				DG.add_weighted_edges_from([(row['source'], row['target'], float(row['edge_count']))]) 
-				#modify to row['edge_count'] /row['source_count'] if radio mode
+		source_count = pd.DataFrame([source]).T
+		source_count.columns = ['source_count']
+		edge_df = edge_data.join(source_count, how='inner', on='source', sort=True)
+		edge_df = edge_df.sort_index()
 
-			self.G = DG.to_undirected()
+		DG = nx.DiGraph()
 
-			JG = json_graph.node_link_data(self.G)
-			str_json = json.dumps(JG)
+		for index, row in edge_df.iterrows():
+			DG.add_weighted_edges_from([(row['source'], row['target'], float(row['edge_count']))]) 
+			#modify to row['edge_count'] /row['source_count'] if radio mode
 
-			with open("static/NXmodel_data/NX_model.json", "w") as json_file:
-				json_file.write(str_json)	
+		self.G = DG.to_undirected()
 
-			json_file.close()
+		JG = json_graph.node_link_data(self.G)
+		str_json = json.dumps(JG)
 
+		with open("static/NXmodel_data/NX_model.json", "w") as json_file:
+			json_file.write(str_json)	
 
+		json_file.close()
+		
 	## used for init
 	def create_input_list(self, df):
 		prev_main_disease_code = ""

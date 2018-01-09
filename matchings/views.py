@@ -21,6 +21,7 @@ from matchings.networkx_model import NetworkX
 
 import pandas as pd
 import numpy as np
+import threading
 import pickle
 
 
@@ -379,4 +380,21 @@ class m4876_01(TemplateView):
 	template_name = 'm4876_01.html'
 
 def updatemodel(request):
+	if request.method == 'POST':
+		if request.POST.get('remodel') is not None:
+			print("Remodel start")
+			
+			t = threading.Thread(target=remodel)
+			t.daemon = True
+			t.start()
 	return render(request, 'update_model.html')
+
+def remodel():
+	newNNmodel = NeuralNetwork()
+	newNNmodel.make_model()
+	newNXmodel = NetworkX()
+	newNXmodel.make_model()
+
+	print("Remodeling done")
+	NNmodel = newNNmodel
+	NXmodel = newNXmodel
