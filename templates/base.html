@@ -12,7 +12,14 @@
 	<!-- Custom styles for this template -->
 	<!--<link href="http://getbootstrap.com/docs/4.0/examples/dashboard/dashboard.css" rel="stylesheet">-->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 	{% load static %}
 
 	<link rel="stylesheet" href="{% static 'css/base.css' %}" />
@@ -44,7 +51,7 @@
 
 				{% if user.is_active %}
 				<!--<strong>{% firstof user.get_short_name user.get_username %} 님 로그인</strong> /-->
-				<strong> 대아한도병원 '김연아' 님 환영합니다&nbsp;&nbsp;</strong> /&nbsp;&nbsp;
+				<strong> 대아한도병원 {% firstof user.get_short_name user.get_username %}님 환영합니다&nbsp;&nbsp;</strong> /&nbsp;&nbsp;
 				<strong><a style = "color:white" href="{% url 'password_change' %}">개인정보수정</a></strong> &nbsp; / &nbsp;&nbsp;
 				<strong><a style = "color:white" href="{% url 'logout'%}">로그아웃</a></strong>
 				{% endif %}
