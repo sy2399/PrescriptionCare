@@ -3,6 +3,7 @@ from django.db import models
 class Disease(models.Model):	
 	dxcode = models.CharField(max_length=1024)
 	prescriptionlist = models.CharField(max_length=4096) 
+	frequency = models.IntegerField(default=1)
 
 class Prescription(models.Model):
 	ordercode = models.CharField(max_length=128)

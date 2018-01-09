@@ -17,7 +17,11 @@ import time
 from matchings.models import Disease, Disease_name, Prescription
 
 # get data
-diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist') ))
+diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist', 'frequency') ))
+diseasedf = diseasedf.dropna(how="any")
+
+thres_diseasedf = diseasedf[diseasedf.frequency <= 1000]
+
 diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
 
 prescriptiondf = pd.DataFrame(list(Prescription.objects.all().values('ordercode', 'ordername')))
@@ -26,22 +30,11 @@ for item in prescriptiondf['ordercode'].str.split(" "):
 	tls.append(item[0])
 prescriptiondf['ordercode'] = pd.Series(data = tls)
 
-# drop rows which contain nan
 
 class NetworkX:
 	def __init__(self):
 
 		try:
-			#read jsonfile
-
-			#for seperating main/sub disease
-#			if import_flag == 1:
-#				json_file = open("static/main_NX_model.json", "r")
-#			elif import_flag == 2:
-#				json_file = open("static/sub_NX_model.json", "r")
-
-
-			#for non seperating main/sub disease
 			json_file = open("static/NXmodel_data/NX_model.json", "r")
 
 			loaded_NX_model_json= json.load(json_file)
@@ -53,10 +46,8 @@ class NetworkX:
 
 		except:
 			print("NX: Do not have required files")
-			#tempdf = df[df.주부상병 == import_flag]
 
-			tempdf = pd.read_csv("static/NXmodel_data/original.csv", sep=",", encoding="utf-8")
-			X_list, y_list = self.create_input_list(tempdf)
+			X_list, y_list = self.create_input_list(thres_diseasedf)
 				
 			edges = {}
 			for i in range(len(X_list)):
@@ -105,16 +96,6 @@ class NetworkX:
 			JG = json_graph.node_link_data(self.G)
 			str_json = json.dumps(JG)
 
-			# for seperating main/sub disease
-#			if import_flag == 1:
-#				with open("static/NXmodel_data/main_NX_model.json", "w") as json_file:
-#					json_file.write(str_json)
-#			elif import_flag == 2:
-#				with open("static/sub_NX_model.json", "w") as json_file:
-#					json_file.write(str_json)	
-
-
-			#for non seperating main/sub disease
 			with open("static/NXmodel_data/NX_model.json", "w") as json_file:
 				json_file.write(str_json)	
 
@@ -197,12 +178,6 @@ class NetworkX:
 		for item in selected_results:
 			results_converted_to_list.append(list(item))
 
-		#make proportion field in results
-#		total_count = 0
-#		for item in results_converted_to_list:
-#			total_count = total_count + item[1]['count']
-
-		#start = int(round(time.time() * 1000))
 		rank = 0
 		for item in results_converted_to_list:
 			percentage = rank/result_len
@@ -230,29 +205,5 @@ class NetworkX:
 				idx = diseasenamedf['icdcode'][diseasenamedf['icdcode'] == item[0]].index[0]
 				item[1] = diseasenamedf['namek'][idx]
 		
-		##################################################
-		#	prescriptions related to founded disease
-		##################################################
-#		for item in results_converted_to_list:
-#			prescription_code_list = []
-#			for prescription_code in self.find_dxcode(item[0])[:num]:
-#				prescription_code_list.append(prescription_code)
-#
-#
-#			item.append(prescription_code_list)
-#
-#		for item in results_converted_to_list:
-#			prescription_name_list = ["Unknown"]
-#			for i in np.arange(num):
-#
-#				if (prescriptiondf['ordercode'] != item[3][i]).all():
-#					prescription_name_list.append("Unknown")
-#					continue
-#				
-#				idx = prescriptiondf['ordercode'][prescriptiondf['ordercode'] == item[3][i]].index[0]
-#				prescription_name_list.append(prescriptiondf['ordername'][idx])
-#
-#			item.append(prescription_name_list)
-
 		return results_converted_to_list
 
