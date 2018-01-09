@@ -54,8 +54,9 @@ class NetworkX:
 		except:
 			print("NX: Do not have required files")
 			#tempdf = df[df.주부상병 == import_flag]
-				
-			X_list, y_list = self.create_input_list(diseasedf)
+
+			tempdf = pd.read_csv("static/NXmodel_data/original.csv", sep=",", encoding="utf-8")
+			X_list, y_list = self.create_input_list(tempdf)
 				
 			edges = {}
 			for i in range(len(X_list)):
@@ -75,14 +76,18 @@ class NetworkX:
 				edge_data['source'][i] = s
 				edge_data['target'][i] = t
 				edge_data['edge_count'][i] = edges[edge]
-				i= i+1
+				i += 1
+				print(i)
 
 			source = {}
+			i = 0
 			for index, row in edge_data.iterrows():
 				if row['source'] not in source: 
 					source[row['source']] = row['edge_count'] 
 				else:
 					source[row['source']] += row['edge_count']
+				i += 1
+				print(i)
 
 			source_count = pd.DataFrame([source]).T
 			source_count.columns = ['source_count']
