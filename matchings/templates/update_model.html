@@ -149,7 +149,12 @@
 		}
 
 
-
+		$(function(){
+			$('#uploadBtn').click(function(){
+				$('#uploadForm').submit();
+				alert("update 성공");
+			});
+		});
 	</script>
 	
 	<div class="container-fluid">
@@ -206,7 +211,8 @@
                     <div class = "row">
 
                         <div class="col-md-6" style="overflow-x:auto;">
-                             <form action="/upload/" method="post" enctype="multipart/form-data">
+                             <form action="." method="post" id="uploadForm" enctype="multipart/form-data">
+								 {% csrf_token %}
 									<table id = "uploadFileTable" class = "vType_line scrolltbody2" style="width:100%">
 
 										<tbody>
@@ -227,7 +233,7 @@
 										</tbody>
 									</table>
                                  <br>
-                                <input type="submit"class="button_box" style = "float:right;" value="UPLOAD" />
+                                <input type="button" id = "uploadBtn" class="button_box" style = "float:right;" value="UPLOAD" />
                             </form>
                         </div>
 

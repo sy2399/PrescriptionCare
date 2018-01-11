@@ -15,7 +15,8 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from matchings.models import Disease, Disease_name, Prescription, Review, Notice, Doctor_diagnose
 from matchings.forms import MatchForm
-
+from matchings.forms import UploadFileForm
+from django.shortcuts import render
 #from matchings.neural_net_model import NeuralNetwork
 from matchings.networkx_model import NetworkX
 
@@ -383,4 +384,13 @@ class m4876_01(TemplateView):
 	template_name = 'm4876_01.html'
 
 def updatemodel(request):
-	return render(request, 'update_model.html')
+	if request.method == 'POST':
+		form = UploadFileForm(request.POST, request.FILES)
+		if form.is_valid():
+			form.save()
+
+			return render(request, 'update_model.html', {'form': form})
+	else:
+		form = UploadFileForm()
+	return render(request,'update_model.html', {'form':form})
+
