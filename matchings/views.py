@@ -36,8 +36,8 @@ prescriptiondf = prescriptiondf.dropna(how="any")
 NNmodel = NeuralNetwork()
 NXmodel = NetworkX()
 
-#diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
-#
+diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
+
 #i = 0
 #for item in Disease.objects.all():
 #	for order in item.prescriptionlist.split(' '):
@@ -279,6 +279,20 @@ def userservice(request):
 								frequency = 1
 							)
 					diag.save()
+			
+				if Disease.objects.filter(Q(dxcode=dxcode) & Q(prescriptionlist=ordercode) & Q(fileflag=False)).count() != 0:
+					dis = Disease.objects.get(Q(ordercode=ordercode) & Q(dxcode=dxcode) & Q(fileflag=False))
+					dis.frequency = str(int(dis.frequency) + 1) # this should be fixed
+					dis.save()
+				else:
+					dis = Disease(
+								dxcode = dxcode,
+								prescriptionlist = ordercode,
+								frequency = 1,
+								fileflag = False
+							)
+					dis.save()
+
 	else:
 		schWord = ''
 
@@ -414,6 +428,8 @@ def updatemodel(request):
 	return render(request, 'update_model.html')
 
 def remodel():
+	#TODO: read saved csv file
+	#TODO: make Disease objects base on file
 	newNNmodel = NeuralNetwork()
 	newNNmodel.make_model()
 	newNXmodel = NetworkX()
