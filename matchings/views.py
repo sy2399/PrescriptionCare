@@ -15,14 +15,10 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from matchings.models import Disease, Disease_name, Prescription, Review, Notice, Doctor_diagnose
 from matchings.forms import MatchForm
-<<<<<<< HEAD
 
 from matchings.neural_net_model import NeuralNetwork
-=======
 from matchings.forms import UploadFileForm
 from django.shortcuts import render
-#from matchings.neural_net_model import NeuralNetwork
->>>>>>> test
 from matchings.networkx_model import NetworkX
 
 import pandas as pd
@@ -40,7 +36,22 @@ prescriptiondf = prescriptiondf.dropna(how="any")
 NNmodel = NeuralNetwork()
 NXmodel = NetworkX()
 
-diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
+#diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
+#
+#i = 0
+#for item in Disease.objects.all():
+#	for order in item.prescriptionlist.split(' '):
+#		i += 1
+#		print(i, item.dxcode, order, item.frequency)
+#		dis = Disease(
+#				dxcode = item.dxcode,
+#				prescriptionlist = order,
+#				frequency = item.frequency
+#			)
+#		dis.save()
+#
+
+
 
 class datashow(ListView):
 	template_name = 'datashow.html'
@@ -366,6 +377,7 @@ def userservice(request):
 			else:
 				item.append(Doctor_diagnose.objects.get(Q(ordercode=code) & Q(dxcode=item[0])).frequency)
 
+	print(networkx_disease_list_non_duplicates)
 	context = {}
 	context['schword'] = schWord
 	context['schword_cnt'] = schWord_cnt
@@ -379,31 +391,47 @@ def check_diagnose(request):
 	#if request.method == 'POST':
 	return render(request, 'userservice.html')
 
-class m4876_00(TemplateView):
-	template_name = 'm4876.html'
-
-class m4876_01(TemplateView):
-	template_name = 'm4876_01.html'
-
 def updatemodel(request):
 	if request.method == 'POST':
+	
+		if request.POST.get('remodel') is not None:
+			print("Remodel start")
+			
+			t = threading.Thread(target=remodel)
+			t.daemon = True
+			t.start()
 
-		form = UploadFileForm(request.POST, request.FILES)
-		if form.is_valid():
-			form.save()
+		else:
+			form = UploadFileForm(request.POST, request.FILES)
+			if form.is_valid():
+				form.save()
+				return render(request, 'update_model.html', {'form': form})
+			else:
+				form = UploadFileForm()
 
-			return render(request, 'update_model.html', {'form': form})
-	else:
-		form = UploadFileForm()
-	return render(request,'update_model.html', {'form':form})
+			return render(request,'update_model.html', {'form': form})
+
+	return render(request, 'update_model.html')
 
 def remodel():
 	newNNmodel = NeuralNetwork()
 	newNNmodel.make_model()
 	newNXmodel = NetworkX()
 	newNXmodel.make_model()
+	newNXmodel.whole_graph()
 
 	print("Remodeling done")
 	NNmodel = newNNmodel
 	NXmodel = newNXmodel
+
+
+def network(request):
+	return render(request, 'network.html')
+
+class m4876_00(TemplateView):
+	template_name = 'm4876.html'
+
+class m4876_01(TemplateView):
+	template_name = 'm4876_01.html'
+
 

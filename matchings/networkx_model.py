@@ -20,7 +20,31 @@ from matchings.models import Disease, Disease_name, Prescription
 diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist', 'frequency') ))
 diseasedf = diseasedf.dropna(how="any")
 
+print(diseasedf.shape)	
 thres_diseasedf = diseasedf[diseasedf.frequency <= 1000]
+
+uniquedf = diseasedf[['dxcode', 'frequency']].drop_duplicates(subset=['dxcode']).sort_values('frequency', ascending=False)[0:3]
+print(uniquedf.head())
+
+#tempdf = pd.DataFrame(columns=['dxcode', 'prescriptionlist', 'frequency'])
+#i = 0
+#templs = []
+#for dxcode in diseasedf['dxcode']:
+#	print(dxcode)
+#	if dxcode in uniquedf['dxcode'].tolist() and dxcode not in templs:
+#		indexes = diseasedf['dxcode'][diseasedf['dxcode'] == dxcode].index
+#		print('index: ', indexes)
+#		for idx in indexes:
+#			tmp = pd.DataFrame([[diseasedf['dxcode'][idx], diseasedf['prescriptionlist'][idx], diseasedf['frequency'][idx]]], columns=['dxcode', 'prescriptionlist', 'frequency'])
+#			tempdf = tempdf.append(tmp, ignore_index=True)
+#			print(i, idx)
+#			i += 1
+#
+#		templs.append(dxcode)
+#		print(tempdf)
+#		print('templs: ', templs)
+
+tempthres_diseasedf = diseasedf[diseasedf.frequency > 45000]
 
 diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
 
@@ -60,6 +84,15 @@ class NetworkX:
 		except:
 			print("NX: Do not have required files")
 			self.make_model()
+	
+		try:
+			json_file = open("static/NXmodel_data/whole_graph_data.json", "r")
+			print("NX: Total graph data exists")
+
+		except:
+			print("NX: Total graph data does not exists")
+			self.make_whole_graph()
+
 
 	def make_model(self):
 		print("NX: making new model")
@@ -119,7 +152,63 @@ class NetworkX:
 			json_file.write(str_json)	
 
 		json_file.close()
-		
+	
+	def make_whole_graph(self):
+		X_list, y_list = self.create_input_list(tempthres_diseasedf)
+		edges = {}
+		for i in range(len(X_list)):
+			dxcode = X_list[i].strip().split(" ")
+			disease = y_list[i]
+			
+			for j in dxcode:
+				edge = disease + " " + j
+				if edge not in edges: edges[edge] = 1
+				else: edges[edge] += 1
+
+		edge_data = pd.DataFrame(columns=['source', 'target', 'edge_count'], index=np.arange(len(edges)))
+
+		i = 0
+		for edge in edges.keys():
+			s, t = edge.split(' ')
+			edge_data['source'][i] = s
+			edge_data['target'][i] = t
+			edge_data['edge_count'][i] = edges[edge]
+			i += 1
+			print(i)
+
+		source = {}
+		i = 0
+		for index, row in edge_data.iterrows():
+			if row['source'] not in source: 
+				source[row['source']] = row['edge_count'] 
+			else:
+				source[row['source']] += row['edge_count']
+			i += 1
+			print(i)
+
+		source_count = pd.DataFrame([source]).T
+		source_count.columns = ['source_count']
+		edge_df = edge_data.join(source_count, how='inner', on='source', sort=True)
+		edge_df = edge_df.sort_index()
+
+		DG = nx.DiGraph()
+
+		for index, row in edge_df.iterrows():
+			DG.add_weighted_edges_from([(row['source'], row['target'], float(row['edge_count']))]) 
+			#modify to row['edge_count'] /row['source_count'] if radio mode
+
+		self.G = DG.to_undirected()
+
+		JG = json_graph.node_link_data(self.G)
+		str_json = json.dumps(JG)
+
+		with open("static/NXmodel_data/whole_graph_data.json", "w") as json_file:
+			json_file.write(str_json)	
+
+		json_file.close()
+	
+
+
 	## used for init
 	def create_input_list(self, df):
 		prev_main_disease_code = ""
