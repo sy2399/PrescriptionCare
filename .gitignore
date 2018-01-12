@@ -4,3 +4,5 @@
 *.xlsx
 *.pyc
 db.sqlite3
+
+media/
