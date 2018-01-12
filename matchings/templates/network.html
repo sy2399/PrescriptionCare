@@ -17,7 +17,54 @@
 	</style>
 
 	<div class="container-fluid">
-		<svg width="960", height="600"></svg>
+		<div class="row">
+			<nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+				<ul class="nav nav-pills flex-column">
+					<!--<li class="nav-item">-->
+						<!--<a class="nav-link" href="{% url 'matchings:datashow' %}">Overview</a>-->
+					<!--</li>-->
+					<!--<li class="nav-item">-->
+						<!--<a class="nav-link" href="#">Reports</a>-->
+					<!--</li>-->
+					<!--<li class="nav-item">-->
+						<!--<a class="nav-link" href="{% url 'matchings:models_test' %}">Compare Models</a>-->
+					<!--</li>
+					-->
+					<!--
+					<li class="nav-item">
+						<a class="nav-link" href="">HOME</a>
+					</li>
+					-->
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'matchings:match_disease' %}">인정상병관리</a>
+					</li>
+					<!--
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'matchings:userstatics' %}">사용 통계</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'matchings:usermanagement' %}">계정 관리</a>
+					</li>
+					-->	
+
+					<li class="nav-item">
+						<a class="nav-link active" href="{% url 'matchings:statics' %}">통계분석<span class="sr-only">(current)</span></a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'matchings:userservice' %}" target="_blank">고객 서비스</a>
+					</li>
+					 <li class="nav-item">
+						<a class="nav-link" href="{% url 'matchings:updatemodel' %}" target="_blank">모델 업데이트</a>
+					</li>
+				</ul>
+
+			</nav>
+
+			<svg width="1260", height="960"></svg>
+		</div>
+	
+	
 		<script src="https://d3js.org/d3.v4.min.js"></script>
 	
 		<script>
@@ -33,7 +80,7 @@
 								.force("charge", d3.forceManyBody())
 								.force("center", d3.forceCenter(width/2, height/2));
 
-			d3.json("/static/NXmodel_data/whole_graph_data.json", function(error, graph){
+			d3.json("{% static 'NXmodel_data/whole_graph_data.json' %}", function(error, graph){
 				if(error) throw error;
 
 				var link = svg.append("g")
@@ -41,16 +88,16 @@
 								.selectAll("line")
 								.data(graph.links)
 								.enter().append("line")
-									.attr("stroke-width", function(d){ return Math.sqrt(d.weight); });
+									.attr("stroke-width", function(d){ return 1; });
 
-				for(i = 0; Object.keys(graph.nodes).length; i++){
-					console.log(graph.nodes[1].id.match(/'([^']+)'/)[1]);
-				}
+
 				var node = svg.append("g")
 								.attr("class", "nodes")
 								.selectAll("circle")
 								.data(graph.nodes)
-								.attr("r", 10)
+								.enter().append("circle")
+								.attr("r", 5)
+								.attr("fill", function(d){return '#1f77b4'})
 								.call(d3.drag()
 										.on("start", dragstarted)
 										.on("drag", dragged)

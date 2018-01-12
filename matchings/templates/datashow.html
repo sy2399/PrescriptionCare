@@ -12,6 +12,12 @@
 					<!--<li class="nav-item">-->
 						<!--<a class="nav-link active" href="{% url 'matchings:datashow' %}">Overview <span class="sr-only">(current)</span></a>-->
 					<!--</li>-->
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'matchings:match_disease' %}">인정상병관리</a>
+					</li>
+
+					
+					
 					<!--<li class="nav-item">-->
 						<!--<a class="nav-link" href="#">Reports</a>-->
 					<!--</li>-->
@@ -23,18 +29,22 @@
 						<a class="nav-link" href="">HOME</a>
 					</li>
 					-->
-					<li class="nav-item">
-						<a class="nav-link" href="{% url 'matchings:match_disease' %}">인정상병관리</a>
-					</li>
-
 					<!--
 					<li class="nav-item">
 						<a class="nav-link" href="{% url 'matchings:userstatics' %}">사용 통계</a>
 					</li>
-					-->
 					<li class="nav-item">
 						<a class="nav-link" href="{% url 'matchings:usermanagement' %}">계정 관리</a>
 					</li>
+					-->
+					
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'matchings:statics' %}">통계분석</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'matchings:userservice' %}" target="_blank">고객 서비스</a>
+					</li>
+
 					<li class="nav-item">
 						<a class="nav-link" href="{% url 'matchings:updatemodel' %}">모델 업데이트</a>
 					</li>

@@ -242,7 +242,8 @@ class ModelCompareFormView(FormView):
 
 		return render(self.request, self.template_name, context)
 
-
+def statics(request):
+	return render(request, 'network.html')
 
 
 class UserStatics(ListView):
