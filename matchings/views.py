@@ -15,8 +15,14 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from matchings.models import Disease, Disease_name, Prescription, Review, Notice, Doctor_diagnose
 from matchings.forms import MatchForm
+<<<<<<< HEAD
 
 from matchings.neural_net_model import NeuralNetwork
+=======
+from matchings.forms import UploadFileForm
+from django.shortcuts import render
+#from matchings.neural_net_model import NeuralNetwork
+>>>>>>> test
 from matchings.networkx_model import NetworkX
 
 import pandas as pd
@@ -381,13 +387,15 @@ class m4876_01(TemplateView):
 
 def updatemodel(request):
 	if request.method == 'POST':
-		if request.POST.get('remodel') is not None:
-			print("Remodel start")
-			
-			t = threading.Thread(target=remodel)
-			t.daemon = True
-			t.start()
-	return render(request, 'update_model.html')
+
+		form = UploadFileForm(request.POST, request.FILES)
+		if form.is_valid():
+			form.save()
+
+			return render(request, 'update_model.html', {'form': form})
+	else:
+		form = UploadFileForm()
+	return render(request,'update_model.html', {'form':form})
 
 def remodel():
 	newNNmodel = NeuralNetwork()
@@ -398,3 +406,4 @@ def remodel():
 	print("Remodeling done")
 	NNmodel = newNNmodel
 	NXmodel = newNXmodel
+

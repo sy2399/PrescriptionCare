@@ -31,7 +31,6 @@ class Review(models.Model):
 	dxcode = models.CharField(max_length=1024) # 상병 코드
 	frequency = models.IntegerField(default=1) # 처방-상병 관계 빈도수 (실제로는 많이 안쓰일 수도 있음)
 
-
 class UploadFileModel(models.Model):
     title = models.TextField(default='')#업로드한 파일명
     file = models.FileField(null=True)#업로드한 파일

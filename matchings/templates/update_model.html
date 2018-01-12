@@ -147,6 +147,17 @@
 		function loading(){
 		    document.getElementById("loading").style.visibility = "visible";
 		}
+<<<<<<< HEAD
+=======
+
+
+		$(function(){
+			$('#uploadBtn').click(function(){
+				$('#uploadForm').submit();
+				alert("update 성공");
+			});
+		});
+>>>>>>> test
 	</script>
 	
 	<div class="container-fluid">
@@ -172,6 +183,7 @@
 					<br><br>
 					<div id="loading" style = "visibility:hidden"><img id="loading-image" src="../../../static/img/loading.gif" alt="Loading..." /></div>
 
+<<<<<<< HEAD
 					<h1 style = "font-size: 20px;">파일 업로드</h1>
 					<br>
 					<div class = "row">
@@ -199,6 +211,43 @@
 							<button class="button_box" type="submit" name="remodel" value="remodel">Remodel</button>
 						</form>
 					</div>
+=======
+                     <h1 style = "font-size: 20px;">파일 업로드</h1>
+                        <br>
+                    <div class = "row">
+
+                        <div class="col-md-6" style="overflow-x:auto;">
+                             <form action="." method="post" id="uploadForm" enctype="multipart/form-data">
+								 {% csrf_token %}
+									<table id = "uploadFileTable" class = "vType_line scrolltbody2" style="width:100%">
+
+										<tbody>
+
+											<tr>
+
+												<td >파일명</td>
+												<td id = "uploadTitle" ><input type="text" style = "width:100%" name="title" id="title" /></td>
+
+											</tr>
+                                            <tr>
+
+												<td >파일</td>
+												<td id = "uploadfile" ><input type="file" name="file" id="file" /></td>
+
+											</tr>
+
+										</tbody>
+									</table>
+                                 <br>
+                                <input type="button" id = "uploadBtn" class="button_box" style = "float:right;" value="UPLOAD" />
+                            </form>
+                        </div>
+
+
+
+
+                    </div>
+>>>>>>> test
 				</div>
 			</main>
 		</div>
