@@ -25,7 +25,8 @@ import pandas as pd
 import numpy as np
 import threading
 import pickle
-
+import json
+from collections import OrderedDict
 
 #diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist')))
 prescriptiondf = pd.DataFrame(list(Prescription.objects.all().values('ordercode', 'ordername')))
@@ -243,7 +244,17 @@ class ModelCompareFormView(FormView):
 		return render(self.request, self.template_name, context)
 
 def statics(request):
-	return render(request, 'network.html')
+	if request.method == "POST":
+		search_list = request.POST['search_dxcode']
+		group_data = OrderedDict()
+		group_data['dxcodes'] = search_list
+	else:
+		search_list = ''
+
+
+
+
+	return render(request, 'statics.html')
 
 
 class UserStatics(ListView):
