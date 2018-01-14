@@ -26,6 +26,7 @@ import numpy as np
 import threading
 import pickle
 import json
+from collections import OrderedDict
 
 diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist', 'frequency', 'fileflag')))
 prescriptiondf = pd.DataFrame(list(Prescription.objects.all().values('ordercode', 'ordername')))
@@ -229,8 +230,21 @@ class ModelCompareFormView(FormView):
 		return render(self.request, self.template_name, context)
 
 def statics(request):
+	context = {}
+
+	df = diseasedf[['dxcode', 'frequency', 'fileflag']]	
+	df = df[df.fileflag==True]
+	df = df.drop_duplicates(subset='dxcode').sort_values('frequency', ascending=False)[0:25]
+	data = []
+	for _, item in df.iterrows():
+		dic = {}
+		dic["dxcode"] = item['dxcode']
+		dic["frequency"] = item['frequency']
+		data.append(dic)
+
 	diagnoses_data = []
-	
+	network_data = []
+
 	if request.method == "POST":
 		search_dxcode = request.POST['search_dxcode']
 		print("request: ", search_dxcode)
@@ -244,19 +258,33 @@ def statics(request):
 
 			diagnoses_data.append(dic)
 
-	context = {}
+		dis = Disease.objects.filter(Q(dxcode=search_dxcode) & Q(fileflag=True))
 
-	df = diseasedf[['dxcode', 'frequency', 'fileflag']]	
-	df = df[df.fileflag==True]
-	df = df.drop_duplicates(subset='dxcode').sort_values('frequency', ascending=False)[0:25]
-	data = []
-	for _, item in df.iterrows():
-		dic = {}
-		dic["dxcode"] = item['dxcode']
-		dic["frequency"] = item['frequency']
-		data.append(dic)
+		network_data = OrderedDict()
+		network_data["nodes"] = []
+		network_data["links"] = []
+
+		network_data["nodes"].append({"id": search_dxcode, "group": 1})
+		ordernodelist = []
+		for item in dis:
+			for ordercode in item.prescriptionlist.split(' '):
+				if ordercode in ordernodelist:
+					continue
+				ordernodelist.append(ordercode)
+				node_dic = {}
+				node_dic["id"] = ordercode
+				node_dic["group"] = 2
+				
+				link_dic = {}
+				link_dic["source"] = search_dxcode
+				link_dic["target"] = ordercode
+				link_dic["weight"] = 1
+				
+				network_data["nodes"].append(node_dic)
+				network_data["links"].append(link_dic)
 
 	context['tsvdata'] = json.dumps(data)
+	context['network_data'] = json.dumps(network_data)
 	context['diagnoses_data'] = json.dumps(diagnoses_data)
 
 	return render(request, 'statics.html', context)
