@@ -26,9 +26,8 @@ import numpy as np
 import threading
 import pickle
 import json
-from collections import OrderedDict
 
-#diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist')))
+diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist', 'frequency', 'fileflag')))
 prescriptiondf = pd.DataFrame(list(Prescription.objects.all().values('ordercode', 'ordername')))
 
 # drop rows which contain nan
@@ -38,20 +37,6 @@ NNmodel = NeuralNetwork()
 NXmodel = NetworkX()
 
 diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
-
-#i = 0
-#for item in Disease.objects.all():
-#	for order in item.prescriptionlist.split(' '):
-#		i += 1
-#		print(i, item.dxcode, order, item.frequency)
-#		dis = Disease(
-#				dxcode = item.dxcode,
-#				prescriptionlist = order,
-#				frequency = item.frequency
-#			)
-#		dis.save()
-#
-
 
 
 class datashow(ListView):
@@ -244,44 +229,35 @@ class ModelCompareFormView(FormView):
 		return render(self.request, self.template_name, context)
 
 def statics(request):
+	diagnoses_data = []
+	
 	if request.method == "POST":
-		search_list = request.POST['search_dxcode']
-		print("request: ", search_list)
-		group_data = OrderedDict()
-		group_data['dxcodes'] = search_list
-	else:
-		search_list = ''
+		search_dxcode = request.POST['search_dxcode']
+		print("request: ", search_dxcode)
+
+		diagnoses = Doctor_diagnose.objects.filter(Q(dxcode=search_dxcode))
+
+		for item in diagnoses:
+			dic = {}
+			dic["ordercode"] = item.ordercode
+			dic["frequency"] = item.frequency
+
+			diagnoses_data.append(dic)
 
 	context = {}
-	data = [				
-				{"letter": "A", "frequency": .08167},
-				{"letter": "B", "frequency": .01492},
-				{"letter": "C", "frequency": .02782},
-				{"letter": "D", "frequency": .04253},
-				{"letter": "E", "frequency": .12702},
-				{"letter": "F", "frequency": .02288},
-				{"letter": "G", "frequency": .02015},
-				{"letter": "H", "frequency": .06094},
-				{"letter": "I", "frequency": .06966},
-				{"letter": "J", "frequency": .00153},
-				{"letter": "K", "frequency": .00772},
-				{"letter": "L", "frequency": .04025},
-				{"letter": "M", "frequency": .02406},
-				{"letter": "N", "frequency": .06749},
-				{"letter": "O", "frequency": .07507},
-				{"letter": "P", "frequency": .01929},
-				{"letter": "Q", "frequency": .00095},
-				{"letter": "R", "frequency": .05987},
-				{"letter": "S", "frequency": .06327},
-				{"letter": "T", "frequency": .09056},
-				{"letter": "U", "frequency": .02758},
-				{"letter": "V", "frequency": .00978},
-				{"letter": "W", "frequency": .02360},
-				{"letter": "X", "frequency": .00150},
-				{"letter": "Y", "frequency": .01974},
-				{"letter": "Z", "frequency": .00074},
-		]
+
+	df = diseasedf[['dxcode', 'frequency', 'fileflag']]	
+	df = df[df.fileflag==True]
+	df = df.drop_duplicates(subset='dxcode').sort_values('frequency', ascending=False)[0:25]
+	data = []
+	for _, item in df.iterrows():
+		dic = {}
+		dic["dxcode"] = item['dxcode']
+		dic["frequency"] = item['frequency']
+		data.append(dic)
+
 	context['tsvdata'] = json.dumps(data)
+	context['diagnoses_data'] = json.dumps(diagnoses_data)
 
 	return render(request, 'statics.html', context)
 

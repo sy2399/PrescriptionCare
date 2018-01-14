@@ -85,12 +85,55 @@
 				<svg id="network" width="960", height="560"></svg>
 				<svg id="bar2" width="960", height="250"></svg>
 			</main>
-			{{tsvdata}}
 		</div>
 	
 	
 		<script src="https://d3js.org/d3.v4.min.js"></script>
 	
+		<script>
+
+			var bar1svg = d3.select("#bar1"),
+				margin = {top: 20, right: 20, bottom: 30, left: 40},
+				barwidth = +bar1svg.attr("width") - margin.left - margin.right,
+				barheight = +bar1svg.attr("height") - margin.top - margin.bottom;
+
+			var x = d3.scaleBand().rangeRound([0, barwidth]).padding(0.1),
+				y = d3.scaleLinear().rangeRound([barheight, 0]);
+
+			var g = bar1svg.append("g")
+							.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+			var data = {{ tsvdata|safe }};
+			
+			x.domain(data.map(function(d) { return d.dxcode; }));
+			y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
+
+			g.append("g")
+				.attr("class", "axis axis--x")
+				.attr("transform", "translate(0," + barheight + ")")
+				.call(d3.axisBottom(x));
+
+			g.append("g")
+				.attr("class", "axis axis--y")
+				.call(d3.axisLeft(y).ticks(10))
+				.append("text")
+				.attr("transform", "rotate(-90)")
+				.attr("y", 6)
+				.attr("dy", "0.71em")
+				.attr("text-anchor", "end")
+				.text("Frequency");
+
+			g.selectAll(".bar")
+				.data(data)
+				.enter().append("rect")
+				.attr("class", "bar")
+				.attr("x", function(d) { return x(d.dxcode); })
+				.attr("y", function(d) { return y(d.frequency); })
+				.attr("width", x.bandwidth())
+				.attr("height", function(d) { return barheight - y(d.frequency); });
+					
+
+		</script>
 		<script>
 		
 			var netsvg = d3.select("#network"),
@@ -169,20 +212,21 @@
 
 		<script>
 
-			var bar1svg = d3.select("#bar1"),
+			var bar2svg = d3.select("#bar2"),
 				margin = {top: 20, right: 20, bottom: 30, left: 40},
-				barwidth = +bar1svg.attr("width") - margin.left - margin.right,
-				barheight = +bar1svg.attr("height") - margin.top - margin.bottom;
+				barwidth = +bar2svg.attr("width") - margin.left - margin.right,
+				barheight = +bar2svg.attr("height") - margin.top - margin.bottom;
 
 			var x = d3.scaleBand().rangeRound([0, barwidth]).padding(0.1),
 				y = d3.scaleLinear().rangeRound([barheight, 0]);
 
-			var g = bar1svg.append("g")
+			var g = bar2svg.append("g")
 							.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-			var data = {{ tsvdata|safe }};
-			
-			x.domain(data.map(function(d) { return d.letter; }));
+
+			data = {{ diagnoses_data|safe }}
+
+			x.domain(data.map(function(d) { return d.ordercode; }));
 			y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
 
 			g.append("g")
@@ -192,7 +236,7 @@
 
 			g.append("g")
 				.attr("class", "axis axis--y")
-				.call(d3.axisLeft(y).ticks(10, "%"))
+				.call(d3.axisLeft(y).ticks(10))
 				.append("text")
 				.attr("transform", "rotate(-90)")
 				.attr("y", 6)
@@ -204,48 +248,11 @@
 				.data(data)
 				.enter().append("rect")
 				.attr("class", "bar")
-				.attr("x", function(d) { return x(d.letter); })
+				.attr("x", function(d) { return x(d.ordercode); })
 				.attr("y", function(d) { return y(d.frequency); })
 				.attr("width", x.bandwidth())
 				.attr("height", function(d) { return barheight - y(d.frequency); });
-					
 
-				<!--			d3.tsv("{% static 'data.tsv' %}", -->
-<!--					function(d) {-->
-<!--						d.frequency = +d.frequency;-->
-<!--						return d;-->
-<!--					}, -->
-<!--					function(error, data) {-->
-<!--						if (error) throw error;-->
-<!---->
-<!--						x.domain(data.map(function(d) { return d.letter; }));-->
-<!--						y.domain([0, d3.max(data, function(d) { return d.frequency; })]);-->
-<!---->
-<!--						g.append("g")-->
-<!--							.attr("class", "axis axis--x")-->
-<!--							.attr("transform", "translate(0," + barheight + ")")-->
-<!--							.call(d3.axisBottom(x));-->
-<!---->
-<!--						g.append("g")-->
-<!--							.attr("class", "axis axis--y")-->
-<!--							.call(d3.axisLeft(y).ticks(10, "%"))-->
-<!--							.append("text")-->
-<!--							.attr("transform", "rotate(-90)")-->
-<!--							.attr("y", 6)-->
-<!--							.attr("dy", "0.71em")-->
-<!--							.attr("text-anchor", "end")-->
-<!--							.text("Frequency");-->
-<!---->
-<!--						g.selectAll(".bar")-->
-<!--							.data(data)-->
-<!--							.enter().append("rect")-->
-<!--							.attr("class", "bar")-->
-<!--							.attr("x", function(d) { return x(d.letter); })-->
-<!--							.attr("y", function(d) { return y(d.frequency); })-->
-<!--							.attr("width", x.bandwidth())-->
-<!--							.attr("height", function(d) { return barheight - y(d.frequency); });-->
-<!--					}-->
-<!--				);-->
 
 		</script>
 

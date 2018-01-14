@@ -20,29 +20,9 @@ from matchings.models import Disease, Disease_name, Prescription
 diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist', 'frequency') ))
 diseasedf = diseasedf.dropna(how="any")
 
-print(diseasedf.shape)	
 thres_diseasedf = diseasedf[diseasedf.frequency <= 1000]
 
 uniquedf = diseasedf[['dxcode', 'frequency']].drop_duplicates(subset=['dxcode']).sort_values('frequency', ascending=False)[0:3]
-print(uniquedf.head())
-
-#tempdf = pd.DataFrame(columns=['dxcode', 'prescriptionlist', 'frequency'])
-#i = 0
-#templs = []
-#for dxcode in diseasedf['dxcode']:
-#	print(dxcode)
-#	if dxcode in uniquedf['dxcode'].tolist() and dxcode not in templs:
-#		indexes = diseasedf['dxcode'][diseasedf['dxcode'] == dxcode].index
-#		print('index: ', indexes)
-#		for idx in indexes:
-#			tmp = pd.DataFrame([[diseasedf['dxcode'][idx], diseasedf['prescriptionlist'][idx], diseasedf['frequency'][idx]]], columns=['dxcode', 'prescriptionlist', 'frequency'])
-#			tempdf = tempdf.append(tmp, ignore_index=True)
-#			print(i, idx)
-#			i += 1
-#
-#		templs.append(dxcode)
-#		print(tempdf)
-#		print('templs: ', templs)
 
 tempthres_diseasedf = diseasedf[diseasedf.frequency > 45000]
 
