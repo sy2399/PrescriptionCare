@@ -13,7 +13,7 @@ from django.template import RequestContext
 from django.db.models import Q
 
 from django.contrib.auth.models import User
-from matchings.models import Disease, Disease_name, Prescription, Review, Notice, Doctor_diagnose
+from matchings.models import Disease, Disease_name, Prescription, Review, Notice, Doctor_diagnose, UploadFileModel
 from matchings.forms import MatchForm
 
 from matchings.neural_net_model import NeuralNetwork
@@ -462,6 +462,7 @@ def updatemodel(request):
 
 		else:
 			form = UploadFileForm(request.POST, request.FILES)
+			print("Request: ", request.POST)
 			if form.is_valid():
 				form.save()
 				return render(request, 'update_model.html', {'form': form})
@@ -473,8 +474,20 @@ def updatemodel(request):
 	return render(request, 'update_model.html')
 
 def remodel():
-	#TODO: read saved csv file
-	#TODO: make Disease objects base on file
+	datafiles = UploadFileModel.objects.filter(Q(usedflag=False))	
+	for datafile in datafiles:
+		print(str(datafile.file.path))
+		df = pd.read_csv(str(datafile.file.path), sep=',', encoding='utf-8')
+		print("Succes reading")
+		print(df)
+		for _, item in df.iterrows():
+			newdis = Disease(
+					dxcode = item.dxcode,
+					prescriptionlist = item.prescriptionlist,
+					frequency = item.frequency,
+					fileflag = True
+				)
+
 	newNNmodel = NeuralNetwork()
 	newNNmodel.make_model()
 	newNXmodel = NetworkX()
