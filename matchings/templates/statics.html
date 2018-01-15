@@ -95,18 +95,34 @@ a:focus, a:hover, a:active {color:#333;}
 					상병검색: <input type="text" name="search_dxcode" size="40">
 					<input type="submit" class="button_box" value="Search" />
 				</form>
-				<h4>연관 처방</h4>
-				{% if network_data|length > 2 %}
-				<svg id="network" width="960", height="560"></svg>
-				{% else %}
-				<div style="width:100%;height:560px;">No data</div>
-				{% endif %}
-				<h4>의사 진단</h4>
-				{%if diagnoses_data|length > 2 %}
-				<svg id="bar2" width="960", height="250"></svg>
-				{% else %}
-				<div style="width:100%;height:250px;">No data</div>
-				{% endif %}
+				<br>
+				<hr>
+				<div class = "row">
+
+
+					<div class="col-sm-6" >
+
+						<h4>연관 처방</h4>
+						{% if network_data|length > 2 %}
+						<svg id="network" width="600", height="500" style = "align:center;"></svg>
+						{% else %}
+						<div style="width:100%;height:560px;">No data</div>
+						{% endif %}
+					</div>
+					<div class="col-sm-6">
+						<h4>의사 진단</h4>
+						{%if diagnoses_data|length > 2 %}
+						<svg id="bar2" width="960", height="250"></svg>
+						{% else %}
+						<div style="width:100%;height:250px;">No data</div>
+						{% endif %}
+					</div>
+
+
+				</div>
+
+
+
 			
 				
 			<!--	<svg id="network" width="960", height="560"></svg>-->
@@ -172,7 +188,7 @@ a:focus, a:hover, a:active {color:#333;}
 			var simulation = d3.forceSimulation()
 								.force("link", d3.forceLink()
 													.id(function(d){ return d.id; })
-													.distance(function(d){ return 12*Math.log(d.weight); })
+													.distance(function(d){ return 900 / Math.log(d.weight); })
 													.strength(0.1)
 								)
 								.force("charge", d3.forceManyBody())
