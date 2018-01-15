@@ -278,10 +278,9 @@ def statics(request):
 				network_data["nodes"].append(node_dic)
 				network_data["links"].append(link_dic)
 
-		ordernodelist.append(ordercode)
 		weight = dict(Counter(ordernodecountlist).most_common(30))
 				
-		for item in network_data["nodes"][1:]:
+		for item in network_data["nodes"]:
 			if item["id"] in weight.keys():
 				item["weight"] = weight[item["id"]]
 
