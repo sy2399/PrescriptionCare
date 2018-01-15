@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load staticfiles %}
+
 {% block title %}Relation network{% endblock %}
 
 {% block content %}
@@ -26,11 +27,22 @@
 		.axis--x path {
 			  display: none;
 		}
+a {color:#333;text-decoration:none;}
+a:focus, a:hover, a:active {color:#333;}
+.button_box {
+		width: 80px;
+		height: 30px;
+		background-color: #ECF4F6;
+		border: 1px solid #1291E7;
+		text-align: center;
+		color:#1291E7;
+		cursor: pointer
+	}
 	</style>
 
 	<div class="container-fluid">
 		<div class="row">
-			<nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+			<nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar" style="margin-top:20px;">
 				<ul class="nav nav-pills flex-column">
 					<!--<li class="nav-item">-->
 						<!--<a class="nav-link" href="{% url 'matchings:datashow' %}">Overview</a>-->
@@ -73,12 +85,13 @@
 
 			</nav>
 
-			<main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
+			<main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main" style="margin-top:50px;">
 				<svg id="bar1" width="960", height="250"></svg>
 
 				<form action="." method="post">
 					{% csrf_token %}
-					상병검색: <input type="text" name="search_dxcode">
+					상병검색: <input type="text" name="search_dxcode" size="40">
+
 					<input type="submit" class="button_box" value="Search" />
 				</form>
 
