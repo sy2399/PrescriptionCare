@@ -3,164 +3,6 @@
 {% load staticfiles %}
 {% block content %}
 
-<!--<style>-->
-		<!--input[type=text], input[type=password] {-->
-		<!--width: 50%;-->
-		<!--height: 33px;-->
-		<!--margin: 0;-->
-		<!--padding: 0 9px;-->
-		<!--font-size: 14px;-->
-		<!--color: #666;-->
-		<!--line-height: 28px;-->
-		<!--border: 1px solid #dcdcdc;-->
-		<!--background: #fff;-->
-		<!--vertical-align: middle;-->
-		<!--box-sizing: border-box;-->
-	<!--}-->
-	<!--.scrolltbody {-->
-		<!--display: block;-->
-	<!--}-->
-
-	<!--.scrolltbody tbody {-->
-		<!--display: block;-->
-		<!--height: 300px;-->
-		<!--overflow: auto;-->
-	<!--}-->
-
-	<!--.scrolltbody th:nth-of-type(1),-->
-	<!--.scrolltbody td:nth-of-type(1) {-->
-		<!--width: 80px;-->
-		<!--border-right: 1px solid #dadada;-->
-	<!--}-->
-
-	<!--.scrolltbody th:nth-of-type(2),-->
-	<!--.scrolltbody td:nth-of-type(2) {-->
-		<!--width: 80px;-->
-		<!--border-right: 1px solid #dadada;-->
-	<!--}-->
-
-	<!--.scrolltbody th:nth-of-type(3),-->
-	<!--.scrolltbody td:nth-of-type(3) {-->
-		<!--width: 80px;-->
-		<!--border-right: 1px solid #dadada;-->
-	<!--}-->
-
-	<!--.scrolltbody th:last-child {-->
-		<!--width: 410px;-->
-	<!--}-->
-
-	<!--.scrolltbody td:last-child {-->
-		<!--width: 410px;-->
-	<!--}-->
-
-	<!--.scrolltbody td {-->
-		<!--padding: 0px 0px;-->
-		<!--height: 30px;-->
-		<!--text-align: center;-->
-	<!--}-->
-
-	<!--.scrolltbody th {-->
-		<!--text-align: center;-->
-		<!--padding-left: 0px !important;-->
-		<!--overflow-x: hidden;-->
-	<!--}-->
-	<!--/*-0-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;*/-->
-
-	<!--.scrolltbody2 {-->
-		<!--display: block;-->
-	<!--}-->
-
-	<!--.scrolltbody2 tbody {-->
-		<!--display: block;-->
-		<!--height: 300px;-->
-		<!--overflow: auto;-->
-	<!--}-->
-
-	<!--.scrolltbody2 th:nth-of-type(1),-->
-	<!--.scrolltbody2 td:nth-of-type(1) {-->
-		<!--width: 60px;-->
-		<!--border-right: 1px solid #dadada;-->
-	<!--}-->
-
-	<!--.scrolltbody2 th:nth-of-type(2),-->
-	<!--.scrolltbody2 td:nth-of-type(2) {-->
-		<!--width: 100px;-->
-		<!--border-right: 1px solid #dadada;-->
-	<!--}-->
-
-	<!--.scrolltbody2 th:nth-of-type(3),-->
-	<!--.scrolltbody2 td:nth-of-type(3) {-->
-		<!--width: 400px;-->
-		<!--border-right: 1px solid #dadada;-->
-	<!--}-->
-
-	<!--.scrolltbody2 th:nth-of-type(4),-->
-	<!--.scrolltbody2 td:nth-of-type(4) {-->
-		<!--width: 80px;-->
-		<!--border-right: 1px solid #dadada;-->
-	<!--}-->
-
-	<!--.scrolltbody2 th:last-child {-->
-		<!--width: 80px;-->
-	<!--}-->
-
-	<!--.scrolltbody2 td:last-child {-->
-		<!--width: 80px;-->
-	<!--}-->
-
-	<!--.scrolltbody2 td {-->
-		<!--padding: 0px 0px;-->
-		<!--height: 32px;-->
-		<!--text-align: center;-->
-		<!--overflow-x: hidden;-->
-	<!--}-->
-
-	<!--.scrolltbody2 th {-->
-		<!--text-align: center;-->
-		<!--padding-left: 0px !important;-->
-		<!--overflow-x: hidden;-->
-	<!--}-->
-
-
-	<!--&lt;!&ndash; scrollbody3 &ndash;&gt;-->
-
-
-	<!--&lt;!&ndash; end scrollbody3 &ndash;&gt;-->
-
-	<!--.vType_line th {-->
-		<!--background-color: #fff;-->
-	<!--}-->
-
-	<!--.vType_line {-->
-		<!--border-top: 2px solid #1291E7;-->
-	<!--}-->
-
-	<!--.btn_line_gray {-->
-		<!--width: 50px;-->
-		<!--height: 28px;-->
-		<!--margin: 2px;-->
-		<!--font-size: 12px;-->
-	<!--}-->
-
-	<!--.box_layer h1.tit_back {-->
-		<!--background-color: #1291E7;-->
-	<!--}-->
-	<!--.button_box {-->
-		<!--width: 60px;-->
-		<!--height: 30px;-->
-		<!--background-color: #ECF4F6;-->
-		<!--border: 1px solid #1291E7;-->
-		<!--text-align: center;-->
-		<!--color:#1291E7;-->
-		<!--cursor: pointer-->
-	<!--}-->
-	<!--.tit_back >span {-->
-		<!--font-size: 14px;-->
-		<!--color: #D3FFFE;-->
-	<!--}-->
-	<!--</style>-->
-
-
 
 <script>
 function showPrescription(element,disease){
@@ -171,22 +13,6 @@ function showPrescription(element,disease){
 	var prescriptionView = document.getElementById("prescriptionView");
 	var resultTable = document.getElementById("resultTable");
 	var resultTableTr = resultTable.getElementsByTagName("tr");
-
-    <!--for(var i = 0;i<resultTableTr.length;i++){-->
-        <!--resultTableTr[i].style.backgroundColor = "white";-->
-    <!--}-->
-	<!--element.style.backgroundColor = "#abd9e9"-->
-
-
-	<!--prescriptionView.innerHTML= "<tr><td>"+ pcode_list[4]+"</td><td>"+ pcode_list[14] +"</td></tr>"-->
-					<!--+"<tr><td>"+ pcode_list[5]+"</td><td>"+ pcode_list[15] +"</td></tr>"-->
-					<!--+"<tr><td>"+ pcode_list[6]+"</td><td>"+ pcode_list[16] +"</td></tr>"-->
-					<!--+"<tr><td>"+ pcode_list[7]+"</td><td>"+ pcode_list[17] +"</td></tr>"-->
-					<!--+"<tr><td>"+ pcode_list[8]+"</td><td>"+ pcode_list[18] +"</td></tr>"-->
-					<!--+"<tr><td>"+ pcode_list[9]+"</td><td>"+ pcode_list[19] +"</td></tr>"-->
-					<!--+"<tr><td>"+ pcode_list[10]+"</td><td>"+ pcode_list[20] +"</td></tr>"-->
-					<!--+"<tr><td>"+ pcode_list[11]+"</td><td>"+ pcode_list[21] +"</td></tr>"-->
-					<!--+"<tr><td>"+ pcode_list[12]+"</td><td>"+ pcode_list[22] +"</td></tr>";-->
 }
 
 $(function(){
@@ -279,12 +105,6 @@ $(function(){
 
 function HighlightRow(obj){
 
-	//var table = document.getElementById("resultTable");
-	//var tr = table.getElementsByTagName("tr");
-	<!--for(var i=0; i<tr.length; i++){-->
-		<!--tr[i].style.background = "white";-->
-	<!--}-->
-
 	if(obj.style.backgroundColor == "") { // if white
 	    obj.style.backgroundColor = "#d3fffe"
 	}
@@ -297,11 +117,6 @@ $("#prescription_text_2").text("총 {{ disease_list_cnt }}개 데이터 검색�
 
 </script>
 
-<!--<div id = "afterResultView1" style = "">-->
-	<!--<button class="btn btn-default"id = "allselectBtn">전체선택</button>-->
-	<!--<button class="btn btn-default" id = "alldeselectBtn">전체해제</button>-->
-<!--</div>-->
-<!--<div style="overflow-x:auto;">-->
 <div>
 	<table id = "resultTable" class = "vType_line mgb20 scrolltbody2" style="width:100%">
 		<thead>
@@ -314,11 +129,9 @@ $("#prescription_text_2").text("총 {{ disease_list_cnt }}개 데이터 검색�
 			{% for disease in disease_list %}
 				{% if disease.0.1 != "Unknown" %} <!-- if unknown, pass -->
 					{% if disease.1 == 1 %}
-						<!--<tr style="background-color:#d3fffe" onclick = "HighlightRow(this)">-->
 						<tr style="background-color:#d3fffe">
 							<td><input type="checkbox" id="checked" name = "_selected_" checked></td>
 					{% else %}
-						<!--<tr onclick = "HighlightRow(this)">-->
 						<tr>
 							<td><input type="checkbox" id="checked" name = "_selected_"></td>
 					{% endif %}
@@ -350,34 +163,6 @@ $("#prescription_text_2").text("총 {{ disease_list_cnt }}개 데이터 검색�
 				<input type="button" class="button_box" style="float:right" id="saveBtn"  value="저장"/>
 			<br><br>
 		</form>
-		
-		<!--<h6>Notice(상단 체크박스에서 여러 개 선택 시 동일하게 적용됩니다)</h6>
-		<div id="hiddendiv">
-			<form id = "hiddenform" action = "." method="post">
-				<textarea style="width:100%" rows="3" cols="50" id="noticeArea" name = "noticeArea">{{ notice.notice_description }}</textarea>
-				<br>
-				<button id = "reset" style = "float:left">Reset</button>
-
-			</form>
-
-		</div>-->
+		</div>
 	</div>
-
-<!--<div style = "width:50%;float:left" >-->
-	<!--<table class="table table-striped scroll" id = "prescriptionResult" style="width:100%;">-->
-		<!--<thead>-->
-			<!--<tr class= "table-responsive-th">-->
-			<!--<th >Prescription</th>-->
-			<!--<th >Prescription Name</th>-->
-		<!--</tr>-->
-		<!--</thead>-->
-		<!--<tbody id = "prescriptionView">-->
-
-
-		<!--</tbody>-->
-	<!--</table>-->
-<!--</div>-->
-
-
-</div>
 {% endblock %}

@@ -86,17 +86,31 @@ a:focus, a:hover, a:active {color:#333;}
 			</nav>
 
 			<main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main" style="margin-top:50px;">
+				<h4>상병 빈도수</h4>
 				<svg id="bar1" width="960", height="250"></svg>
-
+				<br />
+				<br />
 				<form action="." method="post">
 					{% csrf_token %}
 					상병검색: <input type="text" name="search_dxcode" size="40">
-
 					<input type="submit" class="button_box" value="Search" />
 				</form>
-
+				<h4>연관 처방</h4>
+				{% if network_data|length > 2 %}
 				<svg id="network" width="960", height="560"></svg>
+				{% else %}
+				<div style="width:100%;height:560px;">No data</div>
+				{% endif %}
+				<h4>의사 진단</h4>
+				{%if diagnoses_data|length > 2 %}
 				<svg id="bar2" width="960", height="250"></svg>
+				{% else %}
+				<div style="width:100%;height:250px;">No data</div>
+				{% endif %}
+			
+				
+			<!--	<svg id="network" width="960", height="560"></svg>-->
+			<!--	<svg id="bar2" width="960", height="250"></svg>-->
 			</main>
 		</div>
 	
