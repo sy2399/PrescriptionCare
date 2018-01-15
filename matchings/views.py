@@ -264,7 +264,6 @@ def statics(request):
 		network_data["nodes"] = []
 		network_data["links"] = []
 
-		network_data["nodes"].append({"id": search_dxcode, "group": 1})
 		ordernodelist = []
 		ordernodecountlist = []
 		for item in dis:
@@ -285,15 +284,19 @@ def statics(request):
 				network_data["links"].append(link_dic)
 
 		ordernodelist.append(ordercode)
-		weight = Counter(ordernodecountlist)
+		weight = dict(Counter(ordernodecountlist).most_common(30))
 				
-		for item in network_data["nodes"]:
-			item["weight"] = weight[item["id"]]
+		for item in network_data["nodes"][1:]:
+			if item["id"] in weight.keys():
+				item["weight"] = weight[item["id"]]
 
 		for item in network_data["links"]:
-			item["weight"] = weight[item["target"]]
+			if item["target"] in weight.keys():
+				item["weight"] = weight[item["target"]]
 
-
+		network_data["nodes"] = [d for d in network_data["nodes"] if d.get("weight")]
+		network_data["nodes"].append({"id": search_dxcode, "group": 1, "weight": sum(weight.values())})
+		network_data["links"] = [d for d in network_data["links"] if d.get("weight")]
 
 	context['tsvdata'] = json.dumps(data)
 	context['network_data'] = json.dumps(network_data)
