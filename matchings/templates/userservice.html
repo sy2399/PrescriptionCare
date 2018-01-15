@@ -2,15 +2,6 @@
 {% load staticfiles %}
 {% block extrastyle %}{% static 'css/jw_front.css' %}{% endblock %}
 {% block content %}
-<!--<head>-->
-	<!--<meta charset="utf-8">-->
-	<!--<meta http-equiv="Content-Script-Type" content="text/javascript" />-->
-	<!--<meta http-equiv="Content-Style-Type" content="text/css" />-->
-	<!--<meta http-equiv="X-UA-Compatible" content="IE=edge" />-->
-	<!--<meta name="viewport" content="width=1000" />-->
-	<!--<meta name="apple-mobile-web-app-title" content="jw Connected Care System" />-->
-	<!--<title>Ontic Smart Support Service</title>-->
-<!--</head>-->
 <script type="text/javascript" src="{% static 'js/jquery.tablesorter.min.js' %}"></script>
 <script>
 
@@ -53,10 +44,7 @@
 					}
 				}
 
-				<!--$(this).parent().parent().removeClass('class', 'btn_line_gray');-->
-				<!--$(this).parent().parent().css("background-color", "#D3FFFE");-->
 
-				<!-- 처방 목록 테이블 -->
 				for(var i=1;i<$('#servicePrescriptionTable tr').length;i++){
 					var orderCode = $('#servicePrescriptionTable tr').eq(i).children().eq(2).text();
 
@@ -67,7 +55,6 @@
 
 						$('#servicePrescriptionTable tr').eq(i).children().attr('class', 'btn_line_gray');
 						$('#servicePrescriptionTable tr').eq(i).children().eq(0).attr('class', 'btn_line_gray');
-						<!--$('#servicePrescriptionTable tr').eq(i).children().css("background-color", "#DCDCDC");-->
 						var parameter = "'"+orderCode + "'";
 						$('#servicePrescriptionTable tr').eq(i).children().eq(0).html(
 						    '<button type="button" class="btn_line_gray" class="release_btn"  onclick = "release('+parameter+')">해제</button>');
@@ -159,7 +146,6 @@
                     }
                     $("#hiddenForm").append(html);
                     $("#hiddenForm").submit();
-                    //alert($("#hiddenForm").html());
                     alert("저장되었습니다");
                 }else{
 
@@ -181,7 +167,6 @@
 					}
 					$("#hiddenForm").append(html);
 					$("#hiddenForm").submit();
-					//alert($("#hiddenForm").html());
 					alert("저장되었습니다");
                 }
                 else {
@@ -294,8 +279,7 @@
 		padding-left: 0px !important;
 		overflow-x: hidden;
 	}
-	/*-0-----------------------------*/
-
+	
 	.scrolltbody2 {
 		display: block;
 	}
@@ -429,7 +413,7 @@
 			</table>
 
 			<br>
-			<!--// process -->
+			
 			<div class="tit_sWrap">
 				<h4 class="tit_bold_gray">상병추천</h4>
 			</div>
@@ -442,9 +426,7 @@
 					<th>처방명</th>
 					<th>상병코드</th>
 					<th>상병명</th>
-					<!--<th>과</th>-->
 					<th>정확도</th>
-					<!--<th>사용빈도▼</th>-->
 					<th>사용빈도</th>
 				</thead>
 				<tbody style="overflow-y:auto;height:150px;">
@@ -457,7 +439,6 @@
 						<td>{{ prescription.ordercode }}</td>
 						<td value = {{ prescription.dxcode }}>{{ prescription.dxcode }}</td>
 						<td>{{ name}}</td>
-						<!--<td>IM</td>-->
 						<td>- </td>
 						<td>{{ freq }}</td>
 					</tr>

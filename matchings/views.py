@@ -29,16 +29,16 @@ import pickle
 import json
 from collections import OrderedDict, Counter
 
+
+#	Dataframes	#
 diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist', 'frequency', 'fileflag')))
 prescriptiondf = pd.DataFrame(list(Prescription.objects.all().values('ordercode', 'ordername')))
-
 # drop rows which contain nan
 prescriptiondf = prescriptiondf.dropna(how="any")
+diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
 
 NNmodel = NeuralNetwork()
 NXmodel = NetworkX()
-
-diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
 
 @method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
 class datashow(ListView):
@@ -497,6 +497,9 @@ def remodel():
 					fileflag = True
 				)
 			newdis.save()
+		datafile.usedflag = True
+		datafile.save()
+
 
 	newNNmodel = NeuralNetwork()
 	newNNmodel.make_model()

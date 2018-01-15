@@ -65,7 +65,6 @@
 		padding-left: 0px !important;
 		overflow-x: hidden;
 	}
-	/*-0-----------------------------*/
 
 	.scrolltbody2 {
 		display: block;
@@ -122,12 +121,6 @@
 		overflow-x: hidden;
 	}
 
-
-	<!-- scrollbody3 -->
-
-
-	<!-- end scrollbody3 -->
-
 	.vType_line th {
 		background-color: #fff;
 	}
@@ -173,38 +166,6 @@
 				$('#search-disease-results').empty();
 			});
 
-			<!--
-			$('#allselectBtn').click(function() {
-
-                var checkboxes = $('#resultTable tr')
-                for (var i = 0; i < checkboxes.length; i++) {
-                    if (checkboxes[i].type == 'checkbox') {
-                        checkboxes[i].checked = true;
-                    }
-                }
-			});
-
-			$('#alldeselectBtn').click(function(){
-
-			    var checkboxes = $('#resultTable tr')
-			    for (var i = 0; i < checkboxes.length; i++) {
-             		if (checkboxes[i].type == 'checkbox') {
-                        checkboxes[i].checked = false;
-                    }
-             	}
-			});
-			-->
-
-			<!--
-			var tbl = $('#resultTable');
-			$('#allselectBtn').click(function(){
-				tbl.find(":checkbox").prop("checked", true);
-			});
-
-			$('#alldeselectBtn').click(function(){
-				tbl.find(":checkbox").prop("checked", false);
-			});
-			-->
 		});
 
 	</script>
@@ -213,21 +174,6 @@
 		<div class="row">
 			<nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar"  style="margin-top:20px;">
 				<ul class="nav nav-pills flex-column">
-					<!--<li class="nav-item">-->
-						<!--<a class="nav-link" href="{% url 'matchings:datashow' %}">Overview</a>-->
-					<!--</li>-->
-					<!--<li class="nav-item">-->
-						<!--<a class="nav-link" href="#">Reports</a>-->
-					<!--</li>-->
-					<!--<li class="nav-item">-->
-						<!--<a class="nav-link" href="{% url 'matchings:models_test' %}">Compare Models</a>-->
-					<!--</li>
-					-->
-					<!--
-					<li class="nav-item">
-						<a class="nav-link" href="">HOME</a>
-					</li>
-					-->
 					<li class="nav-item">
 						<a class="nav-link active" href="{% url 'matchings:match_disease' %}">인정상병관리<span class="sr-only">(current)</span></a>
 					</li>
@@ -239,7 +185,6 @@
 						<a class="nav-link" href="{% url 'matchings:usermanagement' %}">계정 관리</a>
 					</li>
 					-->	
-
 					<li class="nav-item">
 						<a class="nav-link" href="{% url 'matchings:statics' %}">통계분석</a>
 					</li>
@@ -270,9 +215,9 @@
                                 <button id="searchBtn" class="button_box">검색</button>
 							</div>
 							<br>
-								<div class="tit_sWrap">
-									<h4 class="tit_bold_gray" id="prescription_text_1">총 0개 데이터 검색됨</h4>
-								</div>
+							<div class="tit_sWrap">
+								<h4 class="tit_bold_gray" id="prescription_text_1">총 0개 데이터 검색됨</h4>
+							</div>
 
 							<div id = "preResultDiv">
 								<table class="vType_line mgb20 scrolltbody" style="width:100%">
@@ -296,16 +241,6 @@
 									</tbody>
 								{% endif %}
 								</table>
-							</div>
-								<!--<div id="list_form" class="form-group">-->
-
-									<!--{% csrf_token %}-->
-									<!--<label>처방 리스트:</label>-->
-									<!--<input type="text" id="clickResultView">-->
-									<!--<button id="list_form_button" onclick = "loading()">Submit</button>-->
-									<!--<button id="list_reset_button">Reset</button>-->
-								<!--</div>-->
-
 							</div>
 
 							<div class="col-md-6">

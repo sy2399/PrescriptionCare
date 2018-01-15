@@ -1,5 +1,3 @@
-<!--{% load staticfiles %}-->
-<!--{% block extrastyle %}{% static 'css/jw_front.css' %}{% endblock %}-->
 {% load staticfiles %}
 {% block content %}
 
@@ -17,20 +15,6 @@ function showPrescription(element,disease){
 
 $(function(){
 	var tbl = $('#resultTable');
-	<!--
-	$('#allselectBtn').click(function(){
-		$(":checkbox", tbl).attr("checked", true);
-		$('#resultTable tr').css("background-color", "#D3FFFE");
-
-	});
-
-	$('#alldeselectBtn').click(function(){
-		$(":checkbox", tbl).attr("checked", false);
-		$('#resultTable tr').css("background-color", "white");
-
-	});
-	-->
-
 	$('input[type="checkbox"]').change(function() {
 		if(this.checked) {
 			$(this).parent().parent().css("background-color", "#D3FFFE");
@@ -97,7 +81,7 @@ $(function(){
 				$('#hiddenform').append(html);
 				$('#hiddenform').submit();
 			} else {
-			// Do nothing!
+
 			}
 		}
 	});
