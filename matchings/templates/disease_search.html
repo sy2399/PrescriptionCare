@@ -47,11 +47,11 @@
 	}
 
 	.scrolltbody th:last-child {
-		width: 410px;
+		width: 550px;
 	}
 
 	.scrolltbody td:last-child {
-		width: 410px;
+		width: 550px;
 	}
 
 	.scrolltbody td {
@@ -102,11 +102,11 @@
 	}
 
 	.scrolltbody2 th:last-child {
-		width: 80px;
+		width: 150px;
 	}
 
 	.scrolltbody2 td:last-child {
-		width: 80px;
+		width: 150px;
 	}
 
 	.scrolltbody2 td {
@@ -255,11 +255,9 @@
 			</nav>
 
 			<main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
-
-				<h2>인정 상병 관리</h2>
 				<div id="prescription_form" class="table-responsive" class = "form-group">
 					{% csrf_token %}
-					<br><br>
+
 					<div id="loading" style = "visibility:hidden"><img id="loading-image" src="../../../static/img/loading.gif" alt="Loading..." /></div>
 
 					<br>
@@ -320,7 +318,7 @@
 								<h4 class="tit_bold_gray" id="prescription_text_2">총 0개 데이터 검색됨</h4>
 							</div>
 							<div id = "resultDiv">
-								<div style="overflow-x:auto;">
+								<div>
 									<table id = "resultTable" class = "vType_line scrolltbody2" style="width:100%">
 										<thead>
 											<th>사용</th>
