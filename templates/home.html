@@ -1,31 +1,97 @@
-{% extends "base.html" %}
 
-{% block title %}Smart Support Service {% endblock %}
-{% load static %}
+
+{% extends 'base.html' %}
+
+{% block title %}login.html{% endblock %}
+
+{% load staticfiles %}
+{% block extrastyle %}{% static 'css/forms.css' %}{% endblock %}
+
 {% block content %}
-<br><br>
-	<link rel="stylesheet" href="{% static 'css/home.css' %}">
-	{% if user.is_active %}
-	<p><a href={% url 'matchings:datashow' %}>Welcome!!</a></p>
-	{% else %}
-	<div class="container" style = "margin-top:50px;">
-		<div class="outer">
-			<div class="inner">
-				<div class="contents">
-					<p id="cards_title" class="row">Please login first</p>
-					<div class="row cards">
-						<div class="col-sm-5 card">
-							<a href="{% url 'login' %}">Login</a>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3"></div>
+			<div class="col-sm-6">
+
+				<div id="loginbox" style="margin-top:50px;">
+
+				<div class="panel panel-info" >
+						<div class="panel-heading">
+							<div class="panel-title" style="text-align:center">ONTIC HIS Smart Support Service</div>
+							<!--<div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#">Forgot password?</a></div>-->
 						</div>
-						<div class="col-sm-5 card">
-							<a href="{% url 'register'%}">Register</a>
+
+						<div style="padding-top:30px" class="panel-body" >
+
+
+
+
+							<form id="loginform" class="form-horizontal" role="form" action = "." method="post">
+
+								{% csrf_token %}
+								{% if form.errors %}
+								<div  id="login-alert" class="alert alert-danger col-sm-12">Wrong!! Please correct the error(s) below</div>
+								{% endif %}
+
+								<div class="col-sm-6" >
+									{% load widget_tweaks %}
+									<div style="margin-top:10px" class="form-group">
+											<!--로그인-->
+										<div class="col-sm-12 controls" style = "text-align:center;">
+											<a href="{% url 'login' %}">Login</a>
+											<input type="hidden" name="next" value="{{ next }}" />
+										</div>
+										</div>
+
+
+								</div>
+
+								<div class="col-sm-6" >
+									<div style="margin-top:10px" class="form-group" >
+										<!-- Button -->
+
+										<div class="col-sm-12 controls" style = "text-align:center;">
+											<a href="{% url 'register'%}">Register</a>
+
+											<input type="hidden" name="next" value="{{ next }}" />
+										</div>
+									</div>
+
+								</div>
+
+
+
+
+ 									<br>
+
+									<div class="form-group">
+										<div class="col-md-12 control">
+											<div style="border-top: 1px solid#888; padding-top:15px; font-size:85%; text-align:center" >
+												주소 서울시 금천구 디지털로길 갑을그레이트밸리 B동 1001호 (주)중외정보기술<br>
+												Tel. 02-801-1000 Fax. 02-801-1099<br>
+												COPYRIGHT 중외정보기술 ALL RIGHTS RESERVED
+											<a href="#" onClick="$('#loginbox').hide(); $('#signupbox').show()">
+
+											</a>
+											</div>
+										</div>
+									</div>
+								</form>
+
+
+
+							</div>
 						</div>
-					</div>
-				</div>
 			</div>
-		</div>
-	</div>
-	{% endif %}
+
+		<div class="col-sm-3" ></div>
+  		</div>
+
+
+
+
+         </div>
+    </div>
 {% endblock %}
 
 
