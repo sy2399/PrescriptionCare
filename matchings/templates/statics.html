@@ -153,14 +153,18 @@ a:focus, a:hover, a:active {color:#333;}
 				netwidth = +netsvg.attr("width"),
 				netheight = +netsvg.attr("height");
 
-			var color = d3.scaleOrdinal(d3.schemeCatagory20);
+			var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 			var simulation = d3.forceSimulation()
-								.force("link", d3.forceLink().id(function(d){ return d.id; }).distance(function(d){ return 8*Math.log(d.weight); }).strength(0.1))
+								.force("link", d3.forceLink()
+													.id(function(d){ return d.id; })
+													.distance(function(d){ return 12*Math.log(d.weight); })
+													.strength(0.1)
+								)
 								.force("charge", d3.forceManyBody())
 								.force("center", d3.forceCenter(netwidth/2, netheight/2));
 
-			var graph = {{ network_data|safe }}
+			var graph = {{ network_data|safe }};
 
 			var link = netsvg.append("g")
 							.attr("class", "links")
@@ -169,14 +173,13 @@ a:focus, a:hover, a:active {color:#333;}
 							.enter().append("line")
 								.attr("stroke-width", function(d){ return 1; });
 
-
 			var node = netsvg.append("g")
 							.attr("class", "nodes")
 							.selectAll("circle")
 							.data(graph.nodes)
 							.enter().append("circle")
-							.attr("r", function(d){ return 5*Math.log10(d.weight); })
-							.attr("fill", function(d){ return '#1f77b4'; })
+							.attr("r", function(d){ return 6*Math.log10(d.weight); })
+							.attr("fill", function(d){ return color(Math.floor(2*Math.log10(d.weight))); })
 							.call(d3.drag()
 									.on("start", dragstarted)
 									.on("drag", dragged)

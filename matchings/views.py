@@ -214,18 +214,13 @@ class ModelCompareFormView(FormView):
 	form_class = MatchForm
 	template_name = 'models_test_page.html'
 
-#	NNmodel = NeuralNetwork()
-#	NXmodel = NetworkxModel()
-
 	def form_valid(self, form):
 		schWord = '%s' % self.request.POST['match_word']
-		#prescription_list = Prescription_List.objects.filter(Q(ORDERCODE__icontains=schWord)).distinct()
 
 		context = {}
 		context['form'] = form
 		context['search_term'] = schWord
 		context['neuralnet_disease_list'] = NNmodel.get_disease(ordercode_input=schWord)
-#		context['networkx_disease_list'] = self.NXmodel.get_disease(ordercode_input=schWord)
 
 		return render(self.request, self.template_name, context)
 
@@ -304,7 +299,6 @@ def statics(request):
 
 	return render(request, 'statics.html', context)
 
-
 class UserStatics(ListView):
 	template_name = 'userstatics.html'
 
@@ -316,8 +310,6 @@ class UserManagement(ListView):
 
 	def get_queryset(self):
 		return User.objects.filter(is_superuser=False)
-
-
 
 def userservice(request):
 	if request.method == 'POST':
@@ -356,8 +348,6 @@ def userservice(request):
 	else:
 		schWord = ''
 
-	print(schWord)
-
 	search_prescription_list = []
 	for code in schWord.split(" "):
 		if Notice.objects.filter(ordercode=code).count() != 1:
@@ -369,7 +359,6 @@ def userservice(request):
 	hosp_disease_name_list = []
 	hosp_prescriptions_fre = []
 	for code in schWord.split(" "):
-		#print(Review.objects.filter(ordercode=code).count())
 		if Review.objects.filter(ordercode=code).count() == 0:
 			continue
 
@@ -377,7 +366,6 @@ def userservice(request):
 		for item in hosp_prescription:
 			hosp_prescriptions.append(item)
 	
-			#hosp_disease_name_list.append(Disease_name.objects.get(icdcode=item.dxcode).namek)
 			if (diseasenamedf['icdcode'] != item.dxcode).all():
 				hosp_disease_name_list.append("Unknown")
 			else:
@@ -451,7 +439,6 @@ def userservice(request):
 			else:
 				item.append(Doctor_diagnose.objects.get(Q(ordercode=code) & Q(dxcode=item[0])).frequency)
 
-	print(networkx_disease_list_non_duplicates)
 	context = {}
 	context['schword'] = schWord
 	context['schword_cnt'] = schWord_cnt
@@ -477,7 +464,6 @@ def updatemodel(request):
 
 		else:
 			form = UploadFileForm(request.POST, request.FILES)
-			print("Request: ", request.POST)
 			if form.is_valid():
 				form.save()
 				return render(request, 'update_model.html', {'form': form})
@@ -491,7 +477,6 @@ def updatemodel(request):
 def remodel():
 	datafiles = UploadFileModel.objects.filter(Q(usedflag=False))	
 	for datafile in datafiles:
-		print(str(datafile.file.path))
 		df = pd.read_csv(str(datafile.file.path), sep=',', encoding='utf-8')
 		print("Success reading")
 		print(df)
