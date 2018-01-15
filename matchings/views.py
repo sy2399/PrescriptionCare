@@ -26,7 +26,7 @@ import numpy as np
 import threading
 import pickle
 import json
-from collections import OrderedDict
+from collections import OrderedDict, Counter
 
 diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist', 'frequency', 'fileflag')))
 prescriptiondf = pd.DataFrame(list(Prescription.objects.all().values('ordercode', 'ordername')))
@@ -266,8 +266,10 @@ def statics(request):
 
 		network_data["nodes"].append({"id": search_dxcode, "group": 1})
 		ordernodelist = []
+		ordernodecountlist = []
 		for item in dis:
-			for ordercode in item.prescriptionlist.split(' '):
+			for ordercode in item.prescriptionlist.split(' '):				
+				ordernodecountlist.append(ordercode)
 				if ordercode in ordernodelist:
 					continue
 				ordernodelist.append(ordercode)
@@ -278,10 +280,20 @@ def statics(request):
 				link_dic = {}
 				link_dic["source"] = search_dxcode
 				link_dic["target"] = ordercode
-				link_dic["weight"] = 1
 				
 				network_data["nodes"].append(node_dic)
 				network_data["links"].append(link_dic)
+
+		ordernodelist.append(ordercode)
+		weight = Counter(ordernodecountlist)
+				
+		for item in network_data["nodes"]:
+			item["weight"] = weight[item["id"]]
+
+		for item in network_data["links"]:
+			item["weight"] = weight[item["target"]]
+
+
 
 	context['tsvdata'] = json.dumps(data)
 	context['network_data'] = json.dumps(network_data)
@@ -478,7 +490,7 @@ def remodel():
 	for datafile in datafiles:
 		print(str(datafile.file.path))
 		df = pd.read_csv(str(datafile.file.path), sep=',', encoding='utf-8')
-		print("Succes reading")
+		print("Success reading")
 		print(df)
 		for _, item in df.iterrows():
 			newdis = Disease(
@@ -487,6 +499,7 @@ def remodel():
 					frequency = item.frequency,
 					fileflag = True
 				)
+			newdis.save()
 
 	newNNmodel = NeuralNetwork()
 	newNNmodel.make_model()
