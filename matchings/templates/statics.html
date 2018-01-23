@@ -210,7 +210,7 @@ a:focus, a:hover, a:active {color:#333;}
 									.on("drag", dragged)
 									.on("end", dragended)
 								);
-			node.append("title").text(function(d){ return d.id; });
+			node.append("title").text(function(d){ return d.name; });
 			simulation
 				.nodes(graph.nodes)
 				.on("tick", ticked);

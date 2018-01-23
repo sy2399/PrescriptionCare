@@ -291,13 +291,24 @@ def statics(request):
 		for item in network_data["nodes"]:
 			if item["id"] in weight.keys():
 				item["weight"] = weight[item["id"]]
+			if Prescription.objects.filter(Q(ordercode=item["id"])).count() == 1:
+				ordername = Prescription.objects.get(Q(ordercode=item["id"])).ordername
+				item["name"] = ordername
+			else:
+				item["name"] = "Unknown"
 
 		for item in network_data["links"]:
 			if item["target"] in weight.keys():
 				item["weight"] = weight[item["target"]]
 
 		network_data["nodes"] = [d for d in network_data["nodes"] if d.get("weight")]
-		network_data["nodes"].append({"id": search_dxcode, "group": 1, "weight": sum(weight.values())})
+		
+		if Disease_name.objects.filter(Q(icdcode=search_dxcode)).count() == 1:
+			disname = Disease_name.objects.get(Q(icdcode=search_dxcode)).namek
+		else:
+			disname = "Unknown" + "(" + search_dxcode + ")"
+
+		network_data["nodes"].append({"id": search_dxcode, "group": 1, "weight": sum(weight.values()), "name": disname})
 		network_data["links"] = [d for d in network_data["links"] if d.get("weight")]
 
 	context['tsvdata'] = json.dumps(data)
@@ -483,6 +494,7 @@ def check_diagnose(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def updatemodel(request):
+
 	if request.method == 'POST':
 	
 		if request.POST.get('remodel') is not None:
@@ -494,21 +506,11 @@ def updatemodel(request):
 		else:
 			form = UploadFileForm(request.POST, request.FILES)
 			if form.is_valid():
-				print(request.FILES)
-
-
-				form.save()
-
-				#getfile
-				#if file's col is weird ~~~
-				#	{remove}
-				# return redirect(asdfafda)
-
-				return render(request, 'update_model.html', {'form': form})
+					form.save()
+					return render(request, 'update_model.html', {'form': form})
 			else:
-				form = UploadFileForm()
 
-			return render(request,'update_model.html', {'form': form})
+				return render(request,'update_model.html')
 
 	return render(request, 'update_model.html')
 
