@@ -16,19 +16,16 @@ import time
 
 from matchings.models import Disease, Disease_name, Prescription
 
-# get data
+# get first data
 diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist', 'frequency') ))
 diseasedf = diseasedf.dropna(how="any")
-
-thres_diseasedf = diseasedf[diseasedf.frequency <= 1000]
-
-uniquedf = diseasedf[['dxcode', 'frequency']].drop_duplicates(subset=['dxcode']).sort_values('frequency', ascending=False)[0:3]
-
+#thres_diseasedf = diseasedf[diseasedf.frequency <= 1000]
+thres_diseasedf = diseasedf[diseasedf.frequency <= 1]
 tempthres_diseasedf = diseasedf[diseasedf.frequency > 45000]
 
 diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
-
 prescriptiondf = pd.DataFrame(list(Prescription.objects.all().values('ordercode', 'ordername')))
+
 tls = []
 for item in prescriptiondf['ordercode'].str.split(" "):
 	tls.append(item[0])
@@ -38,7 +35,8 @@ def get_data():
 	diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist', 'frequency') ))
 	diseasedf = diseasedf.dropna(how="any")
 
-	thres_diseasedf = diseasedf[diseasedf.frequency <= 1000]
+	#thres_diseasedf = diseasedf[diseasedf.frequency <= 1000]
+	thres_diseasedf = diseasedf[diseasedf.frequency <= 1]
 
 	diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
 
@@ -110,7 +108,6 @@ class NetworkX:
 			else:
 				source[row['source']] += row['edge_count']
 			i += 1
-			print(i)
 
 		source_count = pd.DataFrame([source]).T
 		source_count.columns = ['source_count']
@@ -164,7 +161,6 @@ class NetworkX:
 			else:
 				source[row['source']] += row['edge_count']
 			i += 1
-			print(i)
 
 		source_count = pd.DataFrame([source]).T
 		source_count.columns = ['source_count']
@@ -187,7 +183,6 @@ class NetworkX:
 
 		json_file.close()
 	
-
 
 	## used for init
 	def create_input_list(self, df):
@@ -236,12 +231,9 @@ class NetworkX:
 		
 		return sorted(disease_weight.items(), key=lambda x:(x[1]['count'], x[1]['weight']), reverse=True)
 
-
-
 	#function to get dxcode
 	def find_dxcode(self, order):
 		return list(self.G.neighbors(order))
-
 
 	##function for searching
 	def get_ordercode_input_list(self, ordercode_input):
@@ -281,13 +273,14 @@ class NetworkX:
 				relation = "Very Low"
 
 			#item[1]['proportion'] = item[1]['count'] / total_count
-			item.append("X: " + relation)
+			#item.append("X: " + relation)
+			item.append(relation)
 
 
 		#map disease name
 		for item in results_converted_to_list:
 			if (diseasenamedf['icdcode'] != item[0]).all():
-				item[1] = "Unknown"
+				item[1] = "상병 불명"
 			else:
 				idx = diseasenamedf['icdcode'][diseasenamedf['icdcode'] == item[0]].index[0]
 				item[1] = diseasenamedf['namek'][idx]

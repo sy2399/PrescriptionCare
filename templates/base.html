@@ -19,7 +19,10 @@
 
 	<!-- Latest compiled JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/locales/bootstrap-datepicker.tr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
 	{% load static %}
 
 	<link rel="stylesheet" href="{% static 'css/base.css' %}" />
@@ -39,7 +42,7 @@
 		</div>
 		<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link" href="#">Home</a></li>
+				<li class="nav-item active"><a class="nav-link" href="/matchings/match_disease/">Home</a></li>
 				{% if user.active %}
 				<li class="nav-item"><a class="nav-link" href>Page1</a></li>
 				<li class="nav-item"><a class="nav-link" href>Page2</a></li>

@@ -122,11 +122,6 @@ a:focus, a:hover, a:active {color:#333;}
 				</div>
 
 
-
-			
-				
-			<!--	<svg id="network" width="960", height="560"></svg>-->
-			<!--	<svg id="bar2" width="960", height="250"></svg>-->
 			</main>
 		</div>
 	
@@ -208,7 +203,7 @@ a:focus, a:hover, a:active {color:#333;}
 							.selectAll("circle")
 							.data(graph.nodes)
 							.enter().append("circle")
-							.attr("r", function(d){ return 6*Math.log10(d.weight); })
+							.attr("r", function(d){ return 6*Math.floor(Math.log10(d.weight)); })
 							.attr("fill", function(d){ return color(Math.floor(2*Math.log10(d.weight))); })
 							.call(d3.drag()
 									.on("start", dragstarted)
@@ -294,9 +289,15 @@ a:focus, a:hover, a:active {color:#333;}
 				.attr("transform", "rotate(90)")
 				.style("text-anchor", "start");
 
+			var scale = d3.scaleLinear()
+							.range([20, 480])
+							.domain([0, 3]);
+
 			g.append("g")
 				.attr("class", "axis axis--y")
-				.call(d3.axisLeft(y).ticks(10))
+				.call(d3.axisLeft(y)
+					.tickValues(d3.range(scale.domain()[0], scale.domain()[1] + 1, 1))
+					.tickFormat(function(d){ return ~~d; }) )
 				.append("text")
 				.attr("transform", "rotate(-90)")
 				.attr("y", 6)
