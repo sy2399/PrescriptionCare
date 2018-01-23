@@ -144,24 +144,63 @@
 	</style>
 
 	<script type="text/javascript">
+		var flag = false;
 		function loading(){
 		    document.getElementById("loading").style.visibility = "visible";
 		}
+		function handleFiles(files) {
+		  // Check for the various File API support.
+		  if (window.FileReader) {
 
+			  getAsText(files[0])
+		  } else {
+			  alert('FileReader are not supported in this browser.');
+		  }
+		}
+
+		function getAsText(fileToRead) {
+		  var reader = new FileReader();
+
+		  reader.readAsText(fileToRead);
+
+		  reader.onload = loadHandler;
+		  reader.onerror = errorHandler;
+		}
+
+		function loadHandler(event) {
+		  var csv = event.target.result;
+		  processData(csv);
+		}
+
+		function processData(csv) {
+			var allTextLines = csv.split(/\r\n|\n/);
+			var lines = [];
+			var data = allTextLines[0].split(',');
+
+			if(data[0] != 'id' || data[1] != 'dxcode' || data[2] != 'prescriptionlist' || data[3] != 'frequency'){
+				alert("파일의 컬럼명과 순서를 확인해주세요");
+				$("#file").val("");
+				flag = false;
+				return;
+			}else{
+				flag = true;
+			}
+
+		}
+
+		function errorHandler(evt) {
+		  if(evt.target.error.name == "NotReadableError") {
+			  alert("Cannot read file !");
+		  }
+		}
 		$(function(){
 			$('#uploadBtn').click(function(){
-				var file = $('#file').val();
-				var exp = file.split(".")[1];
-				console.log(exp);
-				if(exp != 'csv'){
-					alert("업로드할 파일의 확장자를 확인해주세요");
-					$('#file').focus();
-					return;
-				}else{
+				if(flag != false){
 					$('#uploadForm').submit();
 					alert("파일 업로드 성공");
+				}else{
+					return false;
 				}
-
 
 			});
 
@@ -190,7 +229,7 @@
 					</li>
 
 					<li class="nav-item">
-						<a class="nav-link" href="{% url 'matchings:userservice' %}" target="_blank">고객 서비스</a>
+						<a class="nav-link" href="{% url 'matchings:userservice_search' %}" target="_blank">고객 서비스</a>
 					</li>
 					 <li class="nav-item">
 						<a class="nav-link  active" href="{% url 'matchings:updatemodel' %}" target="_blank">모델 업데이트<span class="sr-only">(current)</span></a>
@@ -224,7 +263,7 @@
 										</tr>
 										<tr>
 											<td >파일</td>
-											<td id = "uploadfile" ><input type="file" name="file" id="file" /></td>
+											<td id = "uploadfile" ><input type="file" name="file" id="file"  onchange="handleFiles(this.files)" accept=".csv"/></td>
 										</tr>
 									</tbody>
 								</table>

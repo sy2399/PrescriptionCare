@@ -463,6 +463,7 @@ def check_diagnose(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def updatemodel(request):
+
 	if request.method == 'POST':
 	
 		if request.POST.get('remodel') is not None:
@@ -471,25 +472,15 @@ def updatemodel(request):
 			t = threading.Thread(target=remodel)
 			t.daemon = True
 			t.start()
-			return render 
+
 		else:
 			form = UploadFileForm(request.POST, request.FILES)
 			if form.is_valid():
-				print(request.FILES)
-
-
-				form.save()
-
-				#getfile
-				#if file's col is weird ~~~
-				#	{remove}
-				# return redirect(asdfafda)
-
-				return render(request, 'update_model.html', {'form': form})
+					form.save()
+					return render(request, 'update_model.html', {'form': form})
 			else:
-				form = UploadFileForm()
 
-			return render(request,'update_model.html', {'form': form})
+				return render(request,'update_model.html')
 
 	return render(request, 'update_model.html')
 
