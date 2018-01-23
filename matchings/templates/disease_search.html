@@ -211,7 +211,7 @@
 	</script>
 	
 	<div class="container-fluid">
-		<div class="row">
+		<div class="row" style="margin:0px;">
 			<nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar"  style="margin-top:20px;">
 				<ul class="nav nav-pills flex-column">
 					<!--<li class="nav-item">-->
@@ -256,13 +256,13 @@
 			</nav>
 
 			<main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main"  style="margin-top:50px;">
-				<div id="prescription_form" class="table-responsive" class = "form-group">
+				<div id="prescription_form" class="table-responsive form-group">
 					{% csrf_token %}
 
 					<div id="loading" style = "visibility:hidden"><img id="loading-image" src="../../../static/img/loading.gif" alt="Loading..." /></div>
 
 					<br>
-					<div class="row">
+					<div class="row" style="margin:0px">
 						<div class="col-md-6">
 							<div>
 								<label>Prescription: </label>
