@@ -57,14 +57,16 @@ def match_disease(request):
 	if request.method == "POST":
 		print(request.POST)
 
-		inputPreCode = request.POST.get("inputPreCode")#.split(" ")[1]
+		inputPreCode = request.POST.get("inputPreCode")
 		print(inputPreCode)
 		inputPreName = Prescription.objects.get(Q(ordercode=inputPreCode)).ordername
 		noticeArea = request.POST.get("noticeArea").strip()
+		print("flag: ", request.POST.get("flag"))
 		if request.POST.get("flag") == "option1":
 			flag = False
 		else:
 			flag = True
+		print("flag: ", flag)
 
 		if Notice.objects.filter(Q(ordercode=inputPreCode)).count() == 1:
 			notice = Notice.objects.get(Q(ordercode=inputPreCode))
@@ -319,6 +321,10 @@ class UserManagement(ListView):
 		return User.objects.filter(is_superuser=False)
 
 @login_required
+def userservice_search(request):
+	return render(request, 'userservice_search.html')
+
+@login_required
 def userservice(request):
 	if request.method == 'POST':
 		if request.POST.get('match_word') is not None:
@@ -356,6 +362,9 @@ def userservice(request):
 	else:
 		schWord = ''
 
+
+	print("Search word: ", schWord)
+
 	search_prescription_list = []
 	for code in schWord.split(" "):
 		if Notice.objects.filter(ordercode=code).count() != 1:
@@ -386,8 +395,8 @@ def userservice(request):
 				hosp_prescriptions_fre.append(Doctor_diagnose.objects.get(Q(ordercode=item.ordercode) & Q(dxcode=item.dxcode)).frequency)
 		
 	sys_prescriptions = []
-	networkx_disease_lists = []
-	networkx_disease_list_non_duplicates = []
+	disease_lists = []
+	disease_list_non_duplicates = []
 	sys_prescriptions_fre = []
 	schWord_cnt = 0
 
@@ -397,7 +406,6 @@ def userservice(request):
 		# revised by khan (Dec 19. 2017)
 		# sys_prescription 에 이미 저장된 내용은 networkx 결과에서 제외시켜야함
 		#################################################################################
-		print(Prescription.objects.filter(ordercode=code).count())
 
 		# check if prescription exists (if not, continue)
 		if Prescription.objects.filter(ordercode=code).count() != 1:
@@ -408,51 +416,63 @@ def userservice(request):
 		# get notice
 		if Notice.objects.filter(ordercode=code).count() == 1:
 			notice = Notice.objects.get(ordercode=code)
+			print("Notice: ", notice)
+			
+			if notice.display_condition:
+
+				# 현재 병원 추천 갯수 파악
+				hosp_prescription_cnt = 0
+				for hosp_prescription in hosp_prescriptions:
+					if hosp_prescription.ordercode == code:
+						hosp_prescription_cnt += 1
+
+				extra_system_prescription_cnt = 5 - hosp_prescription_cnt
+
+				# get disease list from model
+				disease_list = NNmodel.get_disease(ordercode_input=code, num=10)
+				print("hosp_prescription: ")
+				for item in hosp_prescriptions:
+					print(item.dxcode)
+
+				for disease in disease_list:
+					print("disease: ", disease)
+					exist = 0
+					# duplicate 이 있는지 확인
+					for hosp_prescription_item in hosp_prescriptions:
+						if (disease[0] == hosp_prescription_item.dxcode):
+							exist = 1
+							break
+					# duplicate 가 없으면 계속 진행
+					if exist == 0:
+						# 남은 시스템 추천 항목 갯수 만큼 배열에 입력
+						if extra_system_prescription_cnt > 0:
+							disease_list_non_duplicates.append(disease)
+							print(disease[0], " added")
+
+							# 같은 배열의 크기를 위한 작업 (zip을 위해서)
+							sys_prescriptions.append(sys_prescription)
+
+							# extra_system_prescription_cnt 1 감소
+							extra_system_prescription_cnt -= 1
+
+				for item in disease_list:
+					if Doctor_diagnose.objects.filter(Q(ordercode=code) & Q(dxcode=item[0])).count() == 0:
+						item.append(0)
+					else:
+						item.append(Doctor_diagnose.objects.get(Q(ordercode=code) & Q(dxcode=item[0])).frequency)
+
 		else:
 			print("No dxcode " + code + " in notice!!")
 
-		# 현재 병원 추천 갯수 파악
-		hosp_prescription_cnt = 0
-		for hosp_prescription in hosp_prescriptions:
-			if hosp_prescription.ordercode == code:
-				hosp_prescription_cnt += 1
-
-		extra_system_prescription_cnt = 5 - hosp_prescription_cnt
-
-		# get disease list from network X
-		networkx_disease_list = NXmodel.get_disease(ordercode_input=code, num=10)
-		for networkx_disease_item in networkx_disease_list:
-			exist = 0
-			# duplicate 이 있는지 확인
-			for hosp_prescription_item in hosp_prescriptions:
-				if (networkx_disease_item[0] == hosp_prescription_item.dxcode):
-					exist = 1
-					break
-			# duplicate 가 없으면 계속 진행
-			if exist == 0:
-				# 남은 시스템 추천 항목 갯수 만큼 배열에 입력
-				if extra_system_prescription_cnt != 0:
-					networkx_disease_list_non_duplicates.append(networkx_disease_item)
-					print(networkx_disease_item[0], " added")
-
-					# 같은 배열의 크기를 위한 작업 (zip을 위해서)
-					sys_prescriptions.append(sys_prescription)
-
-					# extra_system_prescription_cnt 1 감소
-					extra_system_prescription_cnt -= 1
-
-		for item in networkx_disease_list:
-			if Doctor_diagnose.objects.filter(Q(ordercode=code) & Q(dxcode=item[0])).count() == 0:
-				item.append(0)
-			else:
-				item.append(Doctor_diagnose.objects.get(Q(ordercode=code) & Q(dxcode=item[0])).frequency)
+	print("sys_prescription: ", sys_prescriptions)
+	print("sys_disease_list: ", disease_list_non_duplicates)
 
 	context = {}
 	context['schword'] = schWord
 	context['schword_cnt'] = schWord_cnt
 	context["search_prescription_list"] = zip(np.arange(1, 1 + len(search_prescription_list)).tolist(), search_prescription_list)
 	context["hosp_prescriptions"] = zip(hosp_prescriptions, hosp_disease_name_list, hosp_prescriptions_fre)
-	context["sys_prescriptions"] = zip(sys_prescriptions, networkx_disease_list_non_duplicates)
+	context["sys_prescriptions"] = zip(sys_prescriptions, disease_list_non_duplicates)
 
 	return render(request, 'userservice.html', context)
 
@@ -471,7 +491,6 @@ def updatemodel(request):
 			t = threading.Thread(target=remodel)
 			t.daemon = True
 			t.start()
-			return render 
 		else:
 			form = UploadFileForm(request.POST, request.FILES)
 			if form.is_valid():
@@ -531,5 +550,3 @@ class m4876_00(TemplateView):
 class m4876_01(TemplateView):
 	template_name = 'm4876_01.html'
 
-def userservice_search(request):
-	return render(request, 'userservice_search.html')

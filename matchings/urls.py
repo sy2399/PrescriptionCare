@@ -13,7 +13,7 @@ urlpatterns = [
 	url(r'^model_comparison/', views.ModelCompareFormView.as_view(), name='models_test'),
 	url(r'^userstatics/$', views.UserStatics.as_view(), name='userstatics'),
 	url(r'^usermanagement/$', views.UserManagement.as_view(), name='usermanagement'),
-	url(r'^usersearvice_searchurl/$', views.userservice_search, name='userservice_search'),
+	url(r'^userservice_search/$', views.userservice_search, name='userservice_search'),
 	url(r'^userservice/$', views.userservice, name='userservice'),
 	url(r'^updatemodel/$', views.updatemodel, name='updatemodel'),
 
