@@ -21,6 +21,7 @@ diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescripti
 diseasedf = diseasedf.dropna(how="any")
 #thres_diseasedf = diseasedf[diseasedf.frequency <= 1000]
 thres_diseasedf = diseasedf[diseasedf.frequency <= 1]
+thres_diseasedf = diseasedf[diseasedf.frequency <= 1000]
 tempthres_diseasedf = diseasedf[diseasedf.frequency > 45000]
 
 diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))

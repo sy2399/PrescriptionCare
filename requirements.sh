@@ -14,7 +14,6 @@ sudo pip3 install pickle
 sudo pip3 install h5py
 sudo pip3 install joblib
 
-sudo pip3 install flask
 ## To create superuser account, use command below inside the project root directory:
 ## python3.~ manage.py createsuperuser
 
