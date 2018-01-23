@@ -1,5 +1,3 @@
-<!--{% load staticfiles %}-->
-<!--{% block extrastyle %}{% static 'css/jw_front.css' %}{% endblock %}-->
 {% load staticfiles %}
 {% block content %}
 
@@ -17,20 +15,6 @@ function showPrescription(element,disease){
 
 $(function(){
 	var tbl = $('#resultTable');
-	<!--
-	$('#allselectBtn').click(function(){
-		$(":checkbox", tbl).attr("checked", true);
-		$('#resultTable tr').css("background-color", "#D3FFFE");
-
-	});
-
-	$('#alldeselectBtn').click(function(){
-		$(":checkbox", tbl).attr("checked", false);
-		$('#resultTable tr').css("background-color", "white");
-
-	});
-	-->
-
 	$('input[type="checkbox"]').change(function() {
 		if(this.checked) {
 			$(this).parent().parent().css("background-color", "#D3FFFE");
@@ -42,11 +26,17 @@ $(function(){
 	});
 
 	$('#reset_Btn').click(function(){
-	    $('#search_prescription').val("");
-	    $('#search-prescription-results').empty();
-	    $('#search-disease-results').empty();
-	});
 
+		$('#noticeArea').val("");
+		var checkboxes = $('#resultTable tr')
+		for(var i = 1; i< checkboxes.length;i++){
+			var chk = $('#resultTable tr').eq(i).children().find('input[type="checkbox"]').is(':checked');
+			if(chk == true){
+				$('#resultTable tr').eq(i).children().find('input[type = "checkbox"]').prop("checked", false);
+				$('#resultTable tr').eq(i).css("background-color", "white");
+			}
+		}
+	});
 	$('#saveBtn').click(function(){
 
 	    var is_checked = false;
@@ -97,7 +87,7 @@ $(function(){
 				$('#hiddenform').append(html);
 				$('#hiddenform').submit();
 			} else {
-			// Do nothing!
+
 			}
 		}
 	});

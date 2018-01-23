@@ -1,5 +1,4 @@
 import datetime
-#import xlrd
 import re
 
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
@@ -168,7 +167,6 @@ class NeuralNetwork:
 		for item in self.y_train:
 			self.index = self.y_classes.index(item)
 			self.y_train_idx.append(self.index)
-			print("aaa")
 
 		callback1 = keras.callbacks.EarlyStopping(monitor='val_loss', patience=3)
 		self.train_and_fit_model(self.X_train, self.y_train_idx, self.y_classes, 100, 100, 0.1, [callback1])
@@ -190,8 +188,6 @@ class NeuralNetwork:
 	
 		self.model.save_weights("static/NNmodel_data/NN_model.h5")
 
-
-
 	# construct model
 	def build_neural_net(self, X_train, y_classes):
 		self.model = Sequential()
@@ -209,8 +205,6 @@ class NeuralNetwork:
 			optimizer='sgd',
 			metrics=['accuracy']
 		)
-
-
 
 	#train model
 	def train_and_fit_model(self, X_train, y_train_idx, y_classes, b_size, e_size, v_split, callback_func):
@@ -241,9 +235,6 @@ class NeuralNetwork:
 				top_diagnosis = all_classes[top_index]
 
 			selected_results = top_diagnosis.tolist()
-
-#			print("sel: ", top_diagnosis)
-#			print("ret: ", top_relations)
 
 			results_converted_to_list = []
 			for i in range(0, len(top_diagnosis)):

@@ -29,16 +29,16 @@ import pickle
 import json
 from collections import OrderedDict, Counter
 
+
+#	Dataframes	#
 diseasedf = pd.DataFrame(list(Disease.objects.all().values('dxcode', 'prescriptionlist', 'frequency', 'fileflag')))
 prescriptiondf = pd.DataFrame(list(Prescription.objects.all().values('ordercode', 'ordername')))
-
 # drop rows which contain nan
 prescriptiondf = prescriptiondf.dropna(how="any")
+diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
 
 NNmodel = NeuralNetwork()
 NXmodel = NetworkX()
-
-diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', 'namek') ))
 
 @method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
 class datashow(ListView):
@@ -138,8 +138,8 @@ def search_disease(request):
 	#  Added by khan Dec. 14 2017
 	######################################################
 	#print("search_list: ", search_list)
-	NN_disease_list = NNmodel.get_disease(ordercode_input=search_list, num=10)
-	NX_disease_list = NXmodel.get_disease(ordercode_input=search_list, num=5)
+	NN_disease_list = NNmodel.get_disease(ordercode_input=search_list, num=15)
+	NX_disease_list = NXmodel.get_disease(ordercode_input=search_list, num=15)
 
 	print("NN: ", NN_disease_list)
 	print("")
@@ -150,27 +150,27 @@ def search_disease(request):
 	#####################################################
 
 	disease_list = []
-	for item in NN_disease_list[0:5]:
+	for item in NX_disease_list[0:6]:
 		disease_list.append(item)
 
 	print(disease_list)
 
-	for item in NX_disease_list:
+	for item in NN_disease_list:
 		exist_flag = False
-		for code in NN_disease_list[0:5]:
-			print("item: ", item[0], "code: ", code[0])
+		for code in NX_disease_list[0:6]:
+			#print("item: ", item[0], "code: ", code[0])
 			if item[0] == code[0]:
 				exist_flag = True
 				break
-
-		if exist_flag == False:
+		
+		if (exist_flag == False) and (len(disease_list) < 15):
 			disease_list.append(item)
 
-	for item in NN_disease_list[5:10]:
-		if len(disease_list) < 10:
-			disease_list.append(item)
-		else:
-			break
+#for item in NN_disease_list[5:10]:
+#		if len(disease_list) < 10:
+#			disease_list.append(item)
+#		else:
+#			break
 	print("disease_list: ", disease_list)
 
 	#해당 처방에 대한 Review 정보 받아오기
@@ -194,6 +194,7 @@ def search_disease(request):
 
 	context['disease_list'] = selected_list
 	context['disease_list_cnt'] = len(selected_list)
+
 	# 해당 처방에 대한 Notice 정보 받아오기
 	if Notice.objects.filter(Q(ordercode=search_list)).count() == 1: # 정보가 있으면 (단일만 가능)
 		notice = Notice.objects.get(Q(ordercode=search_list))
@@ -470,11 +471,20 @@ def updatemodel(request):
 			t = threading.Thread(target=remodel)
 			t.daemon = True
 			t.start()
-
+			return render 
 		else:
 			form = UploadFileForm(request.POST, request.FILES)
 			if form.is_valid():
+				print(request.FILES)
+
+
 				form.save()
+
+				#getfile
+				#if file's col is weird ~~~
+				#	{remove}
+				# return redirect(asdfafda)
+
 				return render(request, 'update_model.html', {'form': form})
 			else:
 				form = UploadFileForm()
@@ -497,6 +507,9 @@ def remodel():
 					fileflag = True
 				)
 			newdis.save()
+		datafile.usedflag = True
+		datafile.save()
+
 
 	newNNmodel = NeuralNetwork()
 	newNNmodel.make_model()
@@ -518,4 +531,5 @@ class m4876_00(TemplateView):
 class m4876_01(TemplateView):
 	template_name = 'm4876_01.html'
 
-
+def userservice_search(request):
+	return render(request, 'userservice_search.html')

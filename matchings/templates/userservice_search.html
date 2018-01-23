@@ -148,24 +148,7 @@
 		    document.getElementById("loading").style.visibility = "visible";
 		}
 
-		$(function(){
-			$('#uploadBtn').click(function(){
-				var file = $('#file').val();
-				var exp = file.split(".")[1];
-				console.log(exp);
-				if(exp != 'csv'){
-					alert("업로드할 파일의 확장자를 확인해주세요");
-					$('#file').focus();
-					return;
-				}else{
-					$('#uploadForm').submit();
-					alert("파일 업로드 성공");
-				}
 
-
-			});
-
-		});
 	</script>
 	
 	<div class="container-fluid">
@@ -190,10 +173,10 @@
 					</li>
 
 					<li class="nav-item">
-						<a class="nav-link" href="{% url 'matchings:userservice' %}" target="_blank">고객 서비스</a>
+						<a class="nav-link active" href="{% url 'matchings:userservice_search' %}" target="_blank">고객 서비스<span class="sr-only">(current)</span></a>
 					</li>
 					 <li class="nav-item">
-						<a class="nav-link  active" href="{% url 'matchings:updatemodel' %}" target="_blank">모델 업데이트<span class="sr-only">(current)</span></a>
+						<a class="nav-link" href="{% url 'matchings:updatemodel' %}" target="_blank">모델 업데이트</a>
 					</li>
 				</ul>
 			</nav>
@@ -204,39 +187,20 @@
 
 					<div id="loading" style = "visibility:hidden"><img id="loading-image" src="../../../static/img/loading.gif" alt="Loading..." /></div>
 
-					<h1 style = "font-size: 20px;">파일 업로드</h1>
+					<h1 style = "font-size: 20px;">고객서비스</h1>
 					<br>
-					<p>파일을 업로드 할 시, 반드시 csv 파일을 다음과 같이 작성해서 올리세요<br><br>
-					col: id, dxcode, prescriptionlist, frequency
-					</p>
+
 					
 					<br>
 					<div class = "row">
 						<div class="col-md-6" style="overflow-x:auto;">
 								{% csrf_token %}
-							<form action="." method="post" enctype="multipart/form-data" id = "uploadForm">
+							<form action="{% url 'matchings:userservice' %}" method="post">
 								{% csrf_token %}
-								<table id = "uploadFileTable" class = "vType_line scrolltbody2" style="width:100%">
-									<tbody>
-										<tr>
-											<td >파일명</td>
-											<td id = "uploadTitle" ><input type="text" style = "width:100%" name="title" id="title" /></td>
-										</tr>
-										<tr>
-											<td >파일</td>
-											<td id = "uploadfile" ><input type="file" name="file" id="file" /></td>
-										</tr>
-									</tbody>
-								</table>
-								<br>
-								<button class = "button_box" style = "float:right;margin-left:20px;" id = "uploadBtn" name = "upload">Upload</button>
+								처방 검색 : <input type="text" name="match_word">
+								<input type="submit" class = "button_box" style = "margin-left:50px;" value="Search" />
 							</form>
-							<div class="row" style="float:right;">
-								<form action="." method="post">
-									{% csrf_token %}
-									<button class="button_box" type="submit" name="remodel" value="remodel" >Remodel</button>
-								</form>
-							</div>
+
 						</div>
 					</div>
 
