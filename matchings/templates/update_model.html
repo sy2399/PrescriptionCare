@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block extrastyle %}{% static 'css/jw_front.css' %}{% endblock %}
-{% block title %}Data{% endblock %}
+{% block title %}Update_model{% endblock %}
 {% block content %}
 	<style>
 		input[type=text], input[type=password] {
@@ -233,6 +233,10 @@
 					</li>
 					 <li class="nav-item">
 						<a class="nav-link  active" href="{% url 'matchings:updatemodel' %}" target="_blank">모델 업데이트<span class="sr-only">(current)</span></a>
+					</li>
+					 <!--관리자인 경우만 아래 메뉴가 뜨게-->
+                    <li class="nav-item">
+						<a class="nav-link" href="{% url 'matchings:usermanagement' %}" target="_blank">고객 통계</a>
 					</li>
 				</ul>
 			</nav>

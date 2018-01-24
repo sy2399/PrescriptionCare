@@ -251,6 +251,12 @@
 					 <li class="nav-item">
 						<a class="nav-link" href="{% url 'matchings:updatemodel' %}" target="_blank">모델 업데이트</a>
 					</li>
+
+                    <!--관리자인 경우만 아래 메뉴가 뜨게-->
+                    <li class="nav-item">
+						<a class="nav-link" href="{% url 'matchings:usermanagement' %}" target="_blank">고객 통계</a>
+					</li>
+
 				</ul>
 
 			</nav>
@@ -267,7 +273,7 @@
 							<div>
 								<label>Prescription: </label>
 								<input type="text" id="search_prescription" name="search_prescription" size="40"/>
-							    <button id="pre_resetBtn" class="button_box">초기화</button>
+							   xc
                                 <button id="searchBtn" class="button_box">검색</button>
 							</div>
 							<br>
