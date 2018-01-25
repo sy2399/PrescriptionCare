@@ -18,17 +18,16 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
 
-from PrescriptionCare.views import HomeView
-from PrescriptionCare.views import UserCreateView, UserCreateDone
+from PrescriptionCare import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 	
-	url(r'^$', HomeView.as_view(), name='home'),
+	url(r'^$', views.HomeView.as_view(), name='home'),
 
 	url(r'^accounts/', include('django.contrib.auth.urls')),
-	url(r'^accounts/register/$', UserCreateView.as_view(), name='register'),
-	url(r'^accounts/register/done/$', UserCreateDone.as_view(), name='register_done'),
+	url(r'^accounts/register/$', views.createuser, name='register'),
+	url(r'^accounts/register/done/$', views.UserCreateDone.as_view(), name='register_done'),
 
 	url(r'^matchings/', include('matchings.urls', namespace='matchings')),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

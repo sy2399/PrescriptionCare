@@ -10,9 +10,9 @@
 
 {% block content %}
 
-<script>
+	<script>
 
-$(function(){
+	$(function(){
 		var chechkpw1 = 0;
 		var chechkpw2 = 0;
 
@@ -41,7 +41,6 @@ $(function(){
 			}else{
 				$("#passwordCheckView").html("password 일치");
 				checkpw2= 0;
-
 			}
 
 		});
@@ -53,275 +52,301 @@ $(function(){
 				if(checkpw2 == 2){
 					alert("변경할 비밀번호가 서로 일치하지 않습니다");
 					return;
-				}
-				else if(checkpw1 == 1){
+				}else if(checkpw1 == 1){
 					alert("비밀번호는 8글자 이상이여야 합니다");
 					return;
-
 				}else if(checkpw1 == 3){
 					alert("비밀버호는 숫자와 영어를 혼합해서 만들어주세요");
 					return;
-
 				}
 				return;
 			}
 		});
 
-
 	});
 
-</script>
+	</script>
+
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-1"></div>
-			<div class="col-sm-10">
+				<div class="col-sm-10">
 
-				<div id="loginbox" style="margin-top:50px;">
+					<div id="loginbox" style="margin-top:50px;">
 
-				<div class="panel panel-info" >
-						<div class="panel-heading">
-							<div class="panel-title" style="text-align:center">ONTIC HIS Smart Support Service</div>
-							<!--<div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#">Forgot password?</a></div>-->
+						<div class="panel panel-info" >
+							<div class="panel-heading">
+								<div class="panel-title" style="text-align:center">ONTIC HIS Smart Support Service</div>
+								<div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#">Forgot password?</a></div>
+								</div>
+
+								<div style="padding-top:30px" class="panel-body" >
+									<form id="registerForm" class="form-horizontal" role="form" action = "." method="post">
+			
+										{% csrf_token %}
+										{% if form.errors %}
+										<div  id="login-alert" class="alert alert-danger col-sm-12">Wrong!! Please correct the error(s) below</div>
+										{% endif %}
+
+										<div class="col-sm-9" >
+											{% load widget_tweaks %}
+											<div style="margin-bottom: 25px" class="input-group">
+												<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+												{{ form.username|add_class:"form-control input-lg" }}
+											</div>
+
+											<div> 비밀번호는 숫자와 문자를 조합해서 8자리 이상이어야 합니다</div>
+											<div style="margin-bottom: 25px" class="input-group">
+												<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+												{% load widget_tweaks %}
+												{{ form.password1|add_class:"form-control input-lg" }}
+											</div>
+										
+											<div> 비밀번호를 한번 더 입력하세요</div>
+											<div style="margin-bottom: 25px" class="input-group">
+												<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+												{% load widget_tweaks %}
+												{{ form.password2|add_class:"form-control input-lg" }}
+											</div>
+										
+
+											<div> 이름</div>
+											<div style="margin-bottom: 25px" class="input-group">
+												{% load widget_tweaks %}
+												{{ form.first_name|add_class:"form-control input-lg" }}
+											</div>
+										
+	
+											<div> 이메일 </div>
+											<div style="margin-bottom: 25px" class="input-group">
+												<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+												{% load widget_tweaks %}
+												{{ form.email|add_class:"form-control input-lg" }}
+											</div>
+																	
+											<div> 전화번호</div>
+											<div style="margin-bottom: 25px" class="input-group">
+												{% load widget_tweaks %}
+												{{ form.phone_num|add_class:"form-control input-lg" }}
+											</div>
+										
+
+											<div> 거래처명</div>
+												<div style="margin-bottom: 25px" class="input-group">
+												<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+												{% load widget_tweaks %}
+												{{ form.customer|add_class:"form-control input-lg" }}
+											</div>
+
+											<div> 담당자 부서명</div>
+											<div style="margin-bottom: 25px" class="input-group">
+												<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+												{% load widget_tweaks %}
+												{{ form.assigned_group|add_class:"form-control input-lg" }}
+											</div>
+
+											<div> 담당자 지위</div>
+											<div style="margin-bottom: 25px" class="input-group">
+												<span class="input-group-addon"></span>
+												{% load widget_tweaks %}
+												{{ form.assigned_group_position|add_class:"form-control input-lg" }}
+											</div>
+											
+											<div> 계약 시작일</div>
+											<div style="margin-bottom: 25px" class="input-group">
+												{% load widget_tweaks %}
+												{{ form.contract_start_date|add_class:"form-control input-lg" }}
+											</div>
+											
+											<div> 계약 마감일</div>
+											<div style="margin-bottom: 25px" class="input-group">
+												{% load widget_tweaks %}
+												{{ form.contract_end_date|add_class:"form-control input-lg" }}
+											</div>
+											
+											<div> 비고</div>
+											<div style="margin-bottom: 25px" class="input-group">
+												<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+												{% load widget_tweaks %}
+												{{ form.note|add_class:"form-control input-lg" }}
+											</div>
+											
+											
+											
+											
+											<div class="col-sm-3" >
+											<div style="margin-top:10px" class="form-group">
+												&lt;!&ndash; Button &ndash;&gt;
+
+												<div class="col-sm-12 controls">
+													<input type = "submit" style = "float:right;margin-top:60px;" class="btn btn-success btn-lg" value = "Register">
+													<input type="hidden" name="next" value="{{ next }}" />
+												</div>
+											</div>
+										</div>
+<!--
+										<h1 class="entry-title"><span>Register</span> </h1>
+											<div class="col-sm-6" >
+
+										<div class="form-group">
+											<label class="control-label col-sm-3">아이디 <span class="text-danger">*</span></label>
+											<div class="col-md-8">
+												<div class="input-group">
+													<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+													<input type="text" class="form-control" name="username" id="username" placeholder="아이디를 입력해 주세요" value="">
+												</div>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="control-label col-sm-3">패스워드 <span class="text-danger">*</span></label>
+											<div class="col-md-8">
+												<div class="input-group">
+													<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+													<input type="password" class="form-control" name="password1" id="password1" placeholder="비밀번호를 입력해주세요" value="">
+												</div>
+												<span id = "passwordValidationkView"></span>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="control-label col-sm-3">거래처명 <span class="text-danger">*</span></label>
+											<div class="col-md-8">
+												<div class="input-group">
+													<input type="text" class="form-control" name="customer" id="customer" placeholder="거래처명을 입력해주세요" value="">
+												</div>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="control-label col-sm-3">연락처 <span class="text-danger">*</span></label>
+											<div class="col-md-8">
+												<div class="input-group">
+													<input type="text" class="form-control" name="phone_num" id="phone_num" placeholder="연락처를 입력해주세요" value="">
+												</div>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="control-label col-sm-3">담당자 부서명 <span class="text-danger"></span></label>
+											<div class="col-md-8">
+												<div class="input-group">
+													<input type="text" class="form-control" name="assigned_group" id="assigned_group" placeholder="담당자 부서명을 입력해주세요" value="">
+												</div>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="control-label  col-md-3">계약 기간</label>
+
+											<div class="col-md-2">
+												<div class="input-group date" id="contract_date" data-date="01-02-2018" data-date-format="mm-dd-yyyy">
+													<input type="date" class="form-control" name="contract_start_date" id = "contract_start_date" max="2030-12-31">
+												</div>
+											</div>
+											<div class = "col-md-2" style = "margin-left:40px;"> ~ </div>
+												<div class="col-md-2">
+													<div class="input-group date" id="contract_date2" data-date="01-02-2018" data-date-format="mm-dd-yyyy">
+														<input type="date" class="form-control" name="contract_end_date" id ="contract_end_date" max="2030-12-31">
+													</div>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="control-label col-sm-3">비고<span class="text-danger"></span></label>
+												<div class="col-md-8">
+													<div class="input-group">
+														<textarea rows="4" cols="75" id = "note" name = "note"> </textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class = "col-sm-6">
+											<div class="form-group">
+												<label class="control-label col-sm-3">계정상태 <span class="text-danger">*</span></label>
+												<div class="col-md-8">
+													<div class="input-group">
+														<select class="form-control" id="state">
+															<option>정상</option>
+															<option>탈퇴</option>
+															<option>중지</option>
+														</select>
+													</div>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="control-label col-sm-3">패스워드<span class="text-danger">*</span></label>
+												<div class="col-md-8">
+													<div class="input-group">
+														<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+														<input type="password" class="form-control" name="password2" id="password2" placeholder="비밀번호를 다시 입력해주세요" value="">
+													</div>
+												<span id = "passwordCheckView"></span>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="control-label col-sm-3">담당자명 <span class="text-danger">*</span></label>
+											<div class="col-md-8">
+												<div class="input-group">
+													<input type="text" class="form-control" name="first_name" id="first_name" placeholder="담당자명을 입력해주세요" value="">
+												</div>
+											</div>
+										</div>
+										
+										<div class="form-group">
+											<label class="control-label col-sm-3">이메일 <span class="text-danger">*</span></label>
+											<div class="col-md-8">
+												<div class="input-group">
+													<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+													<input type="email" class="form-control" name="email" id="email" placeholder="이메일을 입력해주세요" value="">
+												</div>
+											</div>
+										</div>
+										
+										<div class="form-group">
+											<label class="control-label col-sm-3">담당자 직책 <span class="text-danger"></span></label>
+												<div class="col-md-8">
+													<div class="input-group">
+														<input type="text" class="form-control" name="assigned_group_position" id="assigned_group_position" placeholder="담당자 직책을 입력해주세요" value="">
+													</div>
+												</div>
+											</div>
+										</div>
+				
+										<br>
+										
+										<div class="form-group">
+											<div class="col-md-12 control">
+												<div class="col-xs-12 col-md-6" style="margin-top:10px;margin-left:200px;">
+													<input type="submit" value="Register" id = "registerBtn" class="btn btn-primary btn-block btn-lg" style="align:center;" >
+												</div>
+											</div>
+										</div>
+-->										
+										<br>
+										
+										<div class="form-group">
+											<div class="col-md-12 control">
+												<div style="border-top: 1px solid#888; padding-top:15px; font-size:85%; text-align:center" >
+													주소 서울시 금천구 디지털로길 갑을그레이트밸리 B동 1001호 (주)중외정보기술<br>
+													Tel. 02-801-1000 Fax. 02-801-1099<br>
+													COPYRIGHT 중외정보기술 ALL RIGHTS RESERVED
+													<a href="#" onClick="$('#loginbox').hide(); $('#signupbox').show()"></a>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
 						</div>
+					</div>
 
-						<div style="padding-top:30px" class="panel-body" >
-							<form id="registerForm" class="form-horizontal" role="form" action = "." method="post">
-
-								{% csrf_token %}
-								{% if form.errors %}
-								<div  id="login-alert" class="alert alert-danger col-sm-12">Wrong!! Please correct the error(s) below</div>
-								{% endif %}
-
-								<!--<div class="col-sm-9" >-->
-									<!--{% load widget_tweaks %}-->
-									<!--<div style="margin-bottom: 25px" class="input-group">-->
-											<!--<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>-->
-											<!--{{ form.username|add_class:"form-control input-lg" }}-->
-
-										<!--</div>-->
-
-									<!--<div> 비밀번호는 숫자와 문자를 조합해서 8자리 이상이어야 합니다</div>-->
-									<!--<div style="margin-bottom: 25px" class="input-group">-->
-											<!--<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>-->
-											<!--{% load widget_tweaks %}-->
-											<!--{{ form.password1|add_class:"form-control input-lg" }}-->
-									<!--</div>-->
-									<!--<div> 비밀번호를 한번 더 입력하세요</div>-->
-									<!--<div style="margin-bottom: 25px" class="input-group">-->
-											<!--<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>-->
-											<!--{% load widget_tweaks %}-->
-											<!--{{ form.password2|add_class:"form-control input-lg" }}-->
-									<!--</div>-->
-
-
-								<!--</div>-->
-
-								<!--<div class="col-sm-3" >-->
-									<!--<div style="margin-top:10px" class="form-group">-->
-										<!--&lt;!&ndash; Button &ndash;&gt;-->
-
-										<!--<div class="col-sm-12 controls">-->
-                                            <!--<input type = "submit" style = "float:right;margin-top:60px;" class="btn btn-success btn-lg" value = "Register">-->
-											<!--<input type="hidden" name="next" value="{{ next }}" />-->
-										<!--</div>-->
-									<!--</div>-->
-
-								<!--</div>-->
-
-
-
-                                <h1 class="entry-title"><span>Register</span> </h1>
-                                <div class="col-sm-6" >
-
-                                <div class="form-group">
-                                          <label class="control-label col-sm-3">아이디 <span class="text-danger">*</span></label>
-                                          <div class="col-md-8">
-                                              <div class="input-group">
-                                              <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                                              <input type="text" class="form-control" name="username" id="username" placeholder="아이디를 입력해 주세요" value="">
-                                            </div>
-
-                                          </div>
-
-
-                                </div>
-
-                                <div class="form-group">
-                                  <label class="control-label col-sm-3">패스워드 <span class="text-danger">*</span></label>
-                                  <div class="col-md-8">
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                      <input type="password" class="form-control" name="password1" id="password1" placeholder="비밀번호를 입력해주세요" value="">
-                                   </div>
-                                      <span id = "passwordValidationkView"></span>
-                                  </div>
-                                </div>
-
-
-
-                                <div class="form-group">
-                                  <label class="control-label col-sm-3">거래처명 <span class="text-danger">*</span></label>
-                                  <div class="col-md-8">
-                                    <div class="input-group">
-
-                                      <input type="text" class="form-control" name="account_name" id="account_name" placeholder="거래처명을 입력해주세요" value="">
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="form-group">
-                                  <label class="control-label col-sm-3">연락처 <span class="text-danger">*</span></label>
-                                  <div class="col-md-8">
-                                    <div class="input-group">
-
-                                      <input type="text" class="form-control" name="phone" id="phone" placeholder="연락처를 입력해주세요" value="">
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="form-group">
-                                  <label class="control-label col-sm-3">담당자 부서명 <span class="text-danger"></span></label>
-                                  <div class="col-md-8">
-                                    <div class="input-group">
-
-                                      <input type="text" class="form-control" name="manager_department" id="manager_department" placeholder="담당자 부서명을 입력해주세요" value="">
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="form-group"> <!-- Date input -->
-                                  <label class="control-label  col-md-3">계약 기간</label>
-
-                                    <div class="col-md-2">
-                                      <div class="input-group date" id="contract_date" data-date="01-02-2018" data-date-format="mm-dd-yyyy">
-                                      <input type="date" class="form-control" name="sday" id = "sday" max="2030-12-31">
-
-                                      </div>
-
-                                    </div>
-                                        <div class = "col-md-2" style = "margin-left:40px;"> ~ </div>
-                                        <div class="col-md-2">
-                                      <div class="input-group date" id="contract_date2" data-date="01-02-2018" data-date-format="mm-dd-yyyy">
-                                      <input type="date" class="form-control" name="eday" id ="eday" max="2030-12-31">
-
-                                      </div>
-
-                                    </div>
-                                </div>
-
-                                 <div class="form-group">
-                                  <label class="control-label col-sm-3">비고<span class="text-danger"></span></label>
-                                  <div class="col-md-8">
-                                    <div class="input-group">
-
-                                      <textarea rows="4" cols="75" id = "ext" name = "ext "> </textarea>
-                                    </div>
-                                  </div>
-                                </div>
-
-
-                                </div>
-
-
-
-                                <div class = "col-sm-6">
-                                    <div class="form-group">
-                                      <label class="control-label col-sm-3">계정상태 <span class="text-danger">*</span></label>
-                                      <div class="col-md-8">
-                                        <div class="input-group">
-                                            <select class="form-control" id="state">
-                                                <option>정상</option>
-                                                <option>탈퇴</option>
-                                                <option>중지</option>
-                                            </select>
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                      <label class="control-label col-sm-3">패스워드<span class="text-danger">*</span></label>
-                                      <div class="col-md-8">
-                                        <div class="input-group">
-                                          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                          <input type="password" class="form-control" name="password2" id="password2" placeholder="비밀번호를 다시 입력해주세요" value="">
-                                        </div>
-                                           <span id = "passwordCheckView"></span>
-                                      </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                      <label class="control-label col-sm-3">담당자명 <span class="text-danger">*</span></label>
-                                      <div class="col-md-8">
-                                        <div class="input-group">
-
-                                          <input type="text" class="form-control" name="manager_name" id="manager_name" placeholder="담당자명을 입력해주세요" value="">
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                      <label class="control-label col-sm-3">이메일 <span class="text-danger">*</span></label>
-                                      <div class="col-md-8">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                                          <input type="email" class="form-control" name="email" id="email" placeholder="이메일을 입력해주세요" value="">
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                      <label class="control-label col-sm-3">담당자 직책 <span class="text-danger"></span></label>
-                                      <div class="col-md-8">
-                                        <div class="input-group">
-
-                                          <input type="text" class="form-control" name="manager_position" id="manager_position" placeholder="담당자 직책을 입력해주세요" value="">
-                                        </div>
-                                      </div>
-                                    </div>
-
-
-
-
-                                </div>
-
-
-
-                                <br>
-                                <div class="form-group">
-                                    <div class="col-md-12 control">
-                                        <div class="col-xs-12 col-md-6" style="margin-top:10px;margin-left:200px;">
-                                        <input type="submit" value="Register" id = "registerBtn" class="btn btn-primary btn-block btn-lg" style="align:center;" >
-                                    </div>
-                                    </div>
-                                </div>
-
-
-
-                                <br>
-
-                                <div class="form-group">
-                                    <div class="col-md-12 control">
-                                        <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%; text-align:center" >
-                                                    주소 서울시 금천구 디지털로길 갑을그레이트밸리 B동 1001호 (주)중외정보기술<br>
-                                                    Tel. 02-801-1000 Fax. 02-801-1099<br>
-                                                    COPYRIGHT 중외정보기술 ALL RIGHTS RESERVED
-                                            <a href="#" onClick="$('#loginbox').hide(); $('#signupbox').show()"></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                </div>
-                </div>
-
-            </div>
-
-		<div class="col-sm-1" ></div>
-
-
-
-
-
-         </div>
-    </div>
+					<div class="col-sm-1" ></div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
