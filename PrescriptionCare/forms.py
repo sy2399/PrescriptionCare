@@ -2,8 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-#class DateInput(forms.DateInput):
-#	input_type = 'date'
+# class DateInput(forms.DateInput):
+# 	input_type = 'date'
 
 class UserCreateForm(UserCreationForm):
 	first_name = forms.CharField(max_length=30, help_text="Required")
