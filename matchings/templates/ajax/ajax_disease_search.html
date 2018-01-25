@@ -77,7 +77,7 @@ $(function(){
 					}
 				}
 
-				alert("저장되었습니다.")
+
 
 				var flag = $(':radio[name="flag_info"]:checked').val();
 				html += "<input type='hidden' id = 'inputPreCode' name = 'inputPreCode' value='{{search_term}}'>"
@@ -86,8 +86,9 @@ $(function(){
 
 				$('#hiddenform').append(html);
 				$('#hiddenform').submit();
+				alert("저장되었습니다.")
 			} else {
-
+				return;
 			}
 		}
 	});
