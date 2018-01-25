@@ -123,7 +123,16 @@
 												{% load widget_tweaks %}
 												{{ form.email|add_class:"form-control input-lg" }}
 											</div>
-																	
+
+											<div> 계정상태 </div>
+											<div style="margin-bottom: 25px" class="input-group">
+												<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+												{% load widget_tweaks %}
+												{{ form.is_active|add_class:"form-control input-lg" }}
+											</div>
+	
+
+
 											<div> 전화번호</div>
 											<div style="margin-bottom: 25px" class="input-group">
 												{% load widget_tweaks %}

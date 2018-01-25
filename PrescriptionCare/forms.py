@@ -9,6 +9,8 @@ class UserCreateForm(UserCreationForm):
 	first_name = forms.CharField(max_length=30, help_text="Required")
 	email = forms.EmailField(max_length=256, help_text="Required")
 
+	is_active = forms.BooleanField(required=False)
+
 	phone_num = forms.CharField(max_length=20, help_text="Required")
 	customer = forms.CharField(max_length=256, help_text="Required")
 	assigned_group = forms.CharField(max_length=256, required=False, help_text="Optional")
@@ -19,7 +21,7 @@ class UserCreateForm(UserCreationForm):
 
 	class Meta:
 		model = User
-		fields = ('username', 'password1', 'password2', 'first_name', 'email', 'phone_num', 'customer', 'assigned_group', 'assigned_group_position', 'contract_start_date', 'contract_end_date', 'note',)
+		fields = ('username', 'password1', 'password2', 'first_name', 'email', 'is_active','phone_num', 'customer', 'assigned_group', 'assigned_group_position', 'contract_start_date', 'contract_end_date', 'note',)
 
 	def save(self, commit=True):
 		user = super(UserCreateForm, self).save(commit=False)
