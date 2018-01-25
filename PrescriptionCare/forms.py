@@ -17,7 +17,7 @@ class UserCreateForm(UserCreationForm):
 	assigned_group_position = forms.CharField(max_length=256, required=False, help_text="Optional")
 	contract_start_date = forms.DateField(help_text="Required")
 	contract_end_date = forms.DateField(help_text="Required")
-	note = forms.CharField(required=False, help_text="Optional")
+	note = forms.CharField(required=False, help_text="Optional", widget=forms.Textarea)
 
 	class Meta:
 		model = User
