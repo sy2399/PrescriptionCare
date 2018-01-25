@@ -41,14 +41,14 @@ diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', '
 NNmodel = NeuralNetwork()
 NXmodel = NetworkX()
 
-@method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class datashow(ListView):
 	template_name = 'datashow.html'
 
 	def get_queryset(self):
 		return Disease.objects.all()[0:10]
 
-@user_passes_test(lambda u: u.is_superuser)
+@login_required
 def match_disease(request):
 	context = {}
 	context.update(csrf(request))
@@ -108,7 +108,7 @@ def match_disease(request):
 	return render(request, 'disease_search.html', context)
 
 #상병 검색시
-@user_passes_test(lambda u: u.is_superuser)
+@login_required
 def search_prescription(request):
 	if request.method == "POST":
 		search_text = request.POST['search_text']
@@ -127,7 +127,7 @@ def search_prescription(request):
 	return render(request, 'ajax/ajax_prescription_search.html', context)
 
 #처방을 클릭해서 상병을 검색할 경우
-@user_passes_test(lambda u: u.is_superuser)
+@login_required
 def search_disease(request):
 	if request.method == "POST":
 		search_list = request.POST['search_list'].strip()
@@ -217,7 +217,7 @@ def search_disease(request):
 ######################################################
 #	Code for webpage that compares NN and NX model   #
 ######################################################
-@method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class ModelCompareFormView(FormView):
 	form_class = MatchForm
 	template_name = 'models_test_page.html'
@@ -232,7 +232,7 @@ class ModelCompareFormView(FormView):
 
 		return render(self.request, self.template_name, context)
 
-@user_passes_test(lambda u: u.is_superuser)
+@login_required
 def statics(request):
 	context = {}
 
@@ -318,14 +318,14 @@ def statics(request):
 
 	return render(request, 'statics.html', context)
 
-@method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class UserStatics(ListView):
 	template_name = 'userstatics.html'
 
 	def get_queryset(self):
 		return User.objects.filter(is_superuser=False)
 
-@method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class UserManagement(ListView):
 	template_name = 'usermanagement.html'
 
@@ -488,12 +488,12 @@ def userservice(request):
 
 	return render(request, 'userservice.html', context)
 
-@user_passes_test(lambda u: u.is_superuser)
+@login_required
 def check_diagnose(request):
 	#if request.method == 'POST':
 	return render(request, 'userservice.html')
 
-@user_passes_test(lambda u: u.is_superuser)
+@login_required
 def updatemodel(request):
 
 	if request.method == 'POST':
@@ -552,10 +552,6 @@ def remodel():
 
 	NNmodel = newNNmodel
 	NXmodel = newNXmodel
-
-
-def network(request):
-	return render(request, 'network.html')
 
 class m4876_00(TemplateView):
 	template_name = 'm4876.html'

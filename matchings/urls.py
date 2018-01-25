@@ -17,7 +17,6 @@ urlpatterns = [
 	url(r'^userservice/$', views.userservice, name='userservice'),
 	url(r'^updatemodel/$', views.updatemodel, name='updatemodel'),
 
-	url(r'^network/$', views.network, name='network'),
 	url(r'^m4876_00/$', views.m4876_00.as_view(), name='m4876_00'),
 	url(r'^m4876_01/$', views.m4876_01.as_view(), name='m4876_01'),
 ]
