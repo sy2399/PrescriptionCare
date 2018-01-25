@@ -1,5 +1,7 @@
 from django.db import models
 
+from datetime import datetime
+
 class Disease(models.Model):	
 	dxcode = models.CharField(max_length=1024)
 	prescriptionlist = models.CharField(max_length=4096) 
@@ -36,3 +38,8 @@ class UploadFileModel(models.Model):
 	title = models.TextField(default='')# 업로드한 파일명
 	file = models.FileField(null=True)# 업로드한 파일
 	usedflag = models.BooleanField(default=False)
+
+class RemodelTime(models.Model):
+	status = models.BooleanField(default=False)
+	starttime = models.DateTimeField(default=datetime.now())
+	endtime = models.DateTimeField(default=datetime.now())

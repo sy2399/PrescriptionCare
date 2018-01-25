@@ -15,7 +15,7 @@ from django.contrib.auth.decorators import user_passes_test, login_required
 from django.utils.decorators import method_decorator
 
 from django.contrib.auth.models import User
-from matchings.models import Disease, Disease_name, Prescription, Review, Notice, Doctor_diagnose, UploadFileModel
+from matchings.models import Disease, Disease_name, Prescription, Review, Notice, Doctor_diagnose, UploadFileModel, RemodelTime
 from matchings.forms import MatchForm
 
 from matchings.neural_net_model import NeuralNetwork
@@ -27,6 +27,7 @@ import numpy as np
 import threading
 import pickle
 import json
+from datetime import datetime
 from collections import OrderedDict, Counter
 
 
@@ -496,25 +497,31 @@ def check_diagnose(request):
 def updatemodel(request):
 
 	if request.method == 'POST':
-	
 		if request.POST.get('remodel') is not None:
-			print("Remodel start")
-			
 			t = threading.Thread(target=remodel)
 			t.daemon = True
 			t.start()
+			time = RemodelTime.objects.latest('endtime')
+			time.starttime = datetime.now()
+			time.status = True
+			time.save()		
 		else:
 			form = UploadFileForm(request.POST, request.FILES)
 			if form.is_valid():
 					form.save()
 					return render(request, 'update_model.html', {'form': form})
 			else:
-
 				return render(request,'update_model.html')
 
-	return render(request, 'update_model.html')
+	context = {}
+	context['modeling_status'] = RemodelTime.objects.latest('endtime').status
+	context['last_modeling_time'] = RemodelTime.objects.latest('endtime').endtime
+
+	return render(request, 'update_model.html', context)
 
 def remodel():
+	print("Remodel start")
+
 	datafiles = UploadFileModel.objects.filter(Q(usedflag=False))	
 	for datafile in datafiles:
 		df = pd.read_csv(str(datafile.file.path), sep=',', encoding='utf-8')
@@ -539,6 +546,10 @@ def remodel():
 	newNXmodel.whole_graph()
 
 	print("Remodeling done")
+	time = RemodelTime.objects.latest('endtime')
+	time.endtime = datetime.now()
+	time.status = False
+
 	NNmodel = newNNmodel
 	NXmodel = newNXmodel
 

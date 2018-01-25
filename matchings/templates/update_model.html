@@ -282,7 +282,12 @@
 							</div>
 						</div>
 					</div>
-
+					{% if modeling_status %}
+					<p>Modeling on going</p>
+					{% else %}
+					<p>Modeling is finished</p>
+					{% endif %}
+					<p>Recent remodel time: {{ last_modeling_time }}</p>
 
 				</div>
 			</main>

@@ -167,6 +167,7 @@ class NeuralNetwork:
 		for item in self.y_train:
 			self.index = self.y_classes.index(item)
 			self.y_train_idx.append(self.index)
+			print("modeling")
 
 		callback1 = keras.callbacks.EarlyStopping(monitor='val_loss', patience=3)
 		self.train_and_fit_model(self.X_train, self.y_train_idx, self.y_classes, 100, 100, 0.1, [callback1])
