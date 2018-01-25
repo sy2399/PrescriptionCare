@@ -8,8 +8,13 @@ from django.contrib.auth.models import User
 class UserCreateForm(UserCreationForm):
 	first_name = forms.CharField(max_length=30, help_text="Required")
 	email = forms.EmailField(max_length=256, help_text="Required")
-
-	is_active = forms.BooleanField(required=False)
+	ACTIVE = (
+		(True, 'Active'),
+		(False, 'Inactive')
+	)
+	
+	#is_active = forms.BooleanField(required=False)
+	is_active = forms.ChoiceField(choices=ACTIVE, label="계정 상태", initial='', widget=forms.Select(), required=True)
 
 	phone_num = forms.CharField(max_length=20, help_text="Required")
 	customer = forms.CharField(max_length=256, help_text="Required")

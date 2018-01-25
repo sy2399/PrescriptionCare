@@ -30,7 +30,8 @@ def createuser(request):
 			user.userprofile.contract_end_date = form.cleaned_data.get('contract_end_date')
 			user.userprofile.note = form.cleaned_data.get('note')
 			user.save()
-						
+
+			return redirect('/')
 	else:
 		form = UserCreateForm()
 
