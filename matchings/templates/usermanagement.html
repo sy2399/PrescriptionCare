@@ -239,11 +239,11 @@
 						<tbody>	
 							{% for user in user_list %}
 							<tr>
-								<td>{{ user.groups }}</td>
+								<td>{{ user.userprofile.assigned_group }}</td>
 								<td>{{ user.username }}</td>
-								<td></td>
-								<td></td>
-								<td></td>
+								<td>{{ user.first_name }}</td>
+								<td>{{ user.date_joined }}</td>
+								<td>{{ user.userprofile.contract_start_date }} ~ {{ user.userprofile.contract_end_date }}</td>
 								<td></td>
 
 							</tr>

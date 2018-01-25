@@ -22,6 +22,8 @@ from matchings.neural_net_model import NeuralNetwork
 from matchings.forms import UploadFileForm
 from matchings.networkx_model import NetworkX
 
+from userprofile.models import UserProfile
+
 import pandas as pd
 import numpy as np
 import threading
@@ -331,6 +333,14 @@ class UserManagement(ListView):
 
 	def get_queryset(self):
 		return User.objects.filter(is_superuser=False)
+	
+	def post(self, request):
+		print("post: ", request.POST)
+		name = request.POST.get('user_name')
+		profile = UserProfile.objects.filter(Q(assigned_group=name))
+		context = {}
+		context['user_list'] = User.objects.filter(Q(is_superuser=False) & (Q(first_name=name) | Q(userprofile=profile)))
+		return render(request, self.template_name, context)
 
 @login_required
 def userservice_search(request):
