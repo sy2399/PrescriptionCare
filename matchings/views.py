@@ -327,7 +327,7 @@ class UserStatics(ListView):
 	def get_queryset(self):
 		return User.objects.filter(is_superuser=False)
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
 class UserManagement(ListView):
 	template_name = 'usermanagement.html'
 

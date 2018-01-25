@@ -83,10 +83,12 @@ a:focus, a:hover, a:active {color:#333;}
 					 <li class="nav-item">
 						<a class="nav-link" href="{% url 'matchings:updatemodel' %}" target="_blank">모델 업데이트</a>
 					</li>
-					 <!--관리자인 경우만 아래 메뉴가 뜨게-->
-                    <li class="nav-item">
+			
+					{% if user.is_superuser %}
+					<li class="nav-item">
 						<a class="nav-link" href="{% url 'matchings:usermanagement' %}" target="_blank">고객 통계</a>
 					</li>
+					{% endif %}
 				</ul>
 
 			</nav>

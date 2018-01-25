@@ -14,7 +14,7 @@ class UserCreateForm(UserCreationForm):
 	)
 	
 	#is_active = forms.BooleanField(required=False)
-	is_active = forms.ChoiceField(choices=ACTIVE, label="계정 상태", initial='', widget=forms.Select(), required=True)
+	is_active = forms.ChoiceField(choices=ACTIVE, label="계정 상태", initial='wert', widget=forms.Select(), required=True)
 
 	phone_num = forms.CharField(max_length=20, help_text="Required")
 	customer = forms.CharField(max_length=256, help_text="Required")
