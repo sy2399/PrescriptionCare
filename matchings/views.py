@@ -523,11 +523,17 @@ def updatemodel(request):
 		else:
 			form = UploadFileForm(request.POST, request.FILES)
 			if form.is_valid():
-					form.save()
-					return render(request, 'update_model.html', {'form': form})
+				form.save()
+				
+				context = {}
+				context['form'] = form
+				context['modeling_status'] = RemodelTime.objects.latest('endtime').status
+				context['last_modeling_time'] = RemodelTime.objects.latest('endtime').endtime
+
+				return render(request, 'update_model.html', context)
 			else:
 				return render(request,'update_model.html')
-
+	
 	context = {}
 	context['modeling_status'] = RemodelTime.objects.latest('endtime').status
 	context['last_modeling_time'] = RemodelTime.objects.latest('endtime').endtime
