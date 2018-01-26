@@ -29,6 +29,7 @@ import numpy as np
 import threading
 import pickle
 import json
+from datetime import date
 from datetime import datetime
 from collections import OrderedDict, Counter
 
@@ -341,9 +342,36 @@ class UserManagement(ListView):
 	def post(self, request):
 		print("post: ", request.POST)
 		name = request.POST.get('user_name')
-		profile = UserProfile.objects.filter(Q(assigned_group=name))
+		sday = request.POST.get('sday')
+		eday = request.POST.get('eday')
+
+		if sday is '' or eday is '':
+			#profile = UserProfile.objects.filter(Q(assigned_group=name))
+			filtered_user = User.objects.filter(
+				Q(is_superuser=False) & 
+				(Q(first_name=name) | Q(userprofile__customer=name))
+			)
+			print(filtered_user)
+		else:
+			print(UserProfile.objects.filter(Q(contract_end_date=eday)))
+			if name is '':
+				filtered_user = User.objects.filter(
+					Q(is_superuser=False) & 
+					Q(userprofile__contract_start_date__gte=sday) &
+					Q(userprofile__contract_end_date__lte=eday)
+				)
+			else:
+				filtered_user = User.objects.filter(
+					Q(is_superuser=False) & 
+					(Q(first_name=name) | Q(userprofile__customer=name)) &
+					Q(userprofile__contract_start_date__lte=sday) &
+					Q(userprofile__contract_end_date__gte=eday)
+
+				)
+
 		context = {}
-		context['user_list'] = User.objects.filter(Q(is_superuser=False) & (Q(first_name=name) | Q(userprofile=profile)))
+		context['user_list'] = filtered_user
+		
 		return render(request, self.template_name, context)
 
 @login_required
