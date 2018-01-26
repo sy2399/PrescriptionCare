@@ -1,6 +1,6 @@
 from django.template.context_processors import csrf
 
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render_to_response, render, redirect
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 
@@ -373,7 +373,7 @@ def userservice(request):
 					diag.save()
 			
 				if Disease.objects.filter(Q(dxcode=dxcode) & Q(prescriptionlist=ordercode) & Q(fileflag=False)).count() != 0:
-					dis = Disease.objects.get(Q(ordercode=ordercode) & Q(dxcode=dxcode) & Q(fileflag=False))
+					dis = Disease.objects.get(Q(prescriptionlist=ordercode) & Q(dxcode=dxcode) & Q(fileflag=False))
 					dis.frequency = str(int(dis.frequency) + 1) # this should be fixed
 					dis.save()
 				else:
@@ -384,6 +384,8 @@ def userservice(request):
 								fileflag = False
 							)
 					dis.save()
+			
+			return redirect('/matchings/userservice_search/')
 
 	else:
 		schWord = ''
