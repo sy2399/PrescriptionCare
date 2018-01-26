@@ -559,6 +559,7 @@ def remodel():
 	time = RemodelTime.objects.latest('endtime')
 	time.endtime = datetime.now()
 	time.status = False
+	time.save()
 
 	NNmodel = newNNmodel
 	NXmodel = newNXmodel
