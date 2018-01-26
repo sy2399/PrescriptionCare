@@ -43,6 +43,11 @@ diseasenamedf = pd.DataFrame(list(Disease_name.objects.all().values('icdcode', '
 NNmodel = NeuralNetwork()
 NXmodel = NetworkX()
 
+time = RemodelTime.objects.latest('endtime')
+time.status = False
+time.save()
+
+
 @method_decorator(login_required, name='dispatch')
 class datashow(ListView):
 	template_name = 'datashow.html'
@@ -511,7 +516,6 @@ def updatemodel(request):
 			t = threading.Thread(target=remodel)
 			t.daemon = True
 			t.start()
-			time = RemodelTime.objects.latest('endtime')
 			time.starttime = datetime.now()
 			time.status = True
 			time.save()		
@@ -556,7 +560,6 @@ def remodel():
 	newNXmodel.whole_graph()
 
 	print("Remodeling done")
-	time = RemodelTime.objects.latest('endtime')
 	time.endtime = datetime.now()
 	time.status = False
 	time.save()
