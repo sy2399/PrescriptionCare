@@ -211,13 +211,13 @@ a:focus, a:hover, a:active {color:#333;}
 							.selectAll("circle")
 							.data(graph.nodes)
 							.enter().append("circle")
-							.attr("r", function(d){ return 6*Math.floor(Math.log10(d.weight)); })
-							.attr("fill", function(d){ return color(Math.floor(2*Math.log10(d.weight))); })
-							.call(d3.drag()
-									.on("start", dragstarted)
-									.on("drag", dragged)
-									.on("end", dragended)
-								);
+								.attr("r", function(d){ return 6*Math.floor(Math.log10(d.weight)); })
+								.attr("fill", function(d){ return color(Math.floor(2*Math.log10(d.weight))); });
+						<!--	.call(d3.drag()-->
+						<!--			.on("start", dragstarted)-->
+<!--										.on("drag", dragged)-->
+<!--										.on("end", dragended)-->
+<!--									);-->
 			node.append("title").text(function(d){ return d.name; });
 			simulation
 				.nodes(graph.nodes)
