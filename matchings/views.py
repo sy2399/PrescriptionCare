@@ -47,7 +47,6 @@ time = RemodelTime.objects.latest('endtime')
 time.status = False
 time.save()
 
-
 @method_decorator(login_required, name='dispatch')
 class datashow(ListView):
 	template_name = 'datashow.html'
