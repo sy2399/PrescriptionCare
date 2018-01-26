@@ -131,7 +131,7 @@
 
 			if(month == "range"){
 
-				var html = "<input type='date' class='form-control' name='sday' id = 'sday' max='2030-12-31'>" + "<input type='date' class='form-control' name='eday' id = 'eday' max='2030-12-31'>"
+				var html = "<div class = 'col-md-2'><input type='date' class='form-control' name='sday' id = 'sday' max='2030-12-31'></div>" + "<div class = 'col-md-2'><input type='date' class='form-control' name='eday' id = 'eday' max='2030-12-31'></div>"
 				$('#hiddenDiv').html(html);
 			}else{
 			$('#hiddenDiv').html("");
@@ -202,10 +202,18 @@
 							<tr style="height:50px;">
 								<td width="30%">기간 선택</td>
 								<td>
-									<input type="radio" name="month" value="last_month" /> 전월
-									<input type="radio" name="month" value="current_month" checked="checked" style = "margin-left:30px;" /> 당월
-									<input type="radio" name="month" value="range" style = "margin-left:30px;" /> 범위 지정
-									<div id = "hiddenDiv"></div>
+
+
+									<div id = "hiddenDiv">
+										<div class = 'col-md-4'>
+											<input type='date' class='form-control' name='sday' id = 'sday' max='2030-12-31'>
+										</div>
+										<div class= "col-md-1" style="text-align:center;padding-top:10px;"> ~ </div>
+										<div class = 'col-md-4'>
+											<input type='date' class='form-control' name='eday' id = 'eday' max='2030-12-31'>
+										</div>
+
+									</div>
 								</td>
 
 							</tr>
@@ -227,7 +235,7 @@
 					<table class="vType_line scrolltbody2">
 						<thead>
 							<tr>
-								<th>고객사명</th>
+								<th>거래처명</th>
 								<th>아이디</th>
 								<th>사용자명</th>
 								<th>계정생성일</th>
@@ -240,11 +248,11 @@
 						<tbody>	
 							{% for user in user_list %}
 							<tr>
-								<td>{{ user.userprofile.assigned_group }}</td>
+								<td>{{ user.userprofile.customer }}</td>
 								<td>{{ user.username }}</td>
 								<td>{{ user.first_name }}</td>
 								<td>{{ user.date_joined }}</td>
-								<td>{{ user.userprofile.contract_start_date }} ~ {{ user.userprofile.contract_end_date }}</td>
+								<td>{{ user.userprofile.contract_start_date }}  ~  {{ user.userprofile.contract_end_date }}</td>
 								<td></td>
 
 							</tr>
