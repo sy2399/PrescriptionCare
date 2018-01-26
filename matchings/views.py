@@ -95,14 +95,16 @@ def match_disease(request):
 		##########################################
 		# 해당 처방에 대한 기존 상병은 모두 삭제함
 		Review.objects.filter(Q(ordercode=inputPreCode)).delete()
+		
 		# 새롭게 업데이트된 선택 결과를 삽입
 		for checked_dxcode in request.POST.getlist("checked_discode"):
-			review = Review(
-				ordercode=inputPreCode,
-				dxcode=checked_dxcode,
-				# dxcode_name
-			)
-			review.save()
+			if (Review.objects.filter(Q(ordercode=inputPreCode) & Q(dxcode=checked_dxcode)).count()) == 0:
+				review = Review(
+					ordercode=inputPreCode,
+					dxcode=checked_dxcode,
+					# dxcode_name
+					)
+				review.save()
 			'''
 			if Review.objects.filter(Q(ordercode=inputPreCode) & Q(dxcode=checked_dxcode)).count() == 1: # 존재하는 경우
 				#review = Review.objects.get(Q(ordercode=inputPreCode) & Q(dxcode=checked_dxcode))
