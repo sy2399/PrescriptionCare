@@ -425,10 +425,15 @@ def userservice(request):
 	search_prescription_list = []
 	tmp_notice_list = []
 	for code in schWord.split(" "):
-		if Notice.objects.filter(ordercode=code).count() != 1:
+		if Notice.objects.filter(ordercode=code).count() != 1: 
+			if Prescription.objects.filter(ordercode=code).count() != 1:
+				tmpname = "Unknown"
+			else:
+				tmpname = Prescription.objects.get(ordercode=code).ordername
+
 			tmpnotice = Notice(
 					ordercode=code,
-					ordername="tmp name",
+					ordername=tmpname,
 					notice_description="No reviews",
 					display_condition=True
 			)
