@@ -98,12 +98,13 @@ def match_disease(request):
 		
 		# 새롭게 업데이트된 선택 결과를 삽입
 		for checked_dxcode in request.POST.getlist("checked_discode"):
-			if (Review.objects.filter(Q(ordercode=inputPreCode) & Q(dxcode=checked_dxcode)).count()) == 0:
+			
+			if Review.objects.filter(Q(ordercode=inputPreCode) & Q(dxcode=checked_dxcode)).count() == 0:
 				review = Review(
 					ordercode=inputPreCode,
 					dxcode=checked_dxcode,
 					# dxcode_name
-					)
+				)
 				review.save()
 			'''
 			if Review.objects.filter(Q(ordercode=inputPreCode) & Q(dxcode=checked_dxcode)).count() == 1: # 존재하는 경우
@@ -112,8 +113,6 @@ def match_disease(request):
 				#review.save()
 			else: # 없는 경우 새로 기록
 			'''
-
-
 	return render(request, 'disease_search.html', context)
 
 #상병 검색시
@@ -424,9 +423,19 @@ def userservice(request):
 	print("Search word: ", schWord)
 
 	search_prescription_list = []
+	tmp_notice_list = []
 	for code in schWord.split(" "):
 		if Notice.objects.filter(ordercode=code).count() != 1:
+			tmpnotice = Notice(
+					ordercode=code,
+					ordername="tmp name",
+					notice_description="No reviews",
+					display_condition=True
+			)
+			search_prescription_list.append(tmpnotice)
+			tmp_notice_list.append(tmpnotice)
 			continue
+
 		search_prescription = Notice.objects.get(ordercode=code)
 		search_prescription_list.append(search_prescription)
 
@@ -459,7 +468,7 @@ def userservice(request):
 	schWord_cnt = 0
 
 	current_disease_max = 5
-	for code in schWord.split(" "):
+	for code in schWord.split(" "): #for item in search_prescription_list
 		#################################################################################
 		# revised by khan (Dec 19. 2017)
 		# sys_prescription 에 이미 저장된 내용은 networkx 결과에서 제외시켜야함
@@ -467,12 +476,12 @@ def userservice(request):
 
 		# check if prescription exists (if not, continue)
 		if Prescription.objects.filter(ordercode=code).count() != 1:
-			continue
+			continue##ignore unknown
 		sys_prescription = Prescription.objects.get(ordercode=code)
 		schWord_cnt += 1
 
 		# get notice
-		if Notice.objects.filter(ordercode=code).count() == 1:
+		if Notice.objects.filter(ordercode=code).count() == 1: #if item.ordercode = 
 			notice = Notice.objects.get(ordercode=code)
 			print("Notice: ", notice)
 			
@@ -488,9 +497,9 @@ def userservice(request):
 
 				# get disease list from model
 				disease_list = NNmodel.get_disease(ordercode_input=code, num=10)
-				print("hosp_prescription: ")
-				for item in hosp_prescriptions:
-					print(item.dxcode)
+				#print("hosp_prescription: ")
+				#for item in hosp_prescriptions:
+				#	print(item.dxcode)
 
 				for disease in disease_list:
 					print("disease: ", disease)
@@ -519,8 +528,44 @@ def userservice(request):
 					else:
 						item.append(Doctor_diagnose.objects.get(Q(ordercode=code) & Q(dxcode=item[0])).frequency)
 
-		else:
+		elif len(tmp_notice_list) != 0:
 			print("No dxcode " + code + " in notice!!")
+			extra_system_prescription_cnt = 5
+
+			# get disease list from model
+			disease_list = NNmodel.get_disease(ordercode_input=code, num=10)
+
+			for disease in disease_list:
+				print("disease: ", disease)
+				exist = 0
+				# duplicate 이 있는지 확인
+				for hosp_prescription_item in hosp_prescriptions:
+					if (disease[0] == hosp_prescription_item.dxcode):
+						exist = 1
+						break
+				# duplicate 가 없으면 계속 진행
+				if exist == 0:
+					# 남은 시스템 추천 항목 갯수 만큼 배열에 입력
+					if extra_system_prescription_cnt > 0:
+						disease_list_non_duplicates.append(disease)
+						print(disease[0], " added")
+
+						# 같은 배열의 크기를 위한 작업 (zip을 위해서)
+						sys_prescriptions.append(sys_prescription)
+
+						# extra_system_prescription_cnt 1 감소
+						extra_system_prescription_cnt -= 1
+
+			for item in disease_list:
+				if Doctor_diagnose.objects.filter(Q(ordercode=code) & Q(dxcode=item[0])).count() == 0:
+					item.append(0)
+				else:
+					item.append(Doctor_diagnose.objects.get(Q(ordercode=code) & Q(dxcode=item[0])).frequency)
+
+
+
+
+
 
 	print("sys_prescription: ", sys_prescriptions)
 	print("sys_disease_list: ", disease_list_non_duplicates)
