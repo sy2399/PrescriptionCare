@@ -7,7 +7,7 @@ Ajou Web application Developing Repository _ About Medical Data
 
 - 임소영 
   - 상병-처방 관계 기반 NeuralNetwork Model 개발(`Python`, `Keras`) [Code Link :neural_net_model.py](https://github.com/sy2399/PrescriptionCare/blob/master/matchings/neural_net_model.py) 
-  - Django Web Service Front-end 개발 (`JavaScript`) [Code Link]
+  - Django Web Service Front-end 개발 (`JavaScript`) 
   
 - 전승곤 
   - 상병-처방 관계 기반 NetworkX Model 개발 [Code Link :networkx_model.py](https://github.com/sy2399/PrescriptionCare/blob/master/matchings/networkx_model.py)
