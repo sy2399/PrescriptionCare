@@ -10,7 +10,7 @@ Ajou Web application Developing Repository _ About Medical Data
   - Django Web Service Front-end 개발 (`JavaScript`) [Code Link]
   
 - 전승곤 
-  - 상병-처방 관계 기반 NetworkX Model 개발 [Code Link :neural_net_model.py](https://github.com/sy2399/PrescriptionCare/blob/master/matchings/networkX_model.py)
+  - 상병-처방 관계 기반 NetworkX Model 개발 [Code Link :networkx_model.py](https://github.com/sy2399/PrescriptionCare/blob/master/matchings/networkx_model.py)
   - Django Web Service Back-end 개발
 
 ##
